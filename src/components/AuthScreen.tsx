@@ -34,13 +34,17 @@ export default function AuthScreen() {
     
     try {
       await signInWithPopup(auth, provider);
-      // Google users are usually automatically verified, 
-      // but Firebase handles that. If the user state changes in App.tsx, 
-      // the verification check there will block them if not verified.
-      // Most Google accounts are pre-verified.
     } catch (err: any) {
       console.error('Google Auth error:', err);
-      setError('An error occurred during Google Sign In');
+      if (err.code === 'auth/popup-blocked') {
+        setError('Popup blocked by browser. Please allow popups for this site.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('Domain not authorized. Please add this domain to "Authorized domains" in Firebase Console.');
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        setError('Sign in cancelled: popup was closed.');
+      } else {
+        setError(err.message || 'An error occurred during Google Sign In');
+      }
     } finally {
       setLoading(false);
     }
@@ -73,7 +77,13 @@ export default function AuthScreen() {
         }
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: name });
-        await sendEmailVerification(userCredential.user);
+        try {
+          await sendEmailVerification(userCredential.user);
+        } catch (verifyErr: any) {
+          console.error('Failed to send verification email:', verifyErr);
+          // Don't block registration if email fails, but notify them
+          setError('Account created, but verification email failed to send. Please check your email settings or try logging in again.');
+        }
         await signOut(auth);
         setShowVerification(true);
       }
