@@ -7,40 +7,36 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
   --color-nejm-blue: #004a80;
-  --color-nejm-gray: #f4f4f4;
-  --color-nejm-border: #d1d1d1;
-  --color-nejm-text: #333333;
-  --color-nejm-red: #b01c2e;
+  --color-nejm-gray: #f8f9fa;
+  --color-nejm-border: #e2e8f0;
+  --color-nejm-text: #1e293b;
+  --color-nejm-red: #991b1b;
 }
 
 @layer base {
   body {
-    @apply bg-white text-nejm-text font-sans antialiased;
+    @apply bg-[#fcfcfc] text-nejm-text font-sans antialiased selection:bg-nejm-blue/10 selection:text-nejm-blue;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-nejm-blue;
+    @apply font-serif text-nejm-blue tracking-tight;
   }
 }
 
 .nejm-card {
-  @apply border border-nejm-border p-6 bg-white shadow-sm;
-}
-
-.nejm-header {
-  @apply border-b-2 border-nejm-blue pb-4 mb-8;
+  @apply border border-nejm-border p-8 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)];
 }
 
 .nejm-label {
-  @apply text-[11px] uppercase font-bold tracking-wider text-nejm-blue/70 mb-1;
+  @apply text-[10px] uppercase font-semibold tracking-[0.15em] text-slate-500 mb-2;
 }
 
 .nejm-input {
-  @apply w-full border border-nejm-border px-3 py-2 text-sm focus:outline-none focus:border-nejm-blue transition-colors bg-nejm-gray/30;
+  @apply w-full border-b border-nejm-border px-0 py-3 text-sm focus:outline-none focus:border-nejm-blue transition-all bg-transparent placeholder:text-transparent;
 }
 
 .nejm-btn {
-  @apply bg-nejm-blue text-white px-8 py-3 font-serif text-lg hover:bg-nejm-blue/90 transition-all shadow-md active:scale-[0.98];
+  @apply bg-nejm-blue text-white px-8 py-3.5 font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-nejm-blue/95 transition-all shadow-lg shadow-nejm-blue/20 active:scale-[0.98] rounded-none;
 }
 
 .nejm-section-title {

@@ -113,25 +113,28 @@ export default function AuthScreen() {
     return (
       <div className="min-h-screen bg-[#fcfcfc] flex items-center justify-center p-4 font-sans">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md"
         >
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-nejm-blue/10 rounded-full mb-4 text-nejm-blue">
-              <Key size={48} />
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-nejm-blue text-white rounded-none mb-6 shadow-xl shadow-nejm-blue/20">
+              <Key size={32} />
             </div>
-            <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2">Reset Password</h1>
-            <p className="text-nejm-text/60 italic font-serif">Link Sent Successfully</p>
+            <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2 tracking-tighter">Reset Link</h1>
+            <p className="text-[10px] text-nejm-text/50 uppercase tracking-[0.3em] font-bold italic">Verification Sent</p>
           </div>
 
-          <div className="nejm-card shadow-xl border-t-4 border-t-nejm-blue p-8 text-center">
-            <div className="flex justify-center mb-6">
-              <CheckCircle2 size={40} className="text-green-600" />
+          <div className="nejm-card border-t-4 border-t-nejm-blue p-10 text-center">
+            <div className="flex justify-center mb-8">
+              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center border border-green-100">
+                <CheckCircle2 size={24} className="text-green-600" />
+              </div>
             </div>
-            <h2 className="text-xl font-serif font-bold mb-4">Email Sent</h2>
-            <p className="text-sm text-nejm-text/70 mb-8 leading-relaxed">
-              We sent you a password change link to <span className="font-bold text-nejm-blue">{email}</span>!
+            <h2 className="text-xl font-serif font-bold mb-4 text-nejm-blue">Authentication Update</h2>
+            <p className="text-xs text-nejm-text/70 mb-10 leading-relaxed font-sans">
+              We have dispatched a secure password reset link to <br/>
+              <span className="font-bold text-nejm-blue tracking-tight">{email}</span>.
             </p>
 
             <button 
@@ -140,10 +143,9 @@ export default function AuthScreen() {
                 setIsForgotPassword(false);
                 setIsLogin(true);
               }}
-              className="nejm-btn w-full flex items-center justify-center gap-2"
+              className="nejm-btn w-full px-4 text-center justify-center flex items-center"
             >
-              <LogIn size={20} />
-              Sign In
+              Return to Access
             </button>
           </div>
         </motion.div>
@@ -155,26 +157,29 @@ export default function AuthScreen() {
     return (
       <div className="min-h-screen bg-[#fcfcfc] flex items-center justify-center p-4 font-sans">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md"
         >
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-nejm-blue/10 rounded-full mb-4 text-nejm-blue">
-              <Mail size={48} />
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-nejm-blue text-white rounded-none mb-6 shadow-xl shadow-nejm-blue/20">
+              <Mail size={32} />
             </div>
-            <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2">Check Email</h1>
-            <p className="text-nejm-text/60 italic font-serif">Verification Required</p>
+            <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2 tracking-tighter">Verify Email</h1>
+            <p className="text-[10px] text-nejm-text/50 uppercase tracking-[0.3em] font-bold italic">Identity Confirmation</p>
           </div>
 
-          <div className="nejm-card shadow-xl border-t-4 border-t-nejm-blue p-8 text-center">
-            <div className="flex justify-center mb-6">
-              <CheckCircle2 size={40} className="text-green-600" />
+          <div className="nejm-card border-t-4 border-t-nejm-blue p-10 text-center">
+            <div className="flex justify-center mb-8">
+              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100">
+                <CheckCircle2 size={24} className="text-nejm-blue" />
+              </div>
             </div>
-            <h2 className="text-xl font-serif font-bold mb-4">Verification Sent</h2>
-            <p className="text-sm text-nejm-text/70 mb-8 leading-relaxed">
-              We have sent you a verification email to <span className="font-bold text-nejm-blue">{email}</span>. 
-              Verify it and log in to access the system.
+            <h2 className="text-xl font-serif font-bold mb-4 text-nejm-blue">Clinician Verification</h2>
+            <p className="text-xs text-nejm-text/70 mb-10 leading-relaxed font-sans">
+              A verification directive has been sent to <br/>
+              <span className="font-bold text-nejm-blue tracking-tight">{email}</span>. 
+              Please authenticate your email to establish your audit trail.
             </p>
 
             <button 
@@ -184,10 +189,9 @@ export default function AuthScreen() {
                 setPassword('');
                 setConfirmPassword('');
               }}
-              className="nejm-btn w-full flex items-center justify-center gap-2"
+              className="nejm-btn w-full px-4 text-center justify-center flex items-center"
             >
-              <LogIn size={20} />
-              Return to Login
+              Back to Sign In
             </button>
           </div>
         </motion.div>
@@ -196,32 +200,45 @@ export default function AuthScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fcfcfc] flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-[#fcfcfc] relative flex items-center justify-center p-4 font-sans overflow-hidden">
+      {/* Sophisticated atmospheric background elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-nejm-blue/5 blur-[120px] rounded-full"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-nejm-red/5 blur-[120px] rounded-full"></div>
+      </div>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-nejm-blue/10 rounded-full mb-4 text-nejm-blue">
-            <Stethoscope size={48} />
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-nejm-blue text-white rounded-none mb-6 shadow-xl shadow-nejm-blue/20">
+            <Stethoscope size={32} />
           </div>
-          <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2">MedWise</h1>
-          <p className="text-nejm-text/60 italic font-serif">Clinical Decision Support System</p>
+          <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2 tracking-tighter">MedWise</h1>
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-px w-8 bg-nejm-red"></div>
+            <p className="text-[10px] text-nejm-text/50 uppercase tracking-[0.3em] font-bold">Clinical Portal</p>
+            <div className="h-px w-8 bg-nejm-red"></div>
+          </div>
         </div>
 
-          <div className="nejm-card shadow-xl border-t-4 border-t-nejm-blue">
+          <div className="nejm-card border-t-4 border-t-nejm-blue relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
+                <Stethoscope size={120} />
+            </div>
+
             {!isForgotPassword && (
-              <div className="flex border-b border-nejm-border mb-8">
+              <div className="flex border-b border-nejm-border -mx-8 -mt-8 mb-8">
                 <button 
                   onClick={() => { setIsLogin(true); setError(null); setIsForgotPassword(false); }}
-                  className={`flex-1 py-4 text-xs uppercase font-bold tracking-widest transition-colors ${isLogin ? 'text-nejm-blue border-b-2 border-nejm-blue bg-nejm-gray/30' : 'text-nejm-text/40 hover:text-nejm-blue'}`}
+                  className={`flex-1 py-5 text-[10px] uppercase font-bold tracking-[0.2em] transition-all ${isLogin ? 'text-nejm-blue bg-white' : 'text-nejm-text/30 bg-nejm-gray hover:text-nejm-blue'}`}
                 >
                   Sign In
                 </button>
                 <button 
                   onClick={() => { setIsLogin(false); setError(null); setIsForgotPassword(false); }}
-                  className={`flex-1 py-4 text-xs uppercase font-bold tracking-widest transition-colors ${!isLogin ? 'text-nejm-blue border-b-2 border-nejm-blue bg-nejm-gray/30' : 'text-nejm-text/40 hover:text-nejm-blue'}`}
+                  className={`flex-1 py-5 text-[10px] uppercase font-bold tracking-[0.2em] transition-all ${!isLogin ? 'text-nejm-blue bg-white' : 'text-nejm-text/30 bg-nejm-gray hover:text-nejm-blue'}`}
                 >
                   Register
                 </button>
@@ -251,21 +268,19 @@ export default function AuthScreen() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="nejm-input" 
-                    placeholder="Dr. John Doe"
                   />
                 </motion.div>
               )}
             </AnimatePresence>
 
             <div>
-              <label className="nejm-label block">Email</label>
+              <label className="nejm-label block">Email Address</label>
               <input 
                 type="email" 
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="nejm-input" 
-                placeholder="clinician@hospital.org"
               />
             </div>
 
@@ -289,7 +304,6 @@ export default function AuthScreen() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="nejm-input" 
-                  placeholder="••••••••"
                 />
               </div>
             )}
@@ -309,7 +323,6 @@ export default function AuthScreen() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="nejm-input" 
-                    placeholder="••••••••"
                   />
                 </motion.div>
               )}
@@ -386,7 +399,7 @@ export default function AuthScreen() {
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-nejm-border bg-white text-sm font-medium text-nejm-text hover:bg-nejm-gray/20 transition-all rounded-sm shadow-sm active:scale-[0.98] disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-4 py-4 px-6 border border-nejm-border bg-white text-[11px] uppercase tracking-[0.1em] font-bold text-nejm-text hover:bg-nejm-gray transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
               >
                 <img 
                   src="https://www.gstatic.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" 

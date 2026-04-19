@@ -132,17 +132,20 @@ export default function App() {
       {/* NEJM Style Top Header */}
       <header className="bg-white border-b border-nejm-border px-4 md:px-8 py-6 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center bg-nejm-blue text-white rounded-sm p-2 shadow-sm">
-              <Stethoscope size={28} />
+          <div className="flex items-center gap-5">
+            <div className="w-14 h-14 flex items-center justify-center bg-nejm-blue text-white rounded-none shadow-xl shadow-nejm-blue/20">
+              <Stethoscope size={30} />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-tight text-nejm-blue leading-none">
+              <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-tighter text-nejm-blue leading-none">
                 MedWise
               </h1>
-              <p className="text-[11px] font-sans uppercase tracking-[0.2em] font-bold text-nejm-red mt-1">
-                Precision Antimicrobial Stewardship in Sepsis
-              </p>
+              <div className="flex items-center gap-2 mt-1.5">
+                <div className="h-[1px] w-4 bg-nejm-red"></div>
+                <p className="text-[10px] font-sans uppercase tracking-[0.2em] font-bold text-nejm-text/40">
+                  Precision Antimicrobial Stewardship
+                </p>
+              </div>
             </div>
           </div>
           
