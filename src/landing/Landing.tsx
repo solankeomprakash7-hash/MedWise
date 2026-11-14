@@ -1,210 +1,266 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
-import { MotionConfig, motion, useScroll, useSpring } from 'motion/react';
-import { EcgStream, rhythms, staticStrip, type Rhythm } from './ecg';
-import SweepCanvas, { type Channel } from './SweepCanvas';
-import Calipers from './Calipers';
-import { brand, courses, interests } from './brand';
+import { useEffect, useRef, useState, type ComponentType, type FormEvent, type KeyboardEvent } from 'react';
+import { AnimatePresence, MotionConfig, motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
+import { Activity, ClipboardCheck, Droplet, Gauge, Pill, type LucideIcon } from 'lucide-react';
+import { brand, courses, interests, modules, type ModuleId } from './brand';
+import { AbxDemo, BpDemo, DmDemo, EcgDemo, PreopDemo } from './demos';
 import './landing.css';
 
-/* ---------- small pieces ---------- */
-
-function Mark({ size = 28 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 28 28" aria-hidden="true" className="mark">
-      <rect x="0.5" y="0.5" width="27" height="27" rx="7" />
-      <path d="M3 15h5l2-4 2.5 9L16 5l2.5 13 1.5-3h5" />
-    </svg>
-  );
-}
-
-// A path of repeated beats for the reading-progress line under the nav.
-function progressPath(width: number, height: number) {
-  const pts = staticStrip('sinus', 9, 120, 11);
-  const step = width / (pts.length - 1);
-  return (
-    'M' +
-    pts
-      .map((v, i) => `${(i * step).toFixed(1)},${(height * 0.7 - v * height * 0.5).toFixed(1)}`)
-      .join(' L')
-  );
-}
-
-function ScrollTrace() {
-  const { scrollYProgress } = useScroll();
-  const p = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
-  const d = useMemo(() => progressPath(1200, 22), []);
-  return (
-    <svg className="scroll-trace" viewBox="0 0 1200 22" preserveAspectRatio="none" aria-hidden="true">
-      <path d={d} className="scroll-trace-ghost" />
-      <motion.path d={d} style={{ pathLength: p }} className="scroll-trace-ink" />
-    </svg>
-  );
-}
-
-const ink: Channel = {
-  color: '#1b2238',
-  gain: 62,
-  baseline: 0.62,
-  width: 2.2,
-  read: (s) => s.ecg(),
+const icons: Record<ModuleId, LucideIcon> = {
+  ecg: Activity,
+  abx: Pill,
+  htn: Gauge,
+  dm: Droplet,
+  preop: ClipboardCheck,
+};
+const demos: Record<ModuleId, ComponentType> = {
+  ecg: EcgDemo,
+  abx: AbxDemo,
+  htn: BpDemo,
+  dm: DmDemo,
+  preop: PreopDemo,
 };
 
-/* ---------- sections ---------- */
+/* ---------- logo ---------- */
+
+function Logo({ light = false }: { light?: boolean }) {
+  if (brand.logo) {
+    return <img src={brand.logo} alt="MedWise" className="logo-img" />;
+  }
+  return (
+    <span className={`logo ${light ? 'logo-light' : ''}`}>
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect width="28" height="28" rx="8" className="logo-bg" />
+        <path d="M7 20V8l7 8 7-8v12" className="logo-m" />
+      </svg>
+      <span>MedWise</span>
+    </span>
+  );
+}
+
+function ScrollBar() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 160, damping: 30, mass: 0.4 });
+  return <motion.div className="scroll-bar" style={{ scaleX }} aria-hidden="true" />;
+}
+
+/* ---------- nav ---------- */
 
 function Nav() {
   return (
     <header className="nav">
       <div className="nav-inner wrap">
-        <a href="#top" className="brand" aria-label="MedWise home">
-          <Mark />
-          <span>MedWise</span>
+        <a href="#top" aria-label="MedWise home">
+          <Logo />
         </a>
         <nav aria-label="Main">
-          <a href="#lab">ECG lab</a>
+          <a href="#platform">Platform</a>
           <a href="#courses">Courses</a>
-          <a href="#app">App</a>
           <a href="#about">About</a>
         </nav>
-        <a href="#join" className="btn btn-small">
-          Join the list
+        <a href={brand.appUrl} className="btn btn-small">
+          Open MedWise
         </a>
       </div>
-      <ScrollTrace />
+      <ScrollBar />
     </header>
   );
 }
 
-function Hero() {
-  const stream = useMemo(() => new EcgStream('sinus', 5), []);
-  const [rhythm, setRhythm] = useState<Rhythm>('sinus');
-  const hrRef = useRef<HTMLSpanElement>(null);
-  const dotRef = useRef<HTMLSpanElement>(null);
+/* ---------- hero + platform window ---------- */
 
+const CYCLE_MS = 9000;
+
+function Platform() {
+  const [active, setActive] = useState<ModuleId>(modules[0].id);
+  const [auto, setAuto] = useState(true);
+  const reduced = useReducedMotion();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Walk through the modules until the visitor touches anything.
   useEffect(() => {
-    stream.onBeat = (rr) => {
-      if (hrRef.current) hrRef.current.textContent = String(Math.round(60 / rr));
-      const dot = dotRef.current;
-      if (dot) {
-        dot.classList.remove('beat');
-        void dot.offsetWidth;
-        dot.classList.add('beat');
-      }
-    };
-    return () => {
-      stream.onBeat = undefined;
-    };
-  }, [stream]);
+    if (!auto || reduced) return;
+    const t = setTimeout(() => {
+      const i = modules.findIndex((m) => m.id === active);
+      setActive(modules[(i + 1) % modules.length].id);
+    }, CYCLE_MS);
+    return () => clearTimeout(t);
+  }, [active, auto, reduced]);
 
-  const pick = (r: Rhythm) => {
-    setRhythm(r);
-    stream.setRhythm(r);
+  const choose = (id: ModuleId) => {
+    setAuto(false);
+    setActive(id);
   };
 
-  const lines = ['Medicine that', 'makes sense', 'at 3 a.m.'];
-  const label = rhythms.find((r) => r.id === rhythm)!.label;
+  const onKey = (e: KeyboardEvent, i: number) => {
+    const dir = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+    if (!dir) return;
+    e.preventDefault();
+    const n = (i + dir + modules.length) % modules.length;
+    choose(modules[n].id);
+    tabRefs.current[n]?.focus();
+  };
+
+  const m = modules.find((x) => x.id === active)!;
+  const Demo = demos[active];
 
   return (
-    <section className="hero ecg-paper" id="top">
-      <div className="wrap hero-grid">
-        <h1 className="hero-title">
-          {lines.map((l, i) => (
-            <span className="line" key={l}>
-              <motion.span
-                initial={{ y: '105%' }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.9, delay: 0.15 + i * 0.12, ease: [0.2, 0.7, 0.1, 1] }}
+    <div
+      className={`platform mod-${active}`}
+      id="platform"
+      onPointerDown={() => setAuto(false)}
+      onFocusCapture={() => setAuto(false)}
+    >
+      <div className="platform-bar" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <p>medwise / {m.short.toLowerCase()}</p>
+      </div>
+      <div className="platform-body">
+        <div className="tabs" role="tablist" aria-label="MedWise modules" aria-orientation="vertical">
+          {modules.map((x, i) => {
+            const Icon = icons[x.id];
+            const on = x.id === active;
+            return (
+              <button
+                key={x.id}
+                ref={(el) => {
+                  tabRefs.current[i] = el;
+                }}
+                role="tab"
+                id={`tab-${x.id}`}
+                aria-selected={on}
+                aria-controls="panel"
+                tabIndex={on ? 0 : -1}
+                className={`tab tab-${x.id} ${on ? 'on' : ''}`}
+                onClick={() => choose(x.id)}
+                onKeyDown={(e) => onKey(e, i)}
               >
-                {l}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+                <Icon size={18} strokeWidth={2} aria-hidden="true" />
+                <span className="tab-name">{x.name}</span>
+                <span className={`tab-status st-${x.status.split(' ')[0].toLowerCase()}`}>{x.status}</span>
+                {on && auto && !reduced && <span className="tab-timer" key={active} />}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="panel" role="tabpanel" id="panel" aria-labelledby={`tab-${active}`}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.2, 0.7, 0.1, 1] }}
+            >
+              <div className="panel-head">
+                <h3>{m.name}</h3>
+                <p>{m.summary}</p>
+                <p className="basis">Based on {m.basis}</p>
+              </div>
+              <Demo />
+              <div className="panel-foot">
+                <span>Illustrative example for education. Not a substitute for clinical judgement.</span>
+                <a href={m.href} className="text-link">
+                  {m.status === 'Live' ? `Open ${m.short.toLowerCase()} in the app` : 'Get notified when it opens'}
+                </a>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Hero() {
+  const lines = ['Clinical decisions,', 'with the reasoning', 'on the screen.'];
+  return (
+    <section className="hero" id="top">
+      <div className="wrap">
+        <div className="hero-grid">
+          <h1 className="hero-title">
+            {lines.map((l, i) => (
+              <span className="line" key={l}>
+                <motion.span
+                  initial={{ y: '105%' }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.1 + i * 0.11, ease: [0.2, 0.7, 0.1, 1] }}
+                >
+                  {l}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+          <motion.div
+            className="hero-side"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.55 }}
+          >
+            <p>
+              MedWise is a clinical decision support platform for the ward and the ICU. ECG
+              interpretation, antibiotic stewardship, hypertension, diabetes and pre-operative
+              evaluation sit in one place, and every suggestion shows the guideline behind it.
+            </p>
+            <div className="cta-row">
+              <a href={brand.appUrl} className="btn">
+                Open MedWise
+              </a>
+              <a href="#join" className="btn btn-ghost">
+                Get early access
+              </a>
+            </div>
+          </motion.div>
+        </div>
         <motion.div
-          className="hero-side"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.45, ease: [0.2, 0.7, 0.1, 1] }}
         >
-          <p>
-            I'm {brand.firstName}. MedWise is where I teach ECGs and ICU medicine the way they are
-            used on the ward: courses, an interactive ECG lab, and an app that helps with antibiotic
-            decisions in sepsis.
-          </p>
-          <div className="cta-row">
-            <a href="#courses" className="btn">
-              See the courses
-            </a>
-            <a href="#lab" className="btn btn-ghost">
-              Try the ECG lab
-            </a>
-          </div>
+          <Platform />
         </motion.div>
       </div>
-
-      <div className="hero-strip">
-        <SweepCanvas
-          stream={stream}
-          channels={[ink]}
-          speed={200}
-          className="hero-canvas"
-          label={`Live lead II trace showing ${label}`}
-          version={rhythm}
-        />
-        <span className="lead-label" aria-hidden="true">
-          II
-        </span>
-        <div className="hr-box" aria-live="off">
-          <span className="hr-dot" ref={dotRef} />
-          <span className="hr-num" ref={hrRef}>
-            72
-          </span>
-          <span className="hr-unit">bpm</span>
-        </div>
-      </div>
-
-      <div className="wrap rhythm-row">
-        <span id="rhythm-q">Change the rhythm</span>
-        <div className="seg" role="radiogroup" aria-labelledby="rhythm-q">
-          {rhythms.map((r) => (
-            <button
-              key={r.id}
-              role="radio"
-              aria-checked={rhythm === r.id}
-              className={rhythm === r.id ? 'on' : ''}
-              onClick={() => pick(r.id)}
-            >
-              {r.label}
-            </button>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
 
-function Lab() {
+/* ---------- principles ---------- */
+
+function Principles() {
+  const items = [
+    {
+      t: 'Reasoning you can check',
+      d: 'Each suggestion names the guideline and the patient findings it used, so you can agree, adjust or overrule it.',
+    },
+    {
+      t: 'Built for the bedside',
+      d: 'Short inputs, fast answers and layouts that work on a phone in a corridor as well as on a ward computer.',
+    },
+    {
+      t: 'Written by a clinician',
+      d: 'Modules are designed around the questions doctors actually ask on rounds and on call, not around a textbook index.',
+    },
+  ];
   return (
-    <section className="lab" id="lab">
-      <div className="wrap lab-grid">
-        <div className="lab-copy">
-          <h2>The ECG lab</h2>
-          <p className="lede">
-            Most people learn ECGs from pictures. In the lab you work on the strip itself: measure
-            intervals, march out P waves, and check your read against a worked answer.
-          </p>
-          <p>
-            The calipers on the right are the real thing. Drag across the strip, or move each arm
-            with the arrow keys. Start with one R–R interval, then try the PR and the QRS.
-          </p>
-          <a href="#join" className="text-link">
-            Get early access to the full lab
-          </a>
-        </div>
-        <Calipers />
+    <section className="principles">
+      <div className="wrap principles-grid">
+        <h2>Support, not a black box</h2>
+        <dl>
+          {items.map((x) => (
+            <div key={x.t}>
+              <dt>{x.t}</dt>
+              <dd>{x.d}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
 }
+
+/* ---------- courses ---------- */
 
 function Courses() {
   return (
@@ -213,8 +269,8 @@ function Courses() {
         <div className="section-head">
           <h2>Courses</h2>
           <p>
-            Short, practical and built around cases. Each course starts with the question you will
-            actually face, then gives you what you need to answer it.
+            Learn the reasoning behind each module. Short, case-based courses that start with the
+            question you will face, then give you what you need to answer it.
           </p>
         </div>
         <ul className="course-list">
@@ -235,9 +291,7 @@ function Courses() {
                 </div>
               </dl>
               <div className="course-cta">
-                <span className={`status status-${c.status.split(' ')[0].toLowerCase()}`}>
-                  {c.status}
-                </span>
+                <span className={`status status-${c.status.split(' ')[0].toLowerCase()}`}>{c.status}</span>
                 <a href="#join" className="btn btn-ghost btn-small">
                   Notify me
                 </a>
@@ -250,88 +304,7 @@ function Courses() {
   );
 }
 
-function AppSection() {
-  const stream = useMemo(() => new EcgStream('sinus', 21), []);
-  const hrRef = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    stream.onBeat = (rr) => {
-      if (hrRef.current) hrRef.current.textContent = String(Math.round(60 / rr));
-    };
-  }, [stream]);
-
-  const channels: Channel[] = [
-    { color: '#45e39a', gain: 46, baseline: 0.36, width: 1.8, glow: true, read: (s) => s.ecg() },
-    { color: '#5ad1f5', gain: 52, baseline: 0.9, width: 1.8, glow: true, read: (s) => s.pleth() },
-  ];
-
-  return (
-    <section className="app" id="app">
-      <div className="wrap app-grid">
-        <div className="app-copy">
-          <h2>The MedWise app</h2>
-          <p className="lede">
-            A decision-support tool for antibiotic stewardship in septic ICU patients. Enter the
-            source, risk factors, labs and cultures; MedWise returns an empiric plan, a
-            de-escalation path and the guideline reasoning behind each step.
-          </p>
-          <ul className="app-points">
-            <li>Aligned with the Surviving Sepsis Campaign and IDSA guidance</li>
-            <li>Adjusts for MDR risk, renal function and culture results</li>
-            <li>Every suggestion shows its reasoning, so you can disagree with it</li>
-          </ul>
-          <div className="cta-row">
-            <a href={brand.appUrl} className="btn btn-light">
-              Open the app
-            </a>
-            <a href="#join" className="btn btn-ghost-light">
-              Request access
-            </a>
-          </div>
-        </div>
-
-        <div className="monitor" aria-label="Example bedside monitor and MedWise suggestion">
-          <div className="monitor-screen">
-            <SweepCanvas
-              stream={stream}
-              channels={channels}
-              speed={150}
-              className="monitor-canvas"
-              label="Animated monitor showing an ECG and a pulse oximetry waveform"
-            />
-            <div className="numerics">
-              <div className="num num-hr">
-                <span>HR</span>
-                <strong ref={hrRef}>72</strong>
-              </div>
-              <div className="num num-spo2">
-                <span>SpO₂</span>
-                <strong>94</strong>
-              </div>
-              <div className="num num-map">
-                <span>MAP</span>
-                <strong>66</strong>
-              </div>
-            </div>
-          </div>
-          <motion.div
-            className="suggestion"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, ease: [0.2, 0.7, 0.1, 1] }}
-          >
-            <p className="sugg-case">Example case: ICU day 3, community-acquired pneumonia</p>
-            <p className="sugg-body">
-              Cultures grew <em>Streptococcus pneumoniae</em>, susceptible to ceftriaxone, and
-              procalcitonin is falling. Consider de-escalating from piperacillin-tazobactam to
-              ceftriaxone and planning a 5 to 7 day total course.
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
+/* ---------- about ---------- */
 
 function About() {
   const initials = brand.name
@@ -340,26 +313,22 @@ function About() {
     .join('')
     .slice(0, 2);
   return (
-    <section className="about ecg-paper" id="about">
+    <section className="about" id="about">
       <div className="wrap about-grid">
         <div className="portrait">
-          {brand.photo ? (
-            <img src={brand.photo} alt={`Portrait of ${brand.name}`} />
-          ) : (
-            <span aria-hidden="true">{initials}</span>
-          )}
+          {brand.photo ? <img src={brand.photo} alt={`Portrait of ${brand.name}`} /> : <span aria-hidden="true">{initials}</span>}
         </div>
         <div className="about-copy">
           <h2>{brand.name}</h2>
           <p className="role">{brand.role}</p>
           <p>
-            I started MedWise because the gap between what textbooks teach and what you need on a
-            night shift is enormous. ECGs feel impossible until someone shows you how to read them
-            in order. Antibiotic choices feel arbitrary until you can see the reasoning.
+            I started MedWise because the decisions that matter most on a shift are often made in a
+            hurry, with the guideline somewhere else. Which antibiotic, and for how long. Whether
+            this blood pressure needs treatment today. Whether this patient is fit for theatre.
           </p>
           <p>
-            Everything here is made to close that gap: teaching built on real cases, and tools you
-            can use with a patient in front of you.
+            MedWise puts that reasoning next to the patient, and the courses teach it properly so
+            you can do it without the app too.
           </p>
         </div>
       </div>
@@ -367,16 +336,17 @@ function About() {
   );
 }
 
+/* ---------- join ---------- */
+
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
 function Join() {
   const [email, setEmail] = useState('');
-  const [picked, setPicked] = useState<string[]>(['courses']);
+  const [picked, setPicked] = useState<string[]>(['platform']);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
 
-  const toggle = (id: string) =>
-    setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+  const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -406,16 +376,16 @@ function Join() {
     <section className="join" id="join">
       <div className="wrap join-grid">
         <div>
-          <h2>Be first in when things open</h2>
+          <h2>Get early access</h2>
           <p>
-            One email when a course opens or the ECG lab goes live, plus short weekly notes on ECGs
-            and ICU medicine. Unsubscribe whenever you like.
+            New modules open to the list first. You will also get one short note a week on a real
+            clinical decision, worked through. Unsubscribe whenever you like.
           </p>
         </div>
         {status === 'done' ? (
           <div className="join-done" role="status">
             <p className="join-done-title">You're on the list.</p>
-            <p>I'll write to {email} when there's something to open.</p>
+            <p>I'll write to {email} as each module opens.</p>
           </div>
         ) : (
           <form className="join-form" onSubmit={submit} noValidate>
@@ -445,11 +415,7 @@ function Join() {
               <div className="chips">
                 {interests.map((i) => (
                   <label key={i.id} className="chip">
-                    <input
-                      type="checkbox"
-                      checked={picked.includes(i.id)}
-                      onChange={() => toggle(i.id)}
-                    />
+                    <input type="checkbox" checked={picked.includes(i.id)} onChange={() => toggle(i.id)} />
                     <span>{i.label}</span>
                   </label>
                 ))}
@@ -467,13 +433,10 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="wrap footer-grid">
-        <a href="#top" className="brand">
-          <Mark size={24} />
-          <span>MedWise</span>
-        </a>
+        <Logo light />
         <p className="disclaimer">
-          MedWise is an educational and decision-support resource. It does not replace clinical
-          judgement or local guidelines.
+          MedWise is a clinical decision support and education resource. It does not replace
+          clinical judgement or local guidelines.
         </p>
         <div className="footer-links">
           {socials.map((s) => (
@@ -493,7 +456,7 @@ function Footer() {
 
 export default function Landing() {
   useEffect(() => {
-    document.title = 'MedWise | ECG courses, ECG lab and ICU tools';
+    document.title = 'MedWise | Clinical decision support';
   }, []);
   return (
     <MotionConfig reducedMotion="user">
@@ -504,9 +467,8 @@ export default function Landing() {
         <Nav />
         <main id="main">
           <Hero />
-          <Lab />
+          <Principles />
           <Courses />
-          <AppSection />
           <About />
           <Join />
         </main>
