@@ -1,0 +1,22 @@
+# ECG library: open-dataset shortlist
+
+Real 12-lead ECGs for the MedWise ECG product, picked from open PhysioNet datasets.
+`shortlist.csv` holds 216 candidates (184 PTB-XL, 32 Chapman–Shaoxing), each tagged with a teaching
+pattern and the specialty tracks it serves. Every ECG is reviewed by a doctor before it enters the product.
+
+## Sources and licences
+
+| Dataset | Licence | Link |
+| --- | --- | --- |
+| PTB-XL 1.0.3 | CC BY 4.0 | https://physionet.org/content/ptb-xl/1.0.3/ |
+| Chapman–Shaoxing 12-lead ECG database 1.0.0 | CC BY 4.0 | https://physionet.org/content/ecg-arrhythmia/1.0.0/ |
+
+Both require attribution in the product (an "ECG sources" page and the dataset name under each tracing).
+
+## Rebuilding
+
+Needs network access to physionet.org and `pip install wfdb matplotlib scipy`.
+
+1. Download `ptbxl_database.csv`, `scp_statements.csv` (PTB-XL) and `ConditionNames_SNOMED-CT.csv` (Chapman) into a `data/` folder, plus Chapman `#Dx` header lines into `data/chap/dx.txt` (one line per record, ending in its `.hea` path).
+2. `python3 tools/shortlist.py data shortlist.csv` picks candidates: human-validated, noise-free records with a 100%-confidence label, fewest co-existing labels first.
+3. Download each record's `.hea` plus `.dat` (PTB-XL, 100 Hz) or `.mat` (Chapman) into `wf/` as `<uid>.<ext>`, then `python3 tools/render.py` draws 12-lead images at 25 mm/s and 10 mm/mV into `png/`.
