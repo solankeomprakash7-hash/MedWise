@@ -71,7 +71,7 @@ export default function Upgrade() {
         <Card k="pro" title="Pro" price={`₹${PRICE.pro[period].toLocaleString('en-IN')}/${period}`} />
       </div>
       {msg && <p className="text-sm text-nejm-blue" role="status">{msg}</p>}
-      <p className="text-xs text-slate-500">Colleges and hospitals: seat licences with faculty reports are available on request.</p>
+      <p className="text-xs text-slate-500">Plans do not renew automatically. See <a className="underline" href="#/legal/refunds">refunds</a> and <a className="underline" href="#/legal/terms">terms</a>. Colleges and hospitals: seat licences are available on request through <a className="underline" href="#/legal/contact">contact</a>.</p>
     </section>
   );
 }

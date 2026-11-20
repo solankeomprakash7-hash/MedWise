@@ -7,6 +7,16 @@ import { Flame, CalendarCheck, Repeat, BookOpen, ArrowRight, Timer, GraduationCa
 
 const SKILLS: [string, string][] = [['rate', 'Rate'], ['rhythm', 'Rhythm'], ['axis', 'Axis'], ['pr', 'PR'], ['qrs', 'QRS'], ['qt', 'QT'], ['tags', 'ST–T'], ['dx', 'Diagnosis'], ['act', 'Next step']];
 
+type BIP = Event & { prompt: () => Promise<void> };
+let deferred: BIP | null = null;
+if (typeof window !== 'undefined') addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e as BIP; });
+function InstallButton() {
+  const [can, setCan] = React.useState(!!deferred);
+  React.useEffect(() => { const f = () => setCan(true); addEventListener('beforeinstallprompt', f); return () => removeEventListener('beforeinstallprompt', f); }, []);
+  if (!can) return null;
+  return <button className="px-4 py-2 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue bg-white" onClick={async () => { await deferred?.prompt(); deferred = null; setCan(false); }}>Install the app</button>;
+}
+
 export default function Home() {
   const { p, plan, user, signIn } = useApp();
   if (p.level == null) return (
@@ -84,6 +94,7 @@ export default function Home() {
               <span className="text-right text-slate-500">{v == null ? '—' : v + '%'}</span></div>; })}
         </div>
         {p.placement && <p className="text-xs text-slate-500 mt-3">Placement score {p.placement.total}/12. <a className="underline" href="#/placement">Retake</a></p>}
+        <div className="mt-6"><InstallButton /></div>
       </div>
     </section>
   );

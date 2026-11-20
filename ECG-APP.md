@@ -23,6 +23,8 @@ from the dataset labels). Keys are generated as drafts; the launch set of 216 wa
 
 ## To switch things on
 
+0. **Business details**: fill in `src/ecg/data/business.ts` (legal name, support email, phone, address). They appear on the Terms, Privacy, Refunds, Delivery and Contact pages (`#/legal/...`), which Razorpay checks before activating live payments.
+
 1. **Firestore rules**: deploy `firestore.rules` to the project's database (`firebase deploy --only firestore:rules`, or paste
    them in the Firebase console). Without them, signed-in progress falls back to the device and the app says so.
 2. **Payments** (Netlify → Site settings → Environment variables), then redeploy:
@@ -39,3 +41,7 @@ from the dataset labels). Keys are generated as drafts; the launch set of 216 wa
 - Pro: everything, including Level 3 and full 10-ECG emergency rounds.
 
 Model ECGs are drawn by the lab's heart model (`content/ecg-library` has no script for them; they are rendered from `public/ecg-lab.html` with `ECG.build`) and are labelled as teaching models in the app.
+
+## Install and offline
+
+`public/ecg-manifest.webmanifest` and `public/ecg-sw.js` make the app installable on phones (Add to Home Screen, or the Install button on Home) and keep the app, lab and every ECG already viewed available offline. Bump the cache name in `ecg-sw.js` if its caching rules change.
