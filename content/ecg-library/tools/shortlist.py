@@ -4,6 +4,7 @@ random.seed(7)
 rows = list(csv.DictReader(open(f'{D}/ptbxl_database.csv')))
 def clean(r): return r['validated_by_human']=='True' and not any(r[k] for k in ('static_noise','burst_noise','electrodes_problems','baseline_drift'))
 # (pattern id, title, track(s), codes, n, extra filter, note)
+# NOTE: shortlist.csv's 'tracks' column was later relabelled to learning levels (Level 1-4, Ignore list).
 SPEC = [
  ('normal','Normal ECG','Foundations; Ignore list',['NORM'],14,None,''),
  ('sinus_brady','Sinus bradycardia','Rhythm; Pre-op',['SBRAD'],6,None,''),

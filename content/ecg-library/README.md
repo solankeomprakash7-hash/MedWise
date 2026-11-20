@@ -2,7 +2,7 @@
 
 Real 12-lead ECGs for the MedWise ECG product, picked from open PhysioNet datasets.
 `shortlist.csv` holds 216 candidates (184 PTB-XL, 32 Chapman–Shaoxing), each tagged with a teaching
-pattern and the specialty tracks it serves. Every ECG is reviewed by a doctor before it enters the product.
+pattern and its learning level (Level 1–4, plus an "Ignore list" tag for benign look-alikes). Every ECG is reviewed by a doctor before it enters the product.
 
 ## Sources and licences
 
