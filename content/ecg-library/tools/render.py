@@ -28,9 +28,10 @@ def render(uid,path):
     a=L['II']; t=np.arange(n)/fs*25+8; ax.plot(t,rows[3]-np.clip(a[:n],-2.6,2.6)*10,color='#111',lw=.7,zorder=3); ax.text(9,rows[3]-9,'II',fontsize=9,family='monospace')
     for y in rows: ax.plot([1.5,2.5,2.5,7.5,7.5,8],[y,y,y-10,y-10,y,y],color='#111',lw=.8)
     fig.savefig(path,dpi=100); plt.close(fig)
-for r in csv.DictReader(open('data/shortlist.csv')):
-    p=f"png/{r['uid']}.png"
-    if os.path.exists(p): continue
-    try: render(r['uid'],p)
-    except Exception as e: print('FAIL',r['uid'],e)
-print('done')
+if __name__ == "__main__":
+  for r in csv.DictReader(open('data/shortlist.csv')):
+      p=f"png/{r['uid']}.png"
+      if os.path.exists(p): continue
+      try: render(r['uid'],p)
+      except Exception as e: print('FAIL',r['uid'],e)
+  print('done')

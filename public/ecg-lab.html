@@ -291,6 +291,8 @@ figure{margin:0}
 .cq .why{margin:10px 0 0; max-width:65ch}
 .dx{border-left:3px solid var(--red); padding:6px 0 6px 14px}
 .dx h4{font-family:var(--f-display); font-size:22px; margin:2px 0 4px}
+.embed .mast .brand, .embed .footer{display:none}
+.embed .mast{padding-top:10px}
 .footer{margin-top:28px; padding-top:10px; border-top:1px solid var(--rule); font-size:14px; color:var(--ink2); font-style:italic}
 
 /* read drill */
@@ -3055,7 +3057,10 @@ function boot() {
   selectLead('II'); setPlaying(state.playing);
   const hsh = (location.hash || '').slice(1);
   sizeMonitor(); sizeWheels();
-  if (E.SC[hsh]) { state.id = hsh; setMode('learn'); }
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add('embed');
+  const wv = hsh.match(/^wave-(\w+)$/);
+  if (wv && C.WAVES.some(w => w.id === wv[1])) { state.waveSel = wv[1]; setMode('waves'); }
+  else if (E.SC[hsh]) { state.id = hsh; setMode('learn'); }
   else if (hsh === 'cases' || hsh === 'quiz' || hsh === 'read') setMode(hsh);
   else setMode('waves');
   new ResizeObserver(() => drawMinis()).observe($('#wavePanel'));
