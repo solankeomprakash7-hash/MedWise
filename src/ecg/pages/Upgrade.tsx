@@ -6,9 +6,9 @@ import { Check } from 'lucide-react';
 type PlanKey = 'student' | 'pro'; type Period = 'month' | 'year';
 const PRICE: Record<PlanKey, Record<Period, number>> = { student: { month: 199, year: 1499 }, pro: { month: 499, year: 2999 } };
 const FEATS: Record<'free' | PlanKey, string[]> = {
-  free: ['Placement test and skill report', 'First 3 units of Level 1', '5 real-ECG reads a week', "Today's ECG and streak"],
-  student: ['All of Levels 1 and 2', 'Unlimited real-ECG reads', 'Spaced repetition of your mistakes', 'Certificate for each level'],
-  pro: ['Everything in Student', 'Levels 3 and 4 as they are released', 'Timed emergency mode and exam pack', 'Offline lookup and checklists'],
+  free: ['Placement test and skill report', 'First 3 units of Level 1', '5 real-ECG reads a week', "Today's ECG, emergency and exam samples"],
+  student: ['All of Levels 1 and 2', 'Unlimited real-ECG reads', 'Spaced repetition of your mistakes', 'Full 20-question exam papers'],
+  pro: ['Everything in Student', 'Level 3 Emergencies now, Level 4 when released', 'Full emergency-mode rounds', 'Emergency ECGs in your practice and exam papers'],
 };
 
 declare global { interface Window { Razorpay?: new (o: object) => { open: () => void } } }

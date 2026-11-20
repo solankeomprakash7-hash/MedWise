@@ -6,6 +6,9 @@ The ECG product lives at `/ecg` (entry `ecg.html`, code in `src/ecg/`). The seps
 
 | Area | Where |
 | --- | --- |
+| Level 3 Emergencies (6 units) with 28 model emergency ECGs (VT, VF, torsades, STEMIs and equivalents, blocks, K⁺) | `src/ecg/data/modelEcgs.json`, `public/ecg/model/` |
+| Emergency mode: 30 s per ECG, choose action and diagnosis | `pages/Emergency.tsx` |
+| Exam mode: timed paper, half ECG identification, half theory, marked at the end | `pages/Exam.tsx` |
 | Placement test (12 questions, 8 on real ECGs) sets the start level | `src/ecg/data/placement.ts`, `pages/Placement.tsx` |
 | Learning path: Levels 1–2 written (12 units), Levels 3–4 listed | `src/ecg/data/curriculum.ts`, `pages/Learn.tsx`, `pages/UnitPage.tsx` |
 | Interactive lab embedded in each unit | `public/ecg-lab.html?embed=1#<pattern or wave-X>` |
@@ -29,6 +32,10 @@ from the dataset labels). Every key is marked `draft: true` until a doctor check
    Until these are set, the Upgrade buttons explain that payments are not switched on yet.
 3. **Authorised domain**: add the Netlify domain under Firebase Authentication → Settings → Authorised domains (needed for Google sign-in).
 
-## Free plan limits
+## Plan limits (set in `lib/logic.ts`)
 
-First 3 units of Level 1, 5 real-ECG reads a week, unlimited daily ECG and placement test. Set in `lib/logic.ts`.
+- Free: first 3 units of Level 1, 5 real-ECG reads a week, daily ECG, placement test, a 3-ECG emergency sample and a 5-question exam sample.
+- Student: Levels 1–2, unlimited reads, full 20-question exam papers.
+- Pro: everything, including Level 3 and full 10-ECG emergency rounds.
+
+Model ECGs are drawn by the lab's heart model (`content/ecg-library` has no script for them; they are rendered from `public/ecg-lab.html` with `ECG.build`) and are labelled as teaching models in the app.

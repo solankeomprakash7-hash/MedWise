@@ -26,7 +26,7 @@ export default function Learn() {
                   <a href={open ? `#/unit/${u.id}` : '#/upgrade'} className="flex items-center gap-3 px-5 py-3 hover:bg-nejm-gray">
                     {st?.done ? <CheckCircle2 size={18} className="text-green-700 shrink-0" /> : open ? <Circle size={18} className="text-slate-300 shrink-0" /> : <Lock size={16} className="text-slate-400 shrink-0" />}
                     <span className="flex-1 min-w-0"><span className="font-semibold text-nejm-blue">{i + 1}. {u.title}</span>
-                      <span className="block text-xs text-slate-500">{u.minutes} min{st ? ` · quiz ${st.score}/3` : ''}{!open ? ' · Student or Pro' : ''}</span></span>
+                      <span className="block text-xs text-slate-500">{u.minutes} min{st ? ` · quiz ${st.score}/3` : ''}{!open ? (u.level >= 3 ? ' · Pro' : ' · Student or Pro') : ''}</span></span>
                   </a></li>; })}
             </ol> : <p className="px-5 py-4 text-sm text-slate-500">Coming soon: {l.outcome.toLowerCase()}.</p>}
           </div>);

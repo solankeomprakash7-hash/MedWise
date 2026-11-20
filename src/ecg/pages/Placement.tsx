@@ -34,7 +34,7 @@ export default function Placement() {
           <p className="text-[10px] uppercase tracking-widest font-bold text-slate-500">{names[i]}</p>
           <p className="font-mono text-2xl tabular-nums">{s}/4</p></div>)}
       </div>
-      {res.level >= 3 && <p className="text-sm text-slate-600">Level 3 units are being written. Until then, keep sharp with real-ECG practice and review Level 2 where you dropped marks.</p>}
+      {res.level >= 3 && <p className="text-sm text-slate-600">Try emergency mode next: 30 seconds per ECG to choose the action.</p>}
       <div className="flex flex-wrap gap-3">
         <button className="nejm-btn" onClick={() => go('learn')}>Go to my path</button>
         <button className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" onClick={() => go('practice')}>Read a real ECG</button>

@@ -3,7 +3,7 @@ import { useApp } from '../EcgApp';
 import { LEVELS, UNITS } from '../data/curriculum';
 import { dailyEcg, dueCards, nextUnit, readsLeft, skillPct } from '../lib/logic';
 import { today } from '../lib/progress';
-import { Flame, CalendarCheck, Repeat, BookOpen, ArrowRight } from 'lucide-react';
+import { Flame, CalendarCheck, Repeat, BookOpen, ArrowRight, Timer, GraduationCap } from 'lucide-react';
 
 const SKILLS: [string, string][] = [['rate', 'Rate'], ['rhythm', 'Rhythm'], ['axis', 'Axis'], ['pr', 'PR'], ['qrs', 'QRS'], ['qt', 'QT'], ['tags', 'ST–T'], ['dx', 'Diagnosis'], ['act', 'Next step']];
 
@@ -64,6 +64,15 @@ export default function Home() {
           <span className="font-serif font-bold text-lg text-nejm-blue">Practise reading</span>
           <span className="text-sm text-slate-600">{due ? `${due} ECG${due > 1 ? 's' : ''} due for review.` : 'Read a new real 12-lead.'}{left !== Infinity ? ` ${left} free read${left === 1 ? '' : 's'} left this week.` : ''}</span>
         </a>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <a href="#/emergency" className="p-5 border border-nejm-border bg-white flex gap-4 items-start">
+          <Timer className="text-nejm-red shrink-0" size={22} /><span><span className="font-serif font-bold text-lg text-nejm-blue block">Emergency mode</span>
+            <span className="text-sm text-slate-600">30 seconds per ECG: choose the action and the diagnosis.</span></span></a>
+        <a href="#/exam" className="p-5 border border-nejm-border bg-white flex gap-4 items-start">
+          <GraduationCap className="text-nejm-blue shrink-0" size={22} /><span><span className="font-serif font-bold text-lg text-nejm-blue block">Exam mode</span>
+            <span className="text-sm text-slate-600">A timed paper of ECG and theory questions, marked at the end.</span></span></a>
       </div>
 
       <div>

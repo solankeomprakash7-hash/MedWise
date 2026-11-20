@@ -11,6 +11,7 @@ export const RHYTHMS: Opt[] = [
   ['svt', 'Regular narrow tachycardia (SVT)'],
   ['junc', 'Junctional rhythm'],
   ['vent', 'Ventricular or paced rhythm'],
+  ['chaos', 'Chaotic: VF or polymorphic VT'],
 ];
 
 export const AXES: Opt[] = [

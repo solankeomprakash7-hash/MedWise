@@ -3,10 +3,18 @@ import { useApp } from '../EcgApp';
 import Drill, { Results } from '../components/Drill';
 import { type RealEcg, type Row, bumpDaily, dailyEcg, dueCards, nextEcg, passed, readsLeft, review } from '../lib/logic';
 import { today, weekKey } from '../lib/progress';
+import { ECGS } from '../lib/logic';
+import { UNITS } from '../data/curriculum';
 
-export default function Practice({ mode }: { mode: 'practice' | 'daily' }) {
+export default function Practice({ mode, topic }: { mode: 'practice' | 'daily'; topic?: string }) {
   const { p, update, plan, user, signIn } = useApp();
-  const pick = (avoid?: string) => (mode === 'daily' ? dailyEcg(p) : nextEcg(p, avoid));
+  const unit = topic ? UNITS.find(u => u.id === topic) : undefined;
+  const topicPool = unit ? ECGS.filter(e => unit.practice.includes(e.pattern)) : [];
+  const pick = (avoid?: string) => {
+    if (mode === 'daily') return dailyEcg(p);
+    if (topicPool.length) { const l = topicPool.filter(e => e.id !== avoid); return l[Math.floor(Math.random() * l.length)] || topicPool[0]; }
+    return nextEcg(p, avoid);
+  };
   const [ecg, setEcg] = React.useState<RealEcg>(() => pick());
   const [rows, setRows] = React.useState<Row[] | null>(null);
   const [isReview, setIsReview] = React.useState(() => !!p.cards[ecg.id]);
@@ -27,7 +35,7 @@ export default function Practice({ mode }: { mode: 'practice' | 'daily' }) {
       <div className="flex flex-wrap justify-between items-end gap-3">
         <div>
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">
-            {daily ? `Today's ECG · ${p.daily.streak} day streak` : isReview ? 'Review · spaced repetition' : 'New ECG'}</p>
+            {daily ? `Today's ECG · ${p.daily.streak} day streak` : unit ? `Topic practice · ${unit.title}` : isReview ? 'Review · spaced repetition' : 'New ECG'}</p>
           <h1 className="text-3xl font-serif font-bold">{rows ? 'Your read' : 'Read this 12-lead'}</h1>
         </div>
         <p className="text-xs font-mono text-slate-500 tabular-nums">{!daily && (left === Infinity ? `${due} due for review` : `${left} free read${left === 1 ? '' : 's'} left this week`)}{daily && dailyDone && !rows ? 'Already done today; this one will not change your streak.' : ''}</p>

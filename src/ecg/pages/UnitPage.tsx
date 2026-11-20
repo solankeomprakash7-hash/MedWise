@@ -40,7 +40,7 @@ export default function UnitPage({ id }: { id: string }) {
           <p className="font-serif text-xl font-bold">{score}/3 {score >= 2 ? '· Unit complete' : '· Review the points and try again'}</p>
           <div className="flex flex-wrap gap-3">
             {score < 2 && <button className="nejm-btn" onClick={() => setScore(null)}>Try again</button>}
-            {reals > 0 && <a className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" href="#/practice">Read real ECGs ({reals} on this topic)</a>}
+            {reals > 0 && <a className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" href={`#/practice/u-${u.id}`}>Practise this topic ({reals} ECGs)</a>}
             {next && score >= 2 && <a className="nejm-btn" href={unitOpen(plan, next.id) ? `#/unit/${next.id}` : '#/upgrade'}>Next: {next.title}</a>}
           </div>
         </div>}

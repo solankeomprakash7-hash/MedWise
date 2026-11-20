@@ -1,21 +1,28 @@
 // Grading, spaced repetition, daily ECG and plan limits.
 import REAL from '../data/realEcgs.json';
+import MODEL from '../data/modelEcgs.json';
 import { ACTS, AXES, RHYTHMS, TAGS, axisCat, label } from '../data/options';
 import { type Card, type Plan, type Progress, addDays, today, weekKey } from './progress';
 import { UNITS } from '../data/curriculum';
 
 export type RealKey = { hr: number | null; regular: boolean; axis: number | null; pr: number | null; qrs: number | null; qt: number | null;
   rhythm: string[]; tags: string[]; opt: string[]; act: string[] };
-export type RealEcg = { id: string; src: string; rec: string; pattern: string; title: string; level: number; age: string; sex: string; key: RealKey; teach: string; draft: boolean };
-export const ECGS = REAL as RealEcg[];
+export type RealEcg = { id: string; src: string; rec: string; pattern: string; title: string; level: number; age: string; sex: string; key: RealKey; teach: string; draft: boolean; model?: boolean };
+const realTitle = new Map((REAL as RealEcg[]).map(e => [e.pattern, e.title]));
+/** Real ECGs first; model tracings cover emergencies the open datasets lack. Shared patterns use the real-ECG title. */
+export const ECGS: RealEcg[] = [...(REAL as RealEcg[]), ...(MODEL as RealEcg[]).map(e => ({ ...e, title: realTitle.get(e.pattern) || e.title }))];
+/** Answers that also count as right for a pattern. */
+export const DX_ALSO: Record<string, string[]> = { mobitz1: ['avb2'], mobitz2: ['avb2'], avb2: ['mobitz1', 'mobitz2'], af_rvr: ['af'], af: ['af_rvr'] };
+export const dxOk = (pattern: string, ans?: string) => !!ans && (ans === pattern || (DX_ALSO[pattern] || []).includes(ans));
 export const byId = (id: string) => ECGS.find(e => e.id === id)!;
-export const imgOf = (id: string) => `/ecg/real/${id}.webp`;
+export const imgOf = (id: string) => id.startsWith('model-') ? `/ecg/model/${id}.webp` : `/ecg/real/${id}.webp`;
 export const DX = [...new Map(ECGS.map(e => [e.pattern, e.title])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
 
 // ---------- plan limits ----------
 export const FREE_UNITS = ['l1-heart', 'l1-paper', 'l1-p'];
 export const FREE_READS_PER_WEEK = 5;
-export const unitOpen = (plan: Plan, unitId: string) => plan !== 'free' || FREE_UNITS.includes(unitId);
+export const unitOpen = (plan: Plan, unitId: string) => plan === 'pro' || FREE_UNITS.includes(unitId) || (plan === 'student' && !unitId.startsWith('l3') && !unitId.startsWith('l4'));
+export const EMERGENCY_SAMPLE = 3, EXAM_SAMPLE = 5;
 export const readsLeft = (plan: Plan, p: Progress) => plan !== 'free' ? Infinity : Math.max(0, FREE_READS_PER_WEEK - (p.week.key === weekKey() ? p.week.reads : 0));
 
 // ---------- grading ----------
@@ -59,7 +66,7 @@ export function grade(e: RealEcg, a: Answer): Row[] {
     tip: [missed.length ? `Missed: ${names(missed)}.` : '', extra.length ? `Not expected: ${names(extra)}.` : '', TIPS.tags].filter(Boolean).join(' ') };
   rows.push(tagRow);
   const dxTitle = (DX.find(d => d[0] === a.dx) || [null, '—'])[1];
-  push('dx', 'Diagnosis', dxTitle, e.title, a.dx === e.pattern);
+  push('dx', 'Diagnosis', dxTitle, e.title, dxOk(e.pattern, a.dx));
   push('act', 'Next step', label(ACTS, a.act), k.act.map(x => label(ACTS, x)).join(' or '), !!a.act && k.act.includes(a.act));
   return rows;
 }

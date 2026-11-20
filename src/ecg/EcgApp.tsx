@@ -10,6 +10,8 @@ import Learn from './pages/Learn';
 import UnitPage from './pages/UnitPage';
 import Practice from './pages/Practice';
 import Upgrade from './pages/Upgrade';
+import Emergency from './pages/Emergency';
+import Exam from './pages/Exam';
 
 type Ctx = { p: Progress; update: (fn: (p: Progress) => Progress) => void; plan: Plan; user: User | null; go: (h: string) => void; signIn: () => void; syncNote: string };
 export const AppCtx = React.createContext<Ctx>(null as unknown as Ctx);
@@ -57,7 +59,7 @@ export default function EcgApp() {
   if (wantAuth && !user) return <AuthScreen subtitle="ECG" onBack={() => setWantAuth(false)} />;
 
   const [page, arg] = r;
-  const nav: [string, string][] = [['home', 'Home'], ['learn', 'Learn'], ['practice', 'Practise'], ['upgrade', plan === 'free' ? 'Upgrade' : 'Plan']];
+  const nav: [string, string][] = [['home', 'Home'], ['learn', 'Learn'], ['practice', 'Practise'], ['emergency', 'Emergency'], ['exam', 'Exam'], ['upgrade', plan === 'free' ? 'Upgrade' : 'Plan']];
   return (
     <AppCtx.Provider value={{ p, update, plan, user, go, signIn: () => setWantAuth(true), syncNote }}>
       <div className="min-h-screen bg-[#fcfcfc] pb-16">
@@ -84,7 +86,8 @@ export default function EcgApp() {
         {syncNote && <p className="max-w-5xl mx-auto px-4 pt-3 text-xs text-amber-700">{syncNote}</p>}
         <main className="max-w-5xl mx-auto px-4 pt-8">
           {page === 'placement' ? <Placement /> : page === 'learn' ? <Learn /> : page === 'unit' ? <UnitPage id={arg} />
-            : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} /> : page === 'upgrade' ? <Upgrade /> : <Home />}
+            : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} topic={arg && arg.startsWith('u-') ? arg.slice(2) : undefined} key={arg || 'p'} />
+            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'upgrade' ? <Upgrade /> : <Home />}
         </main>
         <footer className="max-w-5xl mx-auto px-4 mt-16 pt-4 border-t border-nejm-border text-[11px] text-slate-400 leading-relaxed">
           For education only; not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet); measurements from PTB-XL+. Interactive tracings are teaching models.
