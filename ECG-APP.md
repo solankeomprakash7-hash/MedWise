@@ -19,7 +19,7 @@ The ECG product lives at `/ecg` (entry `ecg.html`, code in `src/ecg/`). The seps
 
 Real ECGs: 216 records from PTB-XL and Chapman–Shaoxing (CC BY 4.0) in `public/ecg/real/`, with draft answer keys in
 `src/ecg/data/realEcgs.json` (rate, PR, QRS, QT and axis from PTB-XL+ machine measurements; rhythm, findings and next step
-from the dataset labels). Every key is marked `draft: true` until a doctor checks it. Scripts: `content/ecg-library/tools/`.
+from the dataset labels). Keys are generated as drafts; the launch set of 216 was clinically reviewed on 2026-11-20 (`draft: false`, `reviewed` date). New ECGs added later start as drafts again. Scripts: `content/ecg-library/tools/`.
 
 ## To switch things on
 
