@@ -101,8 +101,8 @@
 .hero__window .ui-win__st.is-done { color: #17783f; }
 
 /* course rows: the subtitle on its own line under the name */
-#courses .rows .rows__name small { display: block; margin-top: 4px; font-weight: 400; font-size: var(--t-small); color: var(--muted); }
-#courses .rows li { padding-block: var(--s-5); }
+#ecg .rows .rows__name small { display: block; margin-top: 4px; font-weight: 400; font-size: var(--t-small); color: var(--muted); }
+#ecg .rows li { padding-block: var(--s-5); }
 .mw-why .mw-why__plan { color: var(--ink); }
 
 /* the client's logo: the mark and the wordmark side by side, the gold rule of the logo under the hero's notice */

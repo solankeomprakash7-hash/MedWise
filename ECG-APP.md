@@ -1,6 +1,6 @@
 # MedWise ECG (self-study product)
 
-The ECG product lives at `/ecg` (entry `ecg.html`, code in `src/ecg/`). The sepsis tool at `/` is unchanged.
+Site layout: the MedWise landing page is the static `public/index.html` at `/`; the sepsis tool is at `/app` (`app.html`); MedWise ECG is at `/ecg` (entry `ecg.html`, code in `src/ecg/`). Built bundles go to `/_app` because `public/assets` holds the landing page's kit.
 
 ## What is in this first slice (Phase 1)
 

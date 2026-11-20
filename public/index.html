@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MedWise: clinical decision support for doctors</title>
-<meta name="description" content="Five guideline-based modules in one app: antibiotic stewardship in sepsis, ECG reading, hypertension, diabetes and pre-operative evaluation, each showing its reasoning.">
+<meta name="description" content="MedWise ECG is open: learn ECG from zero to ward-ready on real 12-lead tracings. Plus guideline-based decision support for antibiotics, hypertension, diabetes and pre-op evaluation.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="MedWise: clinical decision support for doctors">
 <meta property="og:description" content="Antibiotics, ECG, hypertension, diabetes and pre-op evaluation, with the guideline reasoning on screen.">
@@ -55,7 +55,7 @@
 <!-- type: software
      deal: hero split, nav nav-centre, close close-type, footer footer-statement, rhythm space, buttons arrow, mark: the client logo, grounds paper + topglow
      palette: the client's own logo colours through start.mjs brand (navy #1a1c49 ink and action, teal #18ab97 accent, gold #e2a946 rule); type chivo
-     moments: liquid-type on #reasoning (statement), line-carries-colour on #courses -->
+     moments: liquid-type on #reasoning (statement), line-carries-colour on #ecg -->
 
 <header class="nav nav--centre">
   <div class="wrap nav__bar">
@@ -68,11 +68,11 @@
           <div class="wrap grid">
             <div class="menu-col span-3">
               <p class="t-label">Live now</p>
+              <a href="/ecg">MedWise ECG<span>Learn ECG from zero to ward-ready</span></a>
               <a href="#modules" data-open-tab="tab-abx">Antibiotic stewardship<span>Empiric choice and de-escalation</span></a>
             </div>
             <div class="menu-col span-3">
               <p class="t-label">In development</p>
-              <a href="#modules" data-open-tab="tab-ecg">ECG lab<span>Rhythm strips, read in order</span></a>
               <a href="#modules" data-open-tab="tab-htn">Hypertension<span>Classify and choose treatment</span></a>
             </div>
             <div class="menu-col span-3">
@@ -84,10 +84,10 @@
         </div>
       </div>
       <div class="nav__item"><a class="nav__link" href="#reasoning">Reasoning</a></div>
-      <div class="nav__item"><a class="nav__link" href="#courses">Courses</a></div>
+      <div class="nav__item"><a class="nav__link" href="#ecg">ECG course</a></div>
     </nav>
     <div class="nav__actions">
-      <a class="btn btn--primary" href="/app">Try MedWise</a>
+      <a class="btn btn--primary" href="/ecg">Learn ECG</a>
     </div>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -99,12 +99,12 @@
   <section class="hero hero--split" data-enter aria-labelledby="hero-h">
     <div class="wrap"><div class="hero-text grid hero__grid">
       <div class="hero__text span-5">
-        <p class="hero__kicker"><span class="dot" aria-hidden="true"></span>1 of 5 modules live: antibiotic stewardship</p>
+        <p class="hero__kicker"><span class="dot" aria-hidden="true"></span><a href="#ecg">New: the MedWise ECG course is open</a></p>
         <h1 id="hero-h">Clinical decision support for ward doctors</h1>
-        <p class="hero__lead">MedWise checks a patient's findings against current guidelines and shows the rule behind each suggestion. Sepsis antibiotics today; ECG, hypertension, diabetes and pre-op next.</p>
+        <p class="hero__lead">MedWise checks a patient's findings against current guidelines and shows the rule behind each suggestion. Sepsis antibiotics and the ECG course today; hypertension, diabetes and pre-op next.</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="/app">Try MedWise<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-          <a class="btn btn--secondary" href="#modules">See the five modules</a>
+          <a class="btn btn--secondary" href="/ecg#/placement">Learn ECG: free placement test</a>
         </div>
       </div>
       <div class="hero__media hero__window span-6 start-7">
@@ -152,7 +152,7 @@
   <section class="section" id="modules" aria-labelledby="modules-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="modules-h">Five clinical modules. <span class="muted">Each one names the guideline it follows.</span></h2>
+        <h2 id="modules-h">Five clinical modules. <span class="muted">Two are live; each one names the guideline it follows.</span></h2>
       </div>
       <div class="tabs mw-tabs" role="tablist" aria-label="MedWise modules">
         <button class="tab" role="tab" id="tab-abx" aria-selected="true" aria-controls="p-abx">Antibiotic stewardship</button>
@@ -183,9 +183,10 @@
 
       <div class="mw-panel grid" role="tabpanel" id="p-ecg" aria-labelledby="tab-ecg" hidden>
         <div class="span-5 stack-4">
-          <h3>Rhythm strip reading, in order</h3>
-          <p>Rate, rhythm, axis, intervals and ischaemia in a fixed order, with a worked answer for each tracing.</p>
-          <p class="mw-state">In development</p>
+          <h3>Read any ECG, in order</h3>
+          <p>Rate, rhythm, axis, intervals, ST–T, diagnosis and next step, marked step by step on 216 real 12-lead ECGs, with an animated heart that shows why each wave looks the way it does.</p>
+          <p class="mw-state mw-state--live">Live as the MedWise ECG course</p>
+          <a class="link" href="/ecg">Open MedWise ECG</a>
         </div>
         <div class="span-6 start-7 ui ui-demo mw-demo" data-demo="ecg">
           <div class="mw-ecg">
@@ -294,19 +295,26 @@
     </div>
   </section>
 
-  <section class="section ground-inverse" id="courses" aria-labelledby="courses-h" data-moment="line-carries-colour" data-moment-opts='{"from": "base"}'>
+  <section class="section ground-inverse" id="ecg" aria-labelledby="ecg-h" data-moment="line-carries-colour" data-moment-opts='{"from": "base"}'>
     <div class="wrap grid grid--middle">
       <div class="span-5 stack-5">
         <div class="section-head">
-          <h2 id="courses-h">Courses for doctors on each module</h2>
-          <p>Short, case-based courses that teach the reasoning each module uses, so you can do it without the app.</p>
+          <p class="t-label">Now open</p>
+          <h2 id="ecg-h">MedWise ECG: learn ECG from zero to ward-ready</h2>
+          <p>For medical students, interns and residents of every specialty. Watch the heart write each wave, then read real 12-lead ECGs with calipers and get every step marked, from rate to what you do next.</p>
+          <p>Start free with a 10-minute placement test. Student plan from &#8377;199 a month, Pro from &#8377;499.</p>
         </div>
-        <a class="link" href="#contact">Join the course list</a>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/ecg#/placement">Find my level, free<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="link" href="/ecg#/upgrade">See plans</a>
+        </div>
       </div>
       <ul class="rows span-6 start-7">
-        <li><span class="rows__name">ECG, properly<small>Rate to ischaemia, on real tracings</small></span><span class="rows__value">Students, interns</span></li>
-        <li><span class="rows__name">Antibiotics in the ICU<small>Empiric choice, cultures, de-escalation</small></span><span class="rows__value">Residents</span></li>
-        <li><span class="rows__name">Fit for surgery<small>The pre-operative assessment, case by case</small></span><span class="rows__value">Interns, residents</span></li>
+        <li><span class="rows__name">Level 1 · Foundations<small>Each wave and interval, and how the heart writes them</small></span><span class="rows__value">6 units</span></li>
+        <li><span class="rows__name">Level 2 · Reading<small>The 9-step order, rhythm, axis, blocks, chambers</small></span><span class="rows__value">6 units</span></li>
+        <li><span class="rows__name">Level 3 · Emergencies<small>Killer rhythms, STEMI and its equivalents, potassium</small></span><span class="rows__value">6 units</span></li>
+        <li><span class="rows__name">Level 4 · Advanced<small>Mimics, Sgarbossa, pre-excitation, pacing, inherited syndromes</small></span><span class="rows__value">6 units</span></li>
+        <li><span class="rows__name">Practice<small>216 real ECGs, emergency mode, timed exam papers, daily ECG</small></span><span class="rows__value">Phone and offline</span></li>
       </ul>
     </div>
   </section>
@@ -316,8 +324,8 @@
   <div class="wrap">
     <div class="closing__cta close--type">
       <div class="section-head">
-        <h2 id="close-h">Try MedWise on your next ward round</h2>
-        <p>Antibiotic stewardship is open now. Leave your email to hear when each new module and course opens.</p>
+        <h2 id="close-h">Start reading ECGs with confidence</h2>
+        <p>The ECG course and antibiotic stewardship are open now. Leave your email to hear when the next modules and courses open.</p>
       </div>
       <form class="mw-join" data-firestore novalidate>
         <div class="field">
@@ -330,7 +338,7 @@
         </div>
         <p class="form__status" role="status" data-join-status></p>
       </form>
-      <a class="btn btn--primary" href="/app">Try MedWise<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <a class="btn btn--primary" href="/ecg">Learn ECG<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
     <div class="closing__links">
       <div class="grid">
@@ -338,8 +346,8 @@
           <a class="nav__logo mw-logo" href="#top" aria-label="MedWise home"><img class="mw-logo__mark" src="brand/logo-mark.png" alt="" width="252" height="272"><img class="mw-logo__word" src="brand/logo-word.png" alt="" width="593" height="150"></a>
           <p class="footer__lede">It suggests. You decide. Guideline-based decision support and teaching for doctors.</p>
         </div>
-        <div class="span-2 start-7 footer__col"><h3>Modules</h3><ul><li><a href="#modules">All five modules</a></li><li><a href="/app">Antibiotic stewardship</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="#courses">Courses</a></li><li><a href="#reasoning">Reasoning</a></li></ul></div>
+        <div class="span-2 start-7 footer__col"><h3>Modules</h3><ul><li><a href="#modules">All five modules</a></li><li><a href="/app">Antibiotic stewardship</a></li><li><a href="/ecg">MedWise ECG</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="#ecg">ECG course</a></li><li><a href="/ecg#/placement">Placement test</a></li><li><a href="/ecg#/legal/terms">Terms and policies</a></li></ul></div>
         <div class="span-2 footer__col"><h3>MedWise</h3><ul><li><a href="#contact">Join the list</a></li><li><a href="https://www.instagram.com/medwisee/" rel="noopener" target="_blank">Instagram</a></li></ul></div>
       </div>
       <div class="footer__legal">
