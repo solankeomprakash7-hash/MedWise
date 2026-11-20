@@ -11,6 +11,12 @@ service cloud.firestore {
         allow read, write: if request.auth != null && request.auth.uid == uid;
       }
     }
+    // Landing-page email list: anyone may add their email; nobody may read or change entries.
+    match /waitlist/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['email', 'source', 'createdAt'])
+        && request.resource.data.email is string && request.resource.data.email.size() < 200;
+      allow read, update, delete: if false;
+    }
     // Payment records: server only.
     match /payments/{id} { allow read, write: if false; }
   }

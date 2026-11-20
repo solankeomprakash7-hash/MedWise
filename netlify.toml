@@ -11,10 +11,20 @@
   status = 200
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/ecg/*"
+  to = "/ecg.html"
   status = 200
   force = false
+
+[[redirects]]
+  from = "/app/*"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/app"
+  to = "/app.html"
+  status = 200
 
 [context.production.environment]
   NODE_VERSION = "20"
