@@ -15,6 +15,11 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      // public/assets holds the landing page's kit, so the app's bundles go to /_app
+      assetsDir: '_app',
+      rollupOptions: { input: { app: path.resolve(__dirname, 'app.html') } },
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
