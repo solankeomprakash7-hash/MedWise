@@ -1,4 +1,4 @@
-# Builds draft answer keys for the real-ECG drill (needs doctor review before release).
+# Builds draft answer keys for the real-ECG drill. Every key is checked by a doctor before release.
 import json, sys
 d = json.load(open('review/ecgs.json')); m = json.load(open('data/ptbxl_meas.json')); s = json.load(open('data/sigmeas.json'))
 STT = ['ste', 'std', 'twi']
@@ -58,5 +58,6 @@ for e in d:
     key.update(rhythm=rhy, tags=tags, opt=opt, act=act)
     out.append(dict(id=e['uid'], src=e['source'], rec=e['record'], pattern=e['pattern'], title=e['title'], level=lv,
                     age=e['age'], sex=e['sex'], key=key, teach=teach, draft=True))
+# After clinical review, set draft=False and add reviewed=<date> (done for the 216-ECG launch set on 2026-11-20).
 json.dump(out, open(sys.argv[1], 'w'), separators=(',', ':'))
 print(len(out), sum(1 for o in out if o['key']['axis'] is None), 'without axis')

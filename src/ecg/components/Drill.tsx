@@ -49,7 +49,9 @@ export function Results({ ecg, rows }: { ecg: RealEcg; rows: Row[] }) {
         </table>
       </div>
       {ecg.model && <p className="text-xs text-slate-500">This tracing is a teaching model drawn by the MedWise heart model, used where open datasets have no real example.</p>}
-      {ecg.draft && <p className="flex gap-2 text-xs text-slate-500"><Info size={14} className="shrink-0 mt-0.5" />Measurements come from the dataset's machine read (PTB-XL+) and the signal; the answer key is awaiting clinical review.</p>}
+      {!ecg.model && <p className="flex gap-2 text-xs text-slate-500"><Info size={14} className="shrink-0 mt-0.5" />{ecg.draft
+        ? "Measurements come from the dataset's machine read (PTB-XL+) and the signal; the answer key is awaiting clinical review."
+        : "Intervals and rate come from the dataset's machine read (PTB-XL+); allow for small differences from your own caliper measurements. Answer key clinically reviewed."}</p>}
       {!ecg.model && <p className="text-[11px] text-slate-400">ECG: {ecg.src} record {ecg.rec.split('/').pop()}, {ecg.sex}{ecg.age ? `, ${parseInt(ecg.age)} y` : ''}. Licensed CC BY 4.0 via PhysioNet.</p>}
     </div>
   );
