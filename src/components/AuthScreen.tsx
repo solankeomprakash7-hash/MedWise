@@ -14,7 +14,7 @@ import { auth } from '../lib/firebase';
 import { motion, AnimatePresence } from 'motion/react';
 import { LogIn, UserPlus, AlertCircle, Loader2, Stethoscope, Mail, CheckCircle2, Key } from 'lucide-react';
 
-export default function AuthScreen() {
+export default function AuthScreen({ subtitle = 'Clinical Portal', onBack }: { subtitle?: string; onBack?: () => void } = {}) {
   const { useState } = React;
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -218,9 +218,10 @@ export default function AuthScreen() {
           <h1 className="text-4xl font-serif font-bold text-nejm-blue mb-2 tracking-tighter">MedWise</h1>
           <div className="flex items-center justify-center gap-3">
             <div className="h-px w-8 bg-nejm-red"></div>
-            <p className="text-[10px] text-nejm-text/50 uppercase tracking-[0.3em] font-bold">Clinical Portal</p>
+            <p className="text-[10px] text-nejm-text/50 uppercase tracking-[0.3em] font-bold">{subtitle}</p>
             <div className="h-px w-8 bg-nejm-red"></div>
           </div>
+          {onBack && <button type="button" onClick={onBack} className="mt-4 text-xs text-nejm-blue underline">Continue without an account</button>}
         </div>
 
           <div className="nejm-card border-t-4 border-t-nejm-blue relative overflow-hidden">

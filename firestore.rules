@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Learner record: readable by its owner; plan fields are written only by the payment functions (Admin SDK).
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && !request.resource.data.diff(resource == null ? {} : resource.data).affectedKeys().hasAny(['plan', 'planUntil']);
+      // ECG progress: the owner reads and writes freely.
+      match /ecg/{doc} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+    // Payment records: server only.
+    match /payments/{id} { allow read, write: if false; }
+  }
+}

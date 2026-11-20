@@ -2,6 +2,14 @@
   command = "npm run build"
   publish = "dist"
 
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/ecg"
+  to = "/ecg.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
