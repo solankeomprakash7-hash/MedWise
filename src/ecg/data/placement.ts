@@ -23,6 +23,6 @@ export const PLACEMENT: PQ[] = [
 export function placeLevel(answers: number[]) {
   const sec = [0, 0, 0];
   PLACEMENT.forEach((q, i) => { if (answers[i] === q.a) sec[q.section - 1]++; });
-  const level = sec[0] < 3 ? 1 : sec[1] < 3 ? 2 : sec[2] < 3 ? 2 : 3;
+  const level = sec[0] < 3 ? 1 : sec[1] < 3 ? 2 : sec[2] < 3 ? 2 : sec[0] + sec[1] + sec[2] === 12 ? 4 : 3;
   return { level, sec, total: sec[0] + sec[1] + sec[2] };
 }

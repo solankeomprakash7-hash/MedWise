@@ -6,11 +6,11 @@ The ECG product lives at `/ecg` (entry `ecg.html`, code in `src/ecg/`). The seps
 
 | Area | Where |
 | --- | --- |
-| Level 3 Emergencies (6 units) with 28 model emergency ECGs (VT, VF, torsades, STEMIs and equivalents, blocks, K⁺) | `src/ecg/data/modelEcgs.json`, `public/ecg/model/` |
+| Level 3 Emergencies and Level 4 Advanced (6 units each) with 39 model ECGs (VT, VF, torsades, STEMIs and equivalents, blocks, K⁺) | `src/ecg/data/modelEcgs.json`, `public/ecg/model/` |
 | Emergency mode: 30 s per ECG, choose action and diagnosis | `pages/Emergency.tsx` |
 | Exam mode: timed paper, half ECG identification, half theory, marked at the end | `pages/Exam.tsx` |
 | Placement test (12 questions, 8 on real ECGs) sets the start level | `src/ecg/data/placement.ts`, `pages/Placement.tsx` |
-| Learning path: Levels 1–2 written (12 units), Levels 3–4 listed | `src/ecg/data/curriculum.ts`, `pages/Learn.tsx`, `pages/UnitPage.tsx` |
+| Learning path: all four levels written (24 units) | `src/ecg/data/curriculum.ts`, `pages/Learn.tsx`, `pages/UnitPage.tsx` |
 | Interactive lab embedded in each unit | `public/ecg-lab.html?embed=1#<pattern or wave-X>` |
 | Real-ECG read drill (9 graded steps, calipers) | `components/Drill.tsx`, `components/EcgViewer.tsx` |
 | Spaced repetition (Leitner boxes 0/1/3/7/21/45 days) and today's ECG with streak | `lib/logic.ts`, `pages/Practice.tsx` |
