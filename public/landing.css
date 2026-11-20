@@ -71,7 +71,7 @@
 }
 
 /* the focus ring: the dealt orange reads at 2.3:1 on white, so the ring takes the ink */
-:focus-visible { outline-color: var(--ink); }
+
 
 /* the suggestion card beside the three points */
 .mw-why { display: grid; gap: var(--s-4); padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface); align-content: start; }
@@ -104,3 +104,15 @@
 #courses .rows .rows__name small { display: block; margin-top: 4px; font-weight: 400; font-size: var(--t-small); color: var(--muted); }
 #courses .rows li { padding-block: var(--s-5); }
 .mw-why .mw-why__plan { color: var(--ink); }
+
+/* the client's logo: the mark and the wordmark side by side, the gold rule of the logo under the hero's notice */
+.mw-logo { display: inline-flex; align-items: center; gap: 10px; }
+.mw-logo__mark { height: 34px; width: auto; }
+.mw-logo__word { height: 22px; width: auto; }
+.footer .mw-logo__mark { height: 40px; }
+.footer .mw-logo__word { height: 26px; }
+.hero__kicker .dot { background: #e2a946; }
+.mw-panel .mw-state--live { color: #0f7a6c; }
+.nav__actions .btn { min-height: 44px; }
+@media (max-width: 479px) { .nav .mw-logo__mark { height: 28px; } .nav .mw-logo__word { height: 16px; } .nav .mw-logo { gap: 6px; } }
+@media (max-width: 359px) { .nav .mw-logo__word { display: none; } }

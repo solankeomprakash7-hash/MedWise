@@ -8,9 +8,10 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="MedWise: clinical decision support for doctors">
 <meta property="og:description" content="Antibiotics, ECG, hypertension, diabetes and pre-op evaluation, with the guideline reasoning on screen.">
-<meta property="og:image" content="share.jpg">
+<meta property="og:image" content="brand/logo-full.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="brand/icon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/icon-180.png">
 <meta name="theme-color" content="#ffffff">
 <!-- <link rel="canonical" href="https://[the client's domain]/"> : add once the domain is known -->
 <meta name="site-kind" content="software">
@@ -26,10 +27,10 @@
 <link rel="stylesheet" href="assets/icons/icon.css">
 <style>
 :root {
-  --p-bg: #ffffff; --p-surface: #f4f4f2; --p-ink: #1f2b4d; --p-muted: #646b81;
-  --p-accent: #f7941d; --p-accent-ink: #1f2b4d; --p-action: #f7941d; --p-action-ink: #1f2b4d;
-  --p-inv-bg: #05070a; --p-inv-surface: #111417; --p-inv-ink: #ffffff; --p-inv-muted: #939597;
-  --p-inv-accent: #f7941d; --p-inv-accent-ink: #1f2b4d; --p-inv-action: #f7941d; --p-inv-action-ink: #1f2b4d;
+  --p-bg: #ffffff; --p-surface: #f3f5f7; --p-ink: #1a1c49; --p-muted: #676c8c;
+  --p-accent: #18ab97; --p-accent-ink: #111111; --p-action: #1a1c49; --p-action-ink: #ffffff;
+  --p-inv-bg: #1a1c49; --p-inv-surface: #262a55; --p-inv-ink: #ffffff; --p-inv-muted: #9ea2b8;
+  --p-inv-accent: #18ab97; --p-inv-accent-ink: #111111; --p-inv-action: #18ab97; --p-inv-action-ink: #111111;
   --font-display: "Chivo", system-ui, sans-serif;
   --font-text: "Chivo", system-ui, sans-serif;
   --font-mono: "Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -52,14 +53,14 @@
 </head>
 <body class="bg-paper">
 <!-- type: software
-     deal: hero split, nav nav-centre, close close-type, footer footer-statement, rhythm space, buttons arrow, mark stack, grounds paper + topglow
-     palette white-navy-tab (white ground and navy ink read as a clinical record; the orange accent marks what needs action, as on a ward chart); type chivo
+     deal: hero split, nav nav-centre, close close-type, footer footer-statement, rhythm space, buttons arrow, mark: the client logo, grounds paper + topglow
+     palette: the client's own logo colours through start.mjs brand (navy #1a1c49 ink and action, teal #18ab97 accent, gold #e2a946 rule); type chivo
      moments: liquid-type on #reasoning (statement), line-carries-colour on #courses -->
 
 <header class="nav nav--centre">
   <div class="wrap nav__bar">
     <a class="skip-link" href="#top">Skip to content</a>
-    <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>MedWise</a>
+    <a class="nav__logo mw-logo" href="#top" aria-label="MedWise home"><img class="mw-logo__mark" src="brand/logo-mark.png" alt="" width="252" height="272"><img class="mw-logo__word" src="brand/logo-word.png" alt="" width="593" height="150"></a>
     <nav class="nav__links" aria-label="Main">
       <div class="nav__item">
         <a class="nav__link" href="#modules">Modules <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -276,7 +277,7 @@
           </div>
           <div class="stack-2">
             <h3>A doctor-built tool</h3>
-            <p>Made by Omprakash Solanke, a doctor, for ward rounds and nights on call. The decision stays yours.</p>
+            <p>Made by Dr. Omprakash Solanke for ward rounds and nights on call. The decision stays yours.</p>
           </div>
         </div>
         <div class="span-6 start-7 ui ui-demo mw-why">
@@ -329,20 +330,20 @@
         </div>
         <p class="form__status" role="status" data-join-status></p>
       </form>
-      <a class="btn btn--primary btn--xl btn--wide" href="/app">Try MedWise<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <a class="btn btn--primary" href="/app">Try MedWise<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
     <div class="closing__links">
       <div class="grid">
         <div class="span-4 stack-4">
-          <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>MedWise</a>
-          <p class="footer__lede">Guideline-based decision support and teaching for doctors. It supports clinical judgement and never replaces it.</p>
+          <a class="nav__logo mw-logo" href="#top" aria-label="MedWise home"><img class="mw-logo__mark" src="brand/logo-mark.png" alt="" width="252" height="272"><img class="mw-logo__word" src="brand/logo-word.png" alt="" width="593" height="150"></a>
+          <p class="footer__lede">It suggests. You decide. Guideline-based decision support and teaching for doctors.</p>
         </div>
         <div class="span-2 start-7 footer__col"><h3>Modules</h3><ul><li><a href="#modules">All five modules</a></li><li><a href="/app">Antibiotic stewardship</a></li></ul></div>
         <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="#courses">Courses</a></li><li><a href="#reasoning">Reasoning</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>MedWise</h3><ul><li><a href="#contact">Join the list</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>MedWise</h3><ul><li><a href="#contact">Join the list</a></li><li><a href="https://www.instagram.com/medwisee/" rel="noopener" target="_blank">Instagram</a></li></ul></div>
       </div>
       <div class="footer__legal">
-        <span>&copy; 2026 Omprakash Solanke</span>
+        <span>&copy; 2026 Dr. Omprakash Solanke</span>
         <div class="socials"></div>
       </div>
     </div>
