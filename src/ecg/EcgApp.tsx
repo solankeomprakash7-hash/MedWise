@@ -12,6 +12,7 @@ import Practice from './pages/Practice';
 import Upgrade from './pages/Upgrade';
 import Emergency from './pages/Emergency';
 import Exam from './pages/Exam';
+import Legal, { LEGAL_LINKS } from './pages/Legal';
 
 type Ctx = { p: Progress; update: (fn: (p: Progress) => Progress) => void; plan: Plan; user: User | null; go: (h: string) => void; signIn: () => void; syncNote: string };
 export const AppCtx = React.createContext<Ctx>(null as unknown as Ctx);
@@ -30,6 +31,8 @@ export default function EcgApp() {
   const cloudOk = React.useRef(false);
 
   React.useEffect(() => { const f = () => { setR(route()); window.scrollTo(0, 0); }; addEventListener('hashchange', f); return () => removeEventListener('hashchange', f); }, []);
+  // Offline or slow network: don't block the app on sign-in; continue with local progress.
+  React.useEffect(() => { const t = setTimeout(() => setReady(true), 2500); return () => clearTimeout(t); }, []);
   React.useEffect(() => onAuthStateChanged(auth, async u => {
     const ok = u && u.emailVerified ? u : null;
     setUser(ok); setReady(true);
@@ -87,9 +90,10 @@ export default function EcgApp() {
         <main className="max-w-5xl mx-auto px-4 pt-8">
           {page === 'placement' ? <Placement /> : page === 'learn' ? <Learn /> : page === 'unit' ? <UnitPage id={arg} />
             : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} topic={arg && arg.startsWith('u-') ? arg.slice(2) : undefined} key={arg || 'p'} />
-            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'upgrade' ? <Upgrade /> : <Home />}
+            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade /> : <Home />}
         </main>
         <footer className="max-w-5xl mx-auto px-4 mt-16 pt-4 border-t border-nejm-border text-[11px] text-slate-400 leading-relaxed">
+          <nav className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-slate-500" aria-label="Policies">{LEGAL_LINKS.map(([k, l]) => <a key={k} href={`#/legal/${k}`} className="hover:text-nejm-blue underline-offset-2 hover:underline">{l}</a>)}</nav>
           For education only; not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet); measurements from PTB-XL+. Interactive tracings are teaching models.
         </footer>
       </div>
