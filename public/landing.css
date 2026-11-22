@@ -100,9 +100,6 @@
 /* the window's done status: darker so it reads at 4.5:1 on the panel at every width */
 .hero__window .ui-win__st.is-done { color: #17783f; }
 
-/* course rows: the subtitle on its own line under the name */
-#ecg .rows .rows__name small { display: block; margin-top: 4px; font-weight: 400; font-size: var(--t-small); color: var(--muted); }
-#ecg .rows li { padding-block: var(--s-5); }
 .mw-why .mw-why__plan { color: var(--ink); }
 
 /* the client's logo: the mark and the wordmark side by side, the gold rule of the logo under the hero's notice */
@@ -117,12 +114,30 @@
 @media (max-width: 479px) { .nav .mw-logo__mark { height: 28px; } .nav .mw-logo__word { height: 16px; } .nav .mw-logo { gap: 6px; } }
 @media (max-width: 359px) { .nav .mw-logo__word { display: none; } }
 
+/* the ECG launch section: a real 12-lead read in MedWise ECG, on a light card on the navy ground */
+.mw-read-card { display: grid; gap: var(--s-4); padding: var(--s-4); border-radius: var(--r-lg); background: var(--p-bg, #fff); color: var(--p-ink, #1a1c49); }
+.mw-read-card__ecg { border-radius: var(--r-md); overflow: hidden; background: #fff6f2; }
+.mw-read-card__ecg img { display: block; width: 100%; height: auto; }
+.mw-read-card__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+.mw-read-card__steps li { display: grid; gap: 2px; padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); background: var(--p-surface, #f3f5f7); }
+.mw-read-card__steps span { font-size: 12px; color: #4f5476; }
+.mw-read-card__steps b { font-weight: 500; font-size: var(--t-small); }
+.mw-read-card__steps li::after { content: "\2713"; justify-self: end; margin-top: -1.6em; color: #17783f; font-size: 13px; }
+
+/* the mock's decision pills read as the page's one filled style, not a third button */
+.mw-why__btn--on { border-color: transparent; }
+
+/* modules: one scrolling row of tabs on a phone, never three wrapped lines */
+@media (max-width: 767px) {
+  .mw-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .mw-tabs .tab { flex: none; }
+  .hero .btn-row .btn--secondary, #ecg .btn-row .link { min-height: 44px; }
+  .mw-read-card__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* the ECG launch section fills its screen on phones, so the footer never shows inside it */
 @media (max-width: 767px) {
   #ecg { min-height: 100svh; padding-block: var(--s-6) var(--s-6); }
-  #ecg .wrap { gap: var(--s-4); }
+  #ecg .wrap { gap: var(--s-5); }
   #ecg .section-head .t-label { display: none; }
-  #ecg .stack-5 { gap: var(--s-4); }
-  #ecg .rows li { padding-block: var(--s-3); }
-  #ecg .rows .rows__name small { display: none; }
 }
