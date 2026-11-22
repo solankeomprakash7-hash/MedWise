@@ -25,24 +25,24 @@ export default function EcgViewer({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-[11px] font-mono text-slate-500 tabular-nums" aria-live="polite">{read}</span>
+        <span className="text-[11px] font-mono text-muted tabular-nums" aria-live="polite">{read}</span>
         <div className="flex gap-2">
           <button type="button" onClick={() => { setCal(c => !c); setPts([]); }} aria-pressed={cal}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border ${cal ? 'bg-nejm-blue text-white border-nejm-blue' : 'bg-white border-nejm-border text-nejm-blue'}`}>
+            className={`rounded-sm flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border ${cal ? 'bg-ink text-white border-ink' : 'bg-white border-line text-ink'}`}>
             <Ruler size={14} /> Calipers
           </button>
-          <button type="button" onClick={() => setZoom(z => !z)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border bg-white border-nejm-border text-nejm-blue">
+          <button type="button" onClick={() => setZoom(z => !z)} className="rounded-sm flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border bg-white border-line text-ink">
             {zoom ? <ZoomOut size={14} /> : <ZoomIn size={14} />} {zoom ? 'Fit' : 'Zoom'}
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto border border-nejm-border bg-[#fff6f2]">
+      <div className="overflow-x-auto border border-line bg-paper rounded-md">
         <div className="relative" style={{ width: zoom ? 1500 : '100%' }}>
           <img src={src} alt={alt} className="block w-full h-auto select-none" draggable={false} style={{ maxWidth: 'none' }} />
           <svg viewBox={`0 0 ${W_MM} ${H_MM}`} className={`absolute inset-0 w-full h-full ${cal ? 'cursor-crosshair' : 'cursor-zoom-in'}`} onClick={onClick} role="img" aria-label="Measurement layer">
-            {pts.map((p, i) => <g key={i}><line x1={p.x} x2={p.x} y1={Math.max(0, p.y - 14)} y2={Math.min(H_MM, p.y + 14)} stroke="#004a80" strokeWidth={0.35} strokeDasharray="1.2 0.8" />
-              <line x1={p.x - 1.5} x2={p.x + 1.5} y1={p.y} y2={p.y} stroke="#004a80" strokeWidth={0.4} /></g>)}
-            {pts.length === 2 && <polyline points={`${pts[0].x},${pts[0].y} ${pts[1].x},${pts[0].y} ${pts[1].x},${pts[1].y}`} fill="none" stroke="#004a80" strokeWidth={0.5} />}
+            {pts.map((p, i) => <g key={i}><line x1={p.x} x2={p.x} y1={Math.max(0, p.y - 14)} y2={Math.min(H_MM, p.y + 14)} stroke="#1a1c49" strokeWidth={0.35} strokeDasharray="1.2 0.8" />
+              <line x1={p.x - 1.5} x2={p.x + 1.5} y1={p.y} y2={p.y} stroke="#1a1c49" strokeWidth={0.4} /></g>)}
+            {pts.length === 2 && <polyline points={`${pts[0].x},${pts[0].y} ${pts[1].x},${pts[0].y} ${pts[1].x},${pts[1].y}`} fill="none" stroke="#1a1c49" strokeWidth={0.5} />}
           </svg>
         </div>
       </div>

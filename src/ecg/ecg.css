@@ -1,0 +1,106 @@
+/* MedWise ECG: the app's own stylesheet, on the MedWise landing page's design system
+   (public/index.html + public/assets/system.css): navy ink, teal accent, gold rule, Chivo,
+   soft radius (8 / 12 / 20), one button pair, one card, hover lift and press.
+   Layout: a white header with the logo, a narrow centred column of white cards on a cool surface,
+   ECG paper as the one warm surface; a bottom tab bar on phones. */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Chivo", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Chivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --color-ink: #1a1c49;
+  --color-ink-2: #262a55;
+  --color-muted: #5f6485;
+  --color-surface: #f4f6f8;
+  --color-card: #ffffff;
+  --color-line: #e2e5ee;
+  --color-line-strong: #c7cbdb;
+  --color-accent: #18ab97;
+  --color-accent-ink: #0b7466;     /* teal dark enough for text on white */
+  --color-accent-soft: #e3f6f3;
+  --color-gold: #e2a946;
+  --color-gold-soft: #fbf1dd;
+  --color-ok: #1d7f55;
+  --color-bad: #c03d2b;
+  --color-paper: #fff6f2;
+
+  /* the shared sign-in screen still speaks the sepsis app's class names: map them to this brand */
+  --color-nejm-blue: #1a1c49;
+  --color-nejm-red: #0b7466;
+  --color-nejm-border: #e2e5ee;
+  --color-nejm-gray: #f4f6f8;
+  --color-nejm-text: #1a1c49;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+:root { --ease: cubic-bezier(.2, .8, .2, 1); --dur: 180ms; color-scheme: light; }
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-surface text-ink font-sans antialiased; font-feature-settings: "ss01"; }
+  h1, h2, h3, h4, h5 { @apply text-ink; font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.02em; text-wrap: balance; }
+  ::selection { background: color-mix(in oklab, var(--color-accent) 25%, transparent); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+@layer components {
+  /* one heading face for display text (the old serif class maps here) */
+  .font-display, .font-serif { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.02em; }
+  .eyebrow { @apply text-[12px] font-medium uppercase text-muted; letter-spacing: .08em; }
+  .eyebrow-dot::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-gold); margin-right: 8px; vertical-align: 1px; }
+
+  /* one button pair */
+  .btn-primary, .nejm-btn {
+    @apply inline-flex items-center justify-center gap-2 h-11 px-5 rounded-sm bg-ink text-white text-[15px] font-medium whitespace-nowrap;
+    transition: background-color var(--dur) var(--ease), transform 120ms var(--ease);
+  }
+  .btn-primary:hover, .nejm-btn:hover { background: color-mix(in oklab, var(--color-ink) 84%, white); }
+  .btn-primary:active, .nejm-btn:active, .btn-secondary:active { transform: scale(.98); }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 h-11 px-5 rounded-sm bg-card text-ink border border-line-strong text-[15px] font-medium whitespace-nowrap;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform 120ms var(--ease);
+  }
+  .btn-secondary:hover { background: color-mix(in oklab, white 94%, var(--color-ink)); border-color: color-mix(in oklab, var(--color-ink) 35%, transparent); }
+  .btn-accent { @apply inline-flex items-center justify-center gap-2 h-11 px-5 rounded-sm bg-accent text-ink text-[15px] font-medium whitespace-nowrap; transition: background-color var(--dur) var(--ease), transform 120ms var(--ease); }
+  .btn-accent:active { transform: scale(.98); }
+  .btn-accent:hover { background: color-mix(in oklab, var(--color-accent) 88%, var(--color-ink)); }
+  .btn-arrow::after { content: "\2192"; transition: transform var(--dur) var(--ease); }
+  @media (hover: hover) { .btn-arrow:hover::after { transform: translateX(3px); } }
+  .link { @apply inline-flex items-center gap-1 font-medium text-ink underline underline-offset-4; text-decoration-color: var(--color-line-strong); transition: text-decoration-color var(--dur) var(--ease); }
+  .link:hover { text-decoration-color: currentColor; }
+
+  /* one card */
+  .card, .nejm-card { @apply bg-card border border-line rounded-lg; box-shadow: 0 1px 2px rgb(26 28 73 / .04), 0 8px 24px -12px rgb(26 28 73 / .08); }
+  .nejm-card { padding: 2rem; }
+  a.card, button.card { transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  @media (hover: hover) {
+    a.card:hover, button.card:hover { transform: translateY(-2px); border-color: var(--color-line-strong); box-shadow: 0 2px 4px rgb(26 28 73 / .05), 0 16px 32px -14px rgb(26 28 73 / .16); }
+  }
+  .chip { @apply inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full border border-line bg-card text-[12px] font-medium text-ink; }
+  .chip-accent, .chip-gold { @apply inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full text-[12px] font-medium; }
+  .chip-accent { @apply bg-accent-soft text-accent-ink; }
+  .chip-gold { @apply bg-gold-soft text-[#7a5410]; }
+
+  /* ECG paper: the one warm surface, its own grid */
+  .paper {
+    background-color: var(--color-paper);
+    background-image:
+      linear-gradient(rgb(224 122 110 / .32) 1px, transparent 1px), linear-gradient(90deg, rgb(224 122 110 / .32) 1px, transparent 1px),
+      linear-gradient(rgb(242 184 176 / .35) 1px, transparent 1px), linear-gradient(90deg, rgb(242 184 176 / .35) 1px, transparent 1px);
+    background-size: 25px 25px, 25px 25px, 5px 5px, 5px 5px;
+  }
+
+  /* the sepsis-era input used by the shared sign-in screen */
+  .nejm-input { @apply w-full border border-line rounded-sm px-3 py-2.5 text-sm bg-card focus:outline-none focus:border-ink; }
+  .nejm-label { @apply text-[12px] font-medium text-muted mb-1.5 block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
