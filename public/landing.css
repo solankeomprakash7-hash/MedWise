@@ -116,3 +116,13 @@
 .nav__actions .btn { min-height: 44px; }
 @media (max-width: 479px) { .nav .mw-logo__mark { height: 28px; } .nav .mw-logo__word { height: 16px; } .nav .mw-logo { gap: 6px; } }
 @media (max-width: 359px) { .nav .mw-logo__word { display: none; } }
+
+/* the ECG launch section fills its screen on phones, so the footer never shows inside it */
+@media (max-width: 767px) {
+  #ecg { min-height: 100svh; padding-block: var(--s-6) var(--s-6); }
+  #ecg .wrap { gap: var(--s-4); }
+  #ecg .section-head .t-label { display: none; }
+  #ecg .stack-5 { gap: var(--s-4); }
+  #ecg .rows li { padding-block: var(--s-3); }
+  #ecg .rows .rows__name small { display: none; }
+}
