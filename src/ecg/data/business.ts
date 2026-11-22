@@ -2,7 +2,7 @@
 // activating live payments. Fill in the empty fields; empty lines are simply not shown.
 export const BUSINESS = {
   brand: 'MedWise ECG',
-  legalName: '',      // registered business or proprietor name, as on the Razorpay account
+  legalName: 'MedWise Private Limited', // registered business name, as on the Razorpay account
   email: '',          // support email learners can write to
   phone: '',          // support phone (optional)
   address: '',        // registered address (Razorpay asks for it)
