@@ -101,7 +101,7 @@ export default function EcgApp() {
             <a href="/" className="flex items-center gap-2" aria-label="MedWise home"><img src="/brand/logo-mark.png" alt="" className="h-6 w-auto" /><span className="text-ink font-medium">MedWise</span></a>
             <nav className="flex flex-wrap gap-x-5 gap-y-1" aria-label="Policies">{LEGAL_LINKS.map(([k, l]) => <a key={k} href={`#/legal/${k}`} className="hover:text-ink underline-offset-4 hover:underline">{l}</a>)}</nav>
           </div>
-          <p>For education only, not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet), measurements from PTB-XL+. Animated tracings are teaching models.</p>
+          <p>© 2026 MedWise Private Limited. For education only, not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet), measurements from PTB-XL+. Animated tracings are teaching models.</p>
         </footer>
         <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-line grid grid-cols-5" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Main">
           {nav.map(([h, l, Icon]) => <a key={h} href={`#/${h}`} aria-current={active(h) ? 'page' : undefined}
