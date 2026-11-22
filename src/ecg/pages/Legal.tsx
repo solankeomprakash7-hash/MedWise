@@ -45,7 +45,7 @@ const DOCS: Record<string, Doc> = {
 export default function Legal({ doc }: { doc: string }) {
   if (doc === 'contact') return (
     <article className="max-w-prose flex flex-col gap-4">
-      <h1 className="text-3xl font-serif font-bold">Contact</h1>
+      <h1 className="text-3xl font-display">Contact</h1>
       <dl className="grid grid-cols-[8rem_1fr] gap-y-2 text-sm">
         <dt className="font-semibold">Service</dt><dd>{B.brand}</dd>
         {B.legalName && <><dt className="font-semibold">Operated by</dt><dd>{B.legalName}</dd></>}
@@ -53,14 +53,14 @@ export default function Legal({ doc }: { doc: string }) {
         {B.phone && <><dt className="font-semibold">Phone</dt><dd className="select-all">{B.phone}</dd></>}
         {B.address && <><dt className="font-semibold">Address</dt><dd>{B.address}</dd></>}
       </dl>
-      <p className="text-sm text-slate-600">For help with your account, a payment or a refund, write from the email you signed in with. We reply within two working days.</p>
+      <p className="text-sm text-muted">For help with your account, a payment or a refund, write from the email you signed in with. We reply within two working days.</p>
     </article>
   );
   const d = DOCS[doc] || DOCS.terms;
   return (
     <article className="max-w-prose flex flex-col gap-5">
-      <div><h1 className="text-3xl font-serif font-bold">{d.title}</h1><p className="text-xs text-slate-500 mt-1">Last updated {B.updated}</p></div>
-      {d.body.map(([h, ps]) => <section key={h} className="flex flex-col gap-2"><h2 className="text-lg font-serif font-bold">{h}</h2>{ps.map((t, i) => <p key={i} className="text-sm leading-relaxed">{t}</p>)}</section>)}
+      <div><h1 className="text-3xl font-display">{d.title}</h1><p className="text-xs text-muted mt-1">Last updated {B.updated}</p></div>
+      {d.body.map(([h, ps]) => <section key={h} className="flex flex-col gap-2"><h2 className="text-lg font-display">{h}</h2>{ps.map((t, i) => <p key={i} className="text-sm leading-relaxed">{t}</p>)}</section>)}
     </article>
   );
 }

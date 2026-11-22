@@ -41,30 +41,30 @@ export default function Exam() {
 
   if (!qs) return (
     <section className="max-w-2xl flex flex-col gap-4">
-      <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-nejm-red">Exam mode</p>
-      <h1 className="text-3xl font-serif font-bold">{n} questions in {mins} minutes</h1>
-      <p className="text-slate-600">University and PG-entrance style: half are ECGs to identify, half are questions on mechanism, criteria and management. No feedback until the end, as in the real exam. Questions go up to one level above yours.</p>
-      {plan === 'free' && <p className="text-sm text-slate-500">This is a {EXAM_SAMPLE}-question sample. <a className="underline text-nejm-blue" href="#/upgrade">Student or Pro</a> gives full {N}-question papers.</p>}
-      <div><button className="nejm-btn" onClick={start}>Start the paper</button></div>
+      <p className="eyebrow eyebrow-dot">Exam mode</p>
+      <h1 className="text-3xl font-display">{n} questions in {mins} minutes</h1>
+      <p className="text-muted">University and PG-entrance style: half are ECGs to identify, half are questions on mechanism, criteria and management. No feedback until the end, as in the real exam. Questions go up to one level above yours.</p>
+      {plan === 'free' && <p className="text-sm text-muted">This is a {EXAM_SAMPLE}-question sample. <a className="underline text-ink" href="#/upgrade">Student or Pro</a> gives full {N}-question papers.</p>}
+      <div><button className="btn-primary" onClick={start}>Start the paper</button></div>
     </section>
   );
   if (done) {
     const right = qs.filter((q, k) => ans[k] === q.a).length, pct = Math.round(100 * right / qs.length);
     return (
       <section className="flex flex-col gap-5">
-        <div className="border-l-4 border-nejm-red pl-4">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">Paper complete</p>
-          <h1 className="text-3xl font-serif font-bold">{right}/{qs.length} · {pct}%</h1>
-          <p className="text-slate-600">{pct >= 80 ? 'Exam-ready on this material.' : pct >= 60 ? 'A pass, with gaps to close. Review the red ones below.' : 'Go back to the units for the topics you missed, then try another paper.'}</p>
+        <div className="border-l-4 border-accent pl-4">
+          <p className="eyebrow">Paper complete</p>
+          <h1 className="text-3xl font-display">{right}/{qs.length} · {pct}%</h1>
+          <p className="text-muted">{pct >= 80 ? 'Exam-ready on this material.' : pct >= 60 ? 'A pass, with gaps to close. Review the red ones below.' : 'Go back to the units for the topics you missed, then try another paper.'}</p>
         </div>
         <ol className="flex flex-col gap-3">
-          {qs.map((q, k) => <li key={k} className={`border bg-white p-4 flex flex-col gap-2 ${ans[k] === q.a ? 'border-nejm-border' : 'border-nejm-red/40'}`}>
-            {q.img && <img src={q.img} alt="" className="w-full max-w-md border border-nejm-border" />}
+          {qs.map((q, k) => <li key={k} className={`card p-4 flex flex-col gap-2 ${ans[k] === q.a ? 'border-line' : 'border-bad/40'}`}>
+            {q.img && <img src={q.img} alt="" className="w-full max-w-md border border-line" />}
             <p className="font-semibold">{k + 1}. {q.q}</p>
-            <p className="text-sm">{ans[k] === q.a ? <span className="text-green-800">✓ {q.o[q.a]}</span> : <><span className="text-nejm-red">✗ {ans[k] == null ? 'not answered' : q.o[ans[k]!]}</span> · correct: <b>{q.o[q.a]}</b></>}</p>
-            <p className="text-sm text-slate-600">{q.why}</p></li>)}
+            <p className="text-sm">{ans[k] === q.a ? <span className="text-ok">✓ {q.o[q.a]}</span> : <><span className="text-bad">✗ {ans[k] == null ? 'not answered' : q.o[ans[k]!]}</span> · correct: <b>{q.o[q.a]}</b></>}</p>
+            <p className="text-sm text-muted">{q.why}</p></li>)}
         </ol>
-        <div><button className="nejm-btn" onClick={start}>New paper</button></div>
+        <div><button className="btn-primary" onClick={start}>New paper</button></div>
       </section>
     );
   }
@@ -72,19 +72,19 @@ export default function Exam() {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex justify-between items-center gap-3">
-        <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">Question {i + 1} of {qs.length} · {ans.filter(x => x != null).length} answered</p>
-        <span className={`flex items-center gap-1.5 font-mono text-xl tabular-nums ${left < 120 ? 'text-nejm-red' : 'text-nejm-blue'}`}><Timer size={18} />{Math.floor(Math.max(0, left) / 60)}:{String(Math.max(0, left) % 60).padStart(2, '0')}</span>
+        <p className="eyebrow">Question {i + 1} of {qs.length} · {ans.filter(x => x != null).length} answered</p>
+        <span className={`flex items-center gap-1.5 font-mono text-xl tabular-nums ${left < 120 ? 'text-bad' : 'text-ink'}`}><Timer size={18} />{Math.floor(Math.max(0, left) / 60)}:{String(Math.max(0, left) % 60).padStart(2, '0')}</span>
       </div>
       <div className="flex flex-wrap gap-1">{qs.map((_, k) => <button key={k} onClick={() => setI(k)} aria-label={`Question ${k + 1}`}
-        className={`w-7 h-7 text-xs font-mono border ${k === i ? 'border-nejm-blue text-nejm-blue font-bold' : ans[k] != null ? 'bg-nejm-blue text-white border-nejm-blue' : 'border-nejm-border bg-white'}`}>{k + 1}</button>)}</div>
+        className={`w-8 h-8 rounded-sm text-xs font-mono border ${k === i ? 'border-ink text-ink font-bold' : ans[k] != null ? 'bg-ink text-white border-ink' : 'border-line bg-white'}`}>{k + 1}</button>)}</div>
       {q.img && <EcgViewer src={q.img} alt="ECG for this question" />}
-      <h2 className="text-xl font-serif font-bold">{q.q}</h2>
+      <h2 className="text-xl font-display">{q.q}</h2>
       <div className="grid gap-2">{q.o.map((o, k) => <button key={k} type="button" aria-pressed={ans[i] === k} onClick={() => setAns(a => { const b = [...a]; b[i] = k; return b; })}
-        className={`text-left px-4 py-3 border text-sm ${ans[i] === k ? 'border-nejm-blue bg-nejm-blue/5 font-semibold' : 'border-nejm-border bg-white'}`}>{String.fromCharCode(65 + k)}. {o}</button>)}</div>
+        className={`rounded-md text-left px-4 py-3 border text-sm ${ans[i] === k ? 'border-ink bg-ink/5 font-semibold' : 'border-line bg-white'}`}>{String.fromCharCode(65 + k)}. {o}</button>)}</div>
       <div className="flex flex-wrap gap-3">
-        <button className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" disabled={i === 0} onClick={() => setI(i - 1)}>Previous</button>
-        {i + 1 < qs.length ? <button className="nejm-btn" onClick={() => setI(i + 1)}>Next</button> : null}
-        <button className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-red text-nejm-red" onClick={() => setDone(true)}>Submit paper</button>
+        <button className="btn-secondary" disabled={i === 0} onClick={() => setI(i - 1)}>Previous</button>
+        {i + 1 < qs.length ? <button className="btn-primary" onClick={() => setI(i + 1)}>Next</button> : null}
+        <button className="btn-secondary !text-bad" onClick={() => setDone(true)}>Submit paper</button>
       </div>
     </section>
   );

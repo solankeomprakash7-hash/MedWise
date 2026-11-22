@@ -2,7 +2,7 @@ import * as React from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import AuthScreen from '../components/AuthScreen';
-import { Activity, LogOut, Loader2 } from 'lucide-react';
+import { Activity, LogOut, Loader2, BookOpen, Timer, GraduationCap, House as HomeIcon } from 'lucide-react';
 import { type Plan, type Progress, cloudLoad, cloudSave, empty, localLoad, localSave, merge, watchPlan } from './lib/progress';
 import Home from './pages/Home';
 import Placement from './pages/Placement';
@@ -58,44 +58,56 @@ export default function EcgApp() {
   }, [user]);
   const go = (h: string) => { location.hash = '#/' + h; };
 
-  if (!ready) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-nejm-blue" size={36} /></div>;
+  if (!ready) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-ink" size={36} /></div>;
   if (wantAuth && !user) return <AuthScreen subtitle="ECG" onBack={() => setWantAuth(false)} />;
 
   const [page, arg] = r;
-  const nav: [string, string][] = [['home', 'Home'], ['learn', 'Learn'], ['practice', 'Practise'], ['emergency', 'Emergency'], ['exam', 'Exam'], ['upgrade', plan === 'free' ? 'Upgrade' : 'Plan']];
+  const active = (h: string) => page === h || (h === 'learn' && page === 'unit');
+  const nav: [string, string, React.ElementType][] = [['home', 'Home', HomeIcon], ['learn', 'Learn', BookOpen], ['practice', 'Practise', Activity], ['emergency', 'Emergency', Timer], ['exam', 'Exam', GraduationCap]];
   return (
     <AppCtx.Provider value={{ p, update, plan, user, go, signIn: () => setWantAuth(true), syncNote }}>
-      <div className="min-h-screen bg-[#fcfcfc] pb-16">
-        <header className="bg-white border-b border-nejm-border sticky top-0 z-40">
-          <div className="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-            <a href="#/home" className="flex items-center gap-3">
-              <span className="w-9 h-9 flex items-center justify-center bg-nejm-blue text-white"><Activity size={20} /></span>
-              <span className="leading-none"><span className="block font-serif font-bold text-xl text-nejm-blue">MedWise ECG</span>
-                <span className="block text-[9px] uppercase tracking-[0.2em] font-bold text-slate-400 mt-1">From zero to ward-ready</span></span>
-            </a>
-            <nav className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest order-3 w-full sm:order-none sm:w-auto overflow-x-auto">
-              {nav.map(([h, l]) => <a key={h} href={`#/${h}`} aria-current={page === h ? 'page' : undefined}
-                className={`px-3 py-2 whitespace-nowrap ${page === h || (h === 'learn' && page === 'unit') ? 'text-nejm-blue border-b-2 border-nejm-red' : 'text-slate-500 hover:text-nejm-blue'}`}>{l}</a>)}
+      <div className="min-h-screen bg-surface pb-24 md:pb-16">
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 btn-primary">Skip to content</a>
+        <header className="bg-card/90 backdrop-blur border-b border-line sticky top-0 z-40" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+          <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <a href="/" className="flex items-center gap-2 shrink-0" aria-label="MedWise home">
+                <img src="/brand/logo-mark.png" alt="" width={252} height={272} className="h-8 w-auto" />
+                <img src="/brand/logo-word.png" alt="" width={593} height={150} className="h-6 w-auto hidden sm:block" />
+              </a>
+              <a href="#/home" className="chip-accent">ECG</a>
+            </div>
+            <nav className="hidden md:flex items-center gap-1" aria-label="Main">
+              {nav.map(([h, l]) => <a key={h} href={`#/${h}`} aria-current={active(h) ? 'page' : undefined}
+                className={`h-9 px-3 inline-flex items-center rounded-sm text-[15px] font-medium transition-colors ${active(h) ? 'bg-ink/[.06] text-ink' : 'text-muted hover:text-ink hover:bg-ink/[.04]'}`}>{l}</a>)}
             </nav>
-            <div className="flex items-center gap-3 text-xs">
+            <div className="flex items-center gap-2">
+              <a href="#/upgrade" className={plan === 'free' ? 'chip-gold' : 'chip'}>{plan === 'free' ? 'Upgrade' : plan === 'pro' ? 'Pro' : 'Student'}</a>
               {user ? <>
-                <span className="hidden md:inline text-slate-500">{user.displayName || user.email}</span>
-                <span className="px-2 py-0.5 border border-nejm-border font-bold uppercase text-[10px] tracking-wider text-nejm-blue">{plan}</span>
-                <button onClick={() => signOut(auth)} className="text-nejm-red flex items-center gap-1 font-bold" aria-label="Sign out"><LogOut size={14} /></button>
-              </> : <button onClick={() => setWantAuth(true)} className="nejm-btn !px-4 !py-2">Sign in</button>}
+                <span className="hidden lg:inline text-sm text-muted max-w-40 truncate">{user.displayName || user.email}</span>
+                <button onClick={() => signOut(auth)} className="btn-secondary !h-9 !px-3" aria-label="Sign out"><LogOut size={16} /></button>
+              </> : <button onClick={() => setWantAuth(true)} className="btn-primary !h-9 !px-4 !text-sm">Sign in</button>}
             </div>
           </div>
         </header>
-        {syncNote && <p className="max-w-5xl mx-auto px-4 pt-3 text-xs text-amber-700">{syncNote}</p>}
-        <main className="max-w-5xl mx-auto px-4 pt-8">
+        {syncNote && <p className="max-w-6xl mx-auto px-4 pt-3 text-sm text-[#8a5a0a]">{syncNote}</p>}
+        <main id="main" className="max-w-6xl mx-auto px-4 pt-8 md:pt-10">
           {page === 'placement' ? <Placement /> : page === 'learn' ? <Learn /> : page === 'unit' ? <UnitPage id={arg} />
             : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} topic={arg && arg.startsWith('u-') ? arg.slice(2) : undefined} key={arg || 'p'} />
             : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade /> : <Home />}
         </main>
-        <footer className="max-w-5xl mx-auto px-4 mt-16 pt-4 border-t border-nejm-border text-[11px] text-slate-400 leading-relaxed">
-          <nav className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-slate-500" aria-label="Policies">{LEGAL_LINKS.map(([k, l]) => <a key={k} href={`#/legal/${k}`} className="hover:text-nejm-blue underline-offset-2 hover:underline">{l}</a>)}</nav>
-          For education only; not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet); measurements from PTB-XL+. Interactive tracings are teaching models.
+        <footer className="max-w-6xl mx-auto px-4 mt-20 pt-6 border-t border-line text-[13px] text-muted leading-relaxed">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
+            <a href="/" className="flex items-center gap-2" aria-label="MedWise home"><img src="/brand/logo-mark.png" alt="" className="h-6 w-auto" /><span className="text-ink font-medium">MedWise</span></a>
+            <nav className="flex flex-wrap gap-x-5 gap-y-1" aria-label="Policies">{LEGAL_LINKS.map(([k, l]) => <a key={k} href={`#/legal/${k}`} className="hover:text-ink underline-offset-4 hover:underline">{l}</a>)}</nav>
+          </div>
+          <p>For education only, not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet), measurements from PTB-XL+. Animated tracings are teaching models.</p>
         </footer>
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-line grid grid-cols-5" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Main">
+          {nav.map(([h, l, Icon]) => <a key={h} href={`#/${h}`} aria-current={active(h) ? 'page' : undefined}
+            className={`flex flex-col items-center justify-center gap-1 h-16 text-[11px] font-medium ${active(h) ? 'text-ink' : 'text-muted'}`}>
+            <span className={`w-12 h-7 rounded-full flex items-center justify-center ${active(h) ? 'bg-accent-soft text-accent-ink' : ''}`}><Icon size={20} /></span>{l}</a>)}
+        </nav>
       </div>
     </AppCtx.Provider>
   );

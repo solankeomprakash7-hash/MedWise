@@ -24,9 +24,9 @@ export default function Practice({ mode, topic }: { mode: 'practice' | 'daily'; 
 
   if (!daily && left <= 0 && !rows) return (
     <section className="max-w-xl flex flex-col gap-4">
-      <h1 className="text-3xl font-serif font-bold">You've used this week's free reads</h1>
-      <p className="text-slate-600">Free accounts get 5 real-ECG reads a week, plus today's ECG. Upgrade for unlimited reads with spaced repetition, or come back on Monday.</p>
-      <div className="flex gap-3"><a className="nejm-btn" href="#/upgrade">See plans</a><a className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" href="#/practice/daily">Today's ECG</a></div>
+      <h1 className="text-3xl font-display">You've used this week's free reads</h1>
+      <p className="text-muted">Free accounts get 5 real-ECG reads a week, plus today's ECG. Upgrade for unlimited reads with spaced repetition, or come back on Monday.</p>
+      <div className="flex gap-3"><a className="btn-primary" href="#/upgrade">See plans</a><a className="btn-secondary" href="#/practice/daily">Today's ECG</a></div>
     </section>
   );
   const due = dueCards(p).length;
@@ -34,19 +34,19 @@ export default function Practice({ mode, topic }: { mode: 'practice' | 'daily'; 
     <section className="flex flex-col gap-5">
       <div className="flex flex-wrap justify-between items-end gap-3">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">
+          <p className="eyebrow">
             {daily ? `Today's ECG · ${p.daily.streak} day streak` : unit ? `Topic practice · ${unit.title}` : isReview ? 'Review · spaced repetition' : 'New ECG'}</p>
-          <h1 className="text-3xl font-serif font-bold">{rows ? 'Your read' : 'Read this 12-lead'}</h1>
+          <h1 className="text-3xl font-display">{rows ? 'Your read' : 'Read this 12-lead'}</h1>
         </div>
-        <p className="text-xs font-mono text-slate-500 tabular-nums">{!daily && (left === Infinity ? `${due} due for review` : `${left} free read${left === 1 ? '' : 's'} left this week`)}{daily && dailyDone && !rows ? 'Already done today; this one will not change your streak.' : ''}</p>
+        <p className="text-xs font-mono text-muted tabular-nums">{!daily && (left === Infinity ? `${due} due for review` : `${left} free read${left === 1 ? '' : 's'} left this week`)}{daily && dailyDone && !rows ? 'Already done today; this one will not change your streak.' : ''}</p>
       </div>
       {rows ? <>
         <Results ecg={ecg} rows={rows} />
         <div className="flex flex-wrap gap-3">
-          {daily ? <a className="nejm-btn" href="#/practice">Keep practising</a> : <button className="nejm-btn" onClick={() => { setEcg(pick(ecg.id)); setRows(null); window.scrollTo(0, 0); }}>Next ECG</button>}
-          <a className="px-5 py-3 text-xs font-bold uppercase tracking-widest border border-nejm-border text-nejm-blue" href="#/home">Home</a>
+          {daily ? <a className="btn-primary" href="#/practice">Keep practising</a> : <button className="btn-primary" onClick={() => { setEcg(pick(ecg.id)); setRows(null); window.scrollTo(0, 0); }}>Next ECG</button>}
+          <a className="btn-secondary" href="#/home">Home</a>
         </div>
-        {!user && <p className="text-xs text-slate-500"><button className="underline text-nejm-blue" onClick={signIn}>Sign in</button> to save your reads and reviews across devices.</p>}
+        {!user && <p className="text-xs text-muted"><button className="underline text-ink" onClick={signIn}>Sign in</button> to save your reads and reviews across devices.</p>}
       </> : <Drill ecg={ecg} onDone={r => {
         setRows(r); const ok = passed(r);
         update(pr => {

@@ -37,7 +37,7 @@ export default function Upgrade() {
       new window.Razorpay!({
         key: o.keyId, order_id: o.orderId, amount: o.amount, currency: 'INR', name: 'MedWise ECG',
         description: `${k === 'pro' ? 'Pro' : 'Student'} plan, 1 ${period}`, prefill: { email: user.email || '', name: user.displayName || '' },
-        theme: { color: '#004a80' },
+        theme: { color: '#1a1c49' },
         handler: async (resp: Record<string, string>) => {
           const v = await fetch('/.netlify/functions/ecg-verify', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await auth.currentUser!.getIdToken()}` }, body: JSON.stringify(resp) });
           setMsg(v.ok ? 'Payment received. Your plan is active.' : 'Payment received but not yet confirmed. It will activate within a few minutes; contact us if it does not.');
@@ -49,20 +49,20 @@ export default function Upgrade() {
   }
 
   const Card = ({ k, title, price }: { k: 'free' | PlanKey; title: string; price: string }) => (
-    <div className={`border bg-white p-5 flex flex-col gap-3 ${k === 'student' ? 'border-nejm-blue shadow-[inset_0_3px_0_#991b1b]' : 'border-nejm-border'}`}>
-      <div><p className="font-serif font-bold text-xl text-nejm-blue">{title}</p><p className="font-mono text-2xl tabular-nums mt-1">{price}</p></div>
-      <ul className="flex flex-col gap-1.5 text-sm flex-1">{FEATS[k].map(f => <li key={f} className="flex gap-2"><Check size={16} className="text-green-700 shrink-0 mt-0.5" />{f}</li>)}</ul>
-      {k === 'free' ? <p className="text-xs text-slate-500">{plan === 'free' ? 'Your current plan' : ''}</p>
-        : plan === k ? <p className="text-sm font-bold text-green-800">Your current plan</p>
-        : <button className="nejm-btn" disabled={!!busy} onClick={() => buy(k)}>{busy === k ? 'Opening…' : `Get ${title}`}</button>}
+    <div className={`card p-5 flex flex-col gap-3 ${k === 'student' ? 'border-ink shadow-[inset_0_3px_0_var(--color-accent)]' : 'border-line'}`}>
+      <div><p className="font-display text-xl text-ink">{title}</p><p className="font-mono text-2xl tabular-nums mt-1">{price}</p></div>
+      <ul className="flex flex-col gap-1.5 text-sm flex-1">{FEATS[k].map(f => <li key={f} className="flex gap-2"><Check size={16} className="text-ok shrink-0 mt-0.5" />{f}</li>)}</ul>
+      {k === 'free' ? <p className="text-xs text-muted">{plan === 'free' ? 'Your current plan' : ''}</p>
+        : plan === k ? <p className="text-sm font-bold text-ok">Your current plan</p>
+        : <button className="btn-primary" disabled={!!busy} onClick={() => buy(k)}>{busy === k ? 'Opening…' : `Get ${title}`}</button>}
     </div>
   );
   return (
     <section className="flex flex-col gap-6">
       <div className="flex flex-wrap justify-between items-end gap-4">
-        <div><h1 className="text-3xl font-serif font-bold">Plans</h1><p className="text-slate-600 mt-1">Prices in Indian rupees, including taxes. Pay by UPI, card or net banking.</p></div>
-        <div className="inline-flex border border-nejm-border text-xs font-bold uppercase tracking-widest" role="group" aria-label="Billing period">
-          {(['month', 'year'] as Period[]).map(x => <button key={x} aria-pressed={period === x} onClick={() => setPeriod(x)} className={`px-4 py-2 ${period === x ? 'bg-nejm-blue text-white' : 'bg-white text-nejm-blue'}`}>{x === 'month' ? 'Monthly' : 'Yearly · save ~40%'}</button>)}
+        <div><h1 className="text-3xl font-display">Plans</h1><p className="text-muted mt-1">Prices in Indian rupees, including taxes. Pay by UPI, card or net banking.</p></div>
+        <div className="inline-flex border border-line rounded-sm overflow-hidden text-sm font-medium bg-card" role="group" aria-label="Billing period">
+          {(['month', 'year'] as Period[]).map(x => <button key={x} aria-pressed={period === x} onClick={() => setPeriod(x)} className={`px-4 py-2 ${period === x ? 'bg-ink text-white' : 'bg-white text-ink'}`}>{x === 'month' ? 'Monthly' : 'Yearly · save ~40%'}</button>)}
         </div>
       </div>
       <div className="grid md:grid-cols-3 gap-4">
@@ -70,8 +70,8 @@ export default function Upgrade() {
         <Card k="student" title="Student" price={`₹${PRICE.student[period].toLocaleString('en-IN')}/${period}`} />
         <Card k="pro" title="Pro" price={`₹${PRICE.pro[period].toLocaleString('en-IN')}/${period}`} />
       </div>
-      {msg && <p className="text-sm text-nejm-blue" role="status">{msg}</p>}
-      <p className="text-xs text-slate-500">Plans do not renew automatically. See <a className="underline" href="#/legal/refunds">refunds</a> and <a className="underline" href="#/legal/terms">terms</a>. Colleges and hospitals: seat licences are available on request through <a className="underline" href="#/legal/contact">contact</a>.</p>
+      {msg && <p className="text-sm text-ink" role="status">{msg}</p>}
+      <p className="text-xs text-muted">Plans do not renew automatically. See <a className="underline" href="#/legal/refunds">refunds</a> and <a className="underline" href="#/legal/terms">terms</a>. Colleges and hospitals: seat licences are available on request through <a className="underline" href="#/legal/contact">contact</a>.</p>
     </section>
   );
 }
