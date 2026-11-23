@@ -59,7 +59,7 @@ export default function EcgApp() {
   const go = (h: string) => { location.hash = '#/' + h; };
 
   if (!ready) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-ink" size={36} /></div>;
-  if (wantAuth && !user) return <AuthScreen subtitle="ECG" onBack={() => setWantAuth(false)} />;
+  if (wantAuth && !user) return <AuthScreen subtitle="ECG course" onBack={() => setWantAuth(false)} />;
 
   const [page, arg] = r;
   const active = (h: string) => page === h || (h === 'learn' && page === 'unit');
