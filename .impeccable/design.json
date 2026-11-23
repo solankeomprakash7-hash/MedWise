@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T08:37:34+00:00",
+  "title": "Design System: MedWise",
+  "extensions": {
+    "colorMeta": {
+      "ward-navy": {
+        "role": "primary",
+        "displayName": "Ward Navy",
+        "canonical": "#1a1c49",
+        "tonalRamp": [
+          "#0c0d21",
+          "#11122f",
+          "#16183e",
+          "#1a1c49",
+          "#5f6080",
+          "#9899ad",
+          "#cdcdd7",
+          "#ededf0"
+        ]
+      },
+      "ward-navy-raised": {
+        "role": "primary",
+        "displayName": "Ward Navy Raised",
+        "canonical": "#262a55",
+        "tonalRamp": [
+          "#111326",
+          "#191b37",
+          "#202448",
+          "#262a55",
+          "#676a88",
+          "#9d9fb2",
+          "#cfd0da",
+          "#eeeef1"
+        ]
+      },
+      "monitor-teal": {
+        "role": "secondary",
+        "displayName": "Monitor Teal",
+        "canonical": "#18ab97",
+        "tonalRamp": [
+          "#0b4d44",
+          "#106f62",
+          "#149180",
+          "#18ab97",
+          "#5dc4b6",
+          "#97d9d0",
+          "#ccede8",
+          "#edf8f7"
+        ]
+      },
+      "monitor-teal-ink": {
+        "role": "secondary",
+        "displayName": "Monitor Teal Ink",
+        "canonical": "#0b7466",
+        "tonalRamp": [
+          "#05342e",
+          "#074b42",
+          "#096357",
+          "#0b7466",
+          "#549e94",
+          "#91c0ba",
+          "#c9e0dd",
+          "#ebf4f3"
+        ]
+      },
+      "monitor-teal-wash": {
+        "role": "secondary",
+        "displayName": "Monitor Teal Wash",
+        "canonical": "#e3f6f3",
+        "tonalRamp": [
+          "#666f6d",
+          "#94a09e",
+          "#c1d1cf",
+          "#e3f6f3",
+          "#ebf9f7",
+          "#f2fbfa",
+          "#f9fdfc",
+          "#fdfefe"
+        ]
+      },
+      "chart-gold": {
+        "role": "tertiary",
+        "displayName": "Chart Gold",
+        "canonical": "#e2a946",
+        "tonalRamp": [
+          "#664c20",
+          "#936e2e",
+          "#c0903c",
+          "#e2a946",
+          "#ebc37e",
+          "#f2d8ac",
+          "#f9ecd6",
+          "#fdf8f0"
+        ]
+      },
+      "chart-gold-wash": {
+        "role": "tertiary",
+        "displayName": "Chart Gold Wash",
+        "canonical": "#fbf1dd",
+        "tonalRamp": [
+          "#716c63",
+          "#a39d90",
+          "#d5cdbc",
+          "#fbf1dd",
+          "#fcf5e7",
+          "#fdf9f0",
+          "#fefcf8",
+          "#fffefc"
+        ]
+      },
+      "chart-gold-ink": {
+        "role": "tertiary",
+        "displayName": "Chart Gold Ink",
+        "canonical": "#7a5410",
+        "tonalRamp": [
+          "#372607",
+          "#4f370a",
+          "#68470e",
+          "#7a5410",
+          "#a28758",
+          "#c3b293",
+          "#e2d9ca",
+          "#f4f1ec"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#737373",
+          "#a6a6a6",
+          "#d9d9d9",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ]
+      },
+      "cool-surface": {
+        "role": "neutral",
+        "displayName": "Cool Surface",
+        "canonical": "#f4f6f8",
+        "tonalRamp": [
+          "#6e6f70",
+          "#9fa0a1",
+          "#cfd1d3",
+          "#f4f6f8",
+          "#f7f9fa",
+          "#fafbfc",
+          "#fdfdfd",
+          "#fefefe"
+        ]
+      },
+      "slate-muted": {
+        "role": "neutral",
+        "displayName": "Slate Muted",
+        "canonical": "#5f6485",
+        "tonalRamp": [
+          "#2b2d3c",
+          "#3e4156",
+          "#515571",
+          "#5f6485",
+          "#8f92aa",
+          "#b7b9c8",
+          "#dcdde4",
+          "#f2f3f5"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e2e5ee",
+        "tonalRamp": [
+          "#66676b",
+          "#93959b",
+          "#c0c3ca",
+          "#e2e5ee",
+          "#ebedf3",
+          "#f2f3f7",
+          "#f9f9fb",
+          "#fdfdfe"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#c7cbdb",
+        "tonalRamp": [
+          "#5a5b63",
+          "#81848e",
+          "#a9adba",
+          "#c7cbdb",
+          "#d8dbe6",
+          "#e6e8ef",
+          "#f3f4f7",
+          "#fbfbfc"
+        ]
+      },
+      "ecg-paper": {
+        "role": "neutral",
+        "displayName": "ECG Paper",
+        "canonical": "#fff6f2",
+        "tonalRamp": [
+          "#736f6d",
+          "#a6a09d",
+          "#d9d1ce",
+          "#fff6f2",
+          "#fff9f6",
+          "#fffbf9",
+          "#fffdfc",
+          "#fffefe"
+        ]
+      },
+      "correct-green": {
+        "role": "feedback",
+        "displayName": "Correct Green",
+        "canonical": "#1d7f55",
+        "tonalRamp": [
+          "#0d3926",
+          "#135337",
+          "#196c48",
+          "#1d7f55",
+          "#61a588",
+          "#99c5b2",
+          "#cde3da",
+          "#edf5f1"
+        ]
+      },
+      "wrong-red": {
+        "role": "feedback",
+        "displayName": "Wrong Red",
+        "canonical": "#c03d2b",
+        "tonalRamp": [
+          "#561b13",
+          "#7d281c",
+          "#a33425",
+          "#c03d2b",
+          "#d3776b",
+          "#e3a8a0",
+          "#f1d4d0",
+          "#faefee"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero and closing statement only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing section headings; app page titles at 500 weight."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card, panel, unit and level headings."
+      },
+      "card-title": {
+        "displayName": "Card title",
+        "purpose": "List items and small card heads."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text, about 62ch."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Meta lines, captions, footer."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase eyebrows, often with the gold dot."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Measured values: bpm, ms, timers, scores."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-rest",
+        "value": "0 1px 2px rgb(26 28 73 / .04), 0 8px 24px -12px rgb(26 28 73 / .08)",
+        "purpose": "Every card at rest."
+      },
+      {
+        "name": "card-lift",
+        "value": "0 2px 4px rgb(26 28 73 / .05), 0 16px 32px -14px rgb(26 28 73 / .16)",
+        "purpose": "Hover on a linked card, with translateY(-2px)."
+      },
+      {
+        "name": "product-frame",
+        "value": "0 30px 60px -30px color-mix(in oklab, #1a1c49 40%, transparent)",
+        "purpose": "App-window mockups on the landing page."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "All state transitions."
+      },
+      {
+        "name": "dur",
+        "value": "180ms",
+        "purpose": "Colour, border and lift transitions."
+      },
+      {
+        "name": "press",
+        "value": "120ms scale(.98)",
+        "purpose": "Button press."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action on a view.",
+      "html": "<button class=\"ds-btn-primary\">Start the placement test</button>",
+      "css": ".ds-btn-primary{font-family:Chivo,system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border:0;border-radius:8px;background:#1a1c49;color:#fff;font-size:15px;font-weight:500;cursor:pointer;transition:background-color .18s cubic-bezier(.2,.8,.2,1),transform .12s}.ds-btn-primary:hover{background:color-mix(in oklab,#1a1c49 84%,white)}.ds-btn-primary:active{transform:scale(.98)}.ds-btn-primary:focus-visible{outline:2px solid #18ab97;outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The alternative action beside a primary.",
+      "html": "<button class=\"ds-btn-secondary\">See the course</button>",
+      "css": ".ds-btn-secondary{font-family:Chivo,system-ui,sans-serif;display:inline-flex;align-items:center;height:44px;padding:0 20px;border:1px solid #c7cbdb;border-radius:8px;background:#fff;color:#1a1c49;font-size:15px;font-weight:500;cursor:pointer;transition:background-color .18s,border-color .18s,transform .12s}.ds-btn-secondary:hover{background:color-mix(in oklab,white 94%,#1a1c49);border-color:color-mix(in oklab,#1a1c49 35%,transparent)}.ds-btn-secondary:active{transform:scale(.98)}.ds-btn-secondary:focus-visible{outline:2px solid #18ab97;outline-offset:2px}"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "Start action on a teal-led surface.",
+      "html": "<button class=\"ds-btn-accent\">Read today's ECG &rarr;</button>",
+      "css": ".ds-btn-accent{font-family:Chivo,system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border:0;border-radius:8px;background:#18ab97;color:#1a1c49;font-size:15px;font-weight:500;cursor:pointer;transition:background-color .18s,transform .12s}.ds-btn-accent:hover{background:color-mix(in oklab,#18ab97 88%,#1a1c49)}.ds-btn-accent:active{transform:scale(.98)}.ds-btn-accent:focus-visible{outline:2px solid #1a1c49;outline-offset:2px}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White card on the cool surface; lifts only when it is a link.",
+      "html": "<a href=\"#\" class=\"ds-card\"><span class=\"ds-card-eyebrow\">Level 2</span><span class=\"ds-card-title\">Axis in two leads</span><span class=\"ds-card-meta\">12 min &middot; 9 practice ECGs</span></a>",
+      "css": ".ds-card{font-family:Chivo,system-ui,sans-serif;display:grid;gap:6px;padding:24px;max-width:340px;background:#fff;border:1px solid #e2e5ee;border-radius:20px;color:#1a1c49;text-decoration:none;box-shadow:0 1px 2px rgb(26 28 73/.04),0 8px 24px -12px rgb(26 28 73/.08);transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s,border-color .18s}.ds-card:hover{transform:translateY(-2px);border-color:#c7cbdb;box-shadow:0 2px 4px rgb(26 28 73/.05),0 16px 32px -14px rgb(26 28 73/.16)}.ds-card:focus-visible{outline:2px solid #18ab97;outline-offset:2px}.ds-card-eyebrow{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#5f6485}.ds-card-title{font-size:18px;font-weight:500;letter-spacing:-.01em}.ds-card-meta{font-size:14px;color:#5f6485}"
+    },
+    {
+      "name": "Chips",
+      "kind": "chip",
+      "refersTo": "chip-accent",
+      "description": "Status chips: neutral, accent (you are here), gold (Pro).",
+      "html": "<span class=\"ds-chip\">12-lead</span> <span class=\"ds-chip ds-chip-accent\">You are here</span> <span class=\"ds-chip ds-chip-gold\">Pro</span>",
+      "css": ".ds-chip{font-family:Chivo,system-ui,sans-serif;display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid #e2e5ee;border-radius:999px;background:#fff;color:#1a1c49;font-size:12px;font-weight:500}.ds-chip-accent{border-color:transparent;background:#e3f6f3;color:#0b7466}.ds-chip-gold{border-color:transparent;background:#fbf1dd;color:#7a5410}"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled text field.",
+      "html": "<label class=\"ds-field\"><span>Email</span><input class=\"ds-input\" placeholder=\"you@hospital.org\"></label>",
+      "css": ".ds-field{font-family:Chivo,system-ui,sans-serif;display:grid;gap:6px;max-width:320px}.ds-field span{font-size:12px;font-weight:500;color:#5f6485}.ds-input{font:inherit;font-size:14px;padding:10px 12px;border:1px solid #e2e5ee;border-radius:8px;background:#fff;color:#1a1c49;transition:border-color .18s}.ds-input:focus{outline:none;border-color:#1a1c49}.ds-input:focus-visible{outline:2px solid #18ab97;outline-offset:2px}"
+    },
+    {
+      "name": "Answer Option",
+      "kind": "custom",
+      "description": "Quiz, drill and exam answer row: selected, then graded.",
+      "html": "<div class=\"ds-opts\"><button class=\"ds-opt\">A. Sinus tachycardia</button><button class=\"ds-opt ds-opt-on\" aria-pressed=\"true\">B. Atrial flutter, 2:1</button><button class=\"ds-opt ds-opt-ok\">C. Atrial fibrillation</button></div>",
+      "css": ".ds-opts{font-family:Chivo,system-ui,sans-serif;display:grid;gap:8px;max-width:380px}.ds-opt{font:inherit;font-size:14px;text-align:left;padding:12px 16px;border:1px solid #e2e5ee;border-radius:12px;background:#fff;color:#1a1c49;cursor:pointer;transition:border-color .18s}.ds-opt:hover{border-color:#c7cbdb}.ds-opt-on{border-color:#1a1c49;background:rgb(26 28 73/.05);font-weight:600}.ds-opt-ok{border-color:#1d7f55;color:#1d7f55}.ds-opt:focus-visible{outline:2px solid #18ab97;outline-offset:2px}"
+    },
+    {
+      "name": "ECG Paper Frame",
+      "kind": "custom",
+      "description": "Signature surface: every ECG sits on this grid, readouts in Chivo Mono.",
+      "html": "<div class=\"ds-paper\"><span class=\"ds-hr\">72 bpm</span><svg viewBox=\"0 0 300 80\" width=\"100%\" height=\"80\" aria-hidden=\"true\"><path d=\"M0 50 H40 l6-6 6 6 H70 l4 6 6-44 6 50 4-12 H120 q10-14 20 0 H180 l6-6 6 6 H210 l4 6 6-44 6 50 4-12 H260 q10-14 20 0 H300\" fill=\"none\" stroke=\"#1a1c49\" stroke-width=\"1.6\"/></svg></div>",
+      "css": ".ds-paper{position:relative;padding:16px;border-radius:12px;max-width:420px;background-color:#fff6f2;background-image:linear-gradient(rgb(224 122 110/.32) 1px,transparent 1px),linear-gradient(90deg,rgb(224 122 110/.32) 1px,transparent 1px),linear-gradient(rgb(242 184 176/.35) 1px,transparent 1px),linear-gradient(90deg,rgb(242 184 176/.35) 1px,transparent 1px);background-size:25px 25px,25px 25px,5px 5px,5px 5px}.ds-hr{position:absolute;right:12px;top:10px;padding:2px 10px;border-radius:8px;background:rgba(255,255,255,.9);font-family:'Chivo Mono',ui-monospace,monospace;font-size:13px;color:#5f6485}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ward Round Notebook",
+    "overview": "**Creative North Star: \"The Ward Round Notebook\"**\n\nMedWise looks like the notebook a careful senior keeps on rounds: navy ink on white, written for a doctor between patients. Teal marks the answer or the live trace, and gold marks the point worth remembering. The ECG paper, pink-grid and warm, is the one place the page changes material, because that is where the reading happens.\n\nThe system is calm and exact rather than loud. One sans-serif family (Chivo) carries everything from the hero to the caliper readout, with Chivo Mono for numbers that are measured. Density follows the surface. The landing page breathes, with one idea per screen. The ECG course is a narrow, card-based column built for short sessions on a phone. The clinical tools put scanability first. Depth is a hairline border plus a very soft navy shadow, never a heavy drop shadow.\n\nThe `/app` sepsis tool still uses an older look: Inter with Libre Baskerville, blue `#004a80`, and square uppercase buttons with wide letter-spacing. That look is **legacy**. New work on `/app` moves it toward this system and never extends the old look.",
+    "keyCharacteristics": [
+      "Navy ink on white and cool grey; teal and gold used sparingly and with meaning",
+      "One type family (Chivo), with Chivo Mono for measured values",
+      "Soft corners on one scale (8 / 12 / 20 px)",
+      "Hairline borders and faint navy-tinted shadows; flat at rest",
+      "ECG paper as the single warm surface",
+      "Real clinical material (real ECGs, real guideline rules) as the imagery"
+    ],
+    "rules": [
+      {
+        "name": "The One Job Rule",
+        "body": "Teal means \"this is the answer / this is live / this is active\"; gold means \"remember this / this is premium\". A colour used outside its job is a bug.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Paper Rule",
+        "body": "ECG paper pink appears only under an ECG tracing. No other surface is warm.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured Mono Rule",
+        "body": "A number that came from a calliper, a clock or a score is set in Chivo Mono. Prose numbers stay in Chivo.",
+        "section": "typography"
+      },
+      {
+        "name": "The Single Family Rule",
+        "body": "No second display face. Serif and \"font-display\" classes map to Chivo.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lift Means Link Rule",
+        "body": "Only something you can click lifts. Static cards never move.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set all text in Ward Navy (`#1a1c49`) or Slate Muted (`#5f6485`). Teal text on white must use Monitor Teal Ink (`#0b7466`).",
+      "**Do** keep one primary (navy) button per view and pair it with at most one secondary.",
+      "**Do** put every ECG on ECG paper with the 5 mm / 1 mm grid, at 25 mm/s and 10 mm/mV.",
+      "**Do** set measured values (bpm, ms, timers, scores) in Chivo Mono with tabular figures.",
+      "**Do** use the 8 / 12 / 20 px radius scale and the 4-to-128 px spacing scale; nothing in between.",
+      "**Do** keep a visible 2 px teal focus ring on every interactive element and honour `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** extend the legacy `/app` look (Inter, Libre Baskerville, `#004a80`, square uppercase buttons with wide tracking) to any new screen.",
+      "**Don't** use Monitor Teal (`#18ab97`) as body text on white; it fails contrast.",
+      "**Don't** use Chart Gold for anything but highlights and Pro markers.",
+      "**Don't** use warm or pink surfaces anywhere except under an ECG.",
+      "**Don't** add heavy drop shadows, gradients on buttons or glassy blur panels.",
+      "**Don't** add a second typeface.",
+      "**Don't** make static cards lift on hover."
+    ]
+  }
+}
