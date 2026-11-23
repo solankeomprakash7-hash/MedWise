@@ -22,6 +22,7 @@
   --color-accent-soft: #e3f6f3;
   --color-gold: #e2a946;
   --color-gold-soft: #fbf1dd;
+  --color-gold-ink: #7a5410;     /* gold dark enough for text */
   --color-ok: #1d7f55;
   --color-bad: #c03d2b;
   --color-paper: #fff6f2;
@@ -86,7 +87,7 @@
   .chip { @apply inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full border border-line bg-card text-[12px] font-medium text-ink; }
   .chip-accent, .chip-gold { @apply inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full text-[12px] font-medium; }
   .chip-accent { @apply bg-accent-soft text-accent-ink; }
-  .chip-gold { @apply bg-gold-soft text-[#7a5410]; }
+  .chip-gold { @apply bg-gold-soft text-gold-ink; }
 
   /* ECG paper: the one warm surface, its own grid */
   .paper {

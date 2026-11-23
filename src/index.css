@@ -5,7 +5,7 @@
 @layer components {
   /* Unknown / No / Yes answers: a segmented radio group, 44 px tall */
   .seg { @apply inline-flex rounded-sm border border-line-strong bg-card p-0.5 gap-0.5 shrink-0; }
-  .seg label { @apply relative inline-flex items-center justify-center min-w-14 h-10 px-3 rounded-[6px] text-[14px] font-medium text-muted cursor-pointer select-none; transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+  .seg label { @apply relative inline-flex items-center justify-center min-w-14 h-11 px-3 rounded-[6px] text-[14px] font-medium text-muted cursor-pointer select-none; transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
   .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
   .seg label:hover { color: var(--color-ink); }
   .seg label:has(input:checked) { background: var(--color-ink); color: #fff; }
