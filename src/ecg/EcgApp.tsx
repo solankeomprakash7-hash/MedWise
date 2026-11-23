@@ -2,7 +2,7 @@ import * as React from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import AuthScreen from '../components/AuthScreen';
-import { Activity, LogOut, Loader2, BookOpen, Timer, GraduationCap, House as HomeIcon } from 'lucide-react';
+import { Activity, LogOut, Loader2, BookOpen, Timer, GraduationCap, FlaskConical, House as HomeIcon } from 'lucide-react';
 import { type Plan, type Progress, cloudLoad, cloudSave, empty, localLoad, localSave, merge, watchPlan } from './lib/progress';
 import Home from './pages/Home';
 import Placement from './pages/Placement';
@@ -13,6 +13,8 @@ import Upgrade from './pages/Upgrade';
 import Emergency from './pages/Emergency';
 import Exam from './pages/Exam';
 import Legal, { LEGAL_LINKS } from './pages/Legal';
+import Lab from './pages/Lab';
+import LabModule from './pages/LabModule';
 
 type Ctx = { p: Progress; update: (fn: (p: Progress) => Progress) => void; plan: Plan; user: User | null; go: (h: string) => void; signIn: () => void; syncNote: string };
 export const AppCtx = React.createContext<Ctx>(null as unknown as Ctx);
@@ -63,7 +65,7 @@ export default function EcgApp() {
 
   const [page, arg] = r;
   const active = (h: string) => page === h || (h === 'learn' && page === 'unit');
-  const nav: [string, string, React.ElementType][] = [['home', 'Home', HomeIcon], ['learn', 'Learn', BookOpen], ['practice', 'Practise', Activity], ['emergency', 'Emergency', Timer], ['exam', 'Exam', GraduationCap]];
+  const nav: [string, string, React.ElementType][] = [['home', 'Home', HomeIcon], ['learn', 'Learn', BookOpen], ['lab', 'Lab', FlaskConical], ['practice', 'Practise', Activity], ['emergency', 'Emergency', Timer], ['exam', 'Exam', GraduationCap]];
   return (
     <AppCtx.Provider value={{ p, update, plan, user, go, signIn: () => setWantAuth(true), syncNote }}>
       <div className="min-h-screen bg-surface pb-24 md:pb-16">
@@ -94,7 +96,7 @@ export default function EcgApp() {
         <main id="main" className="max-w-6xl mx-auto px-4 pt-8 md:pt-10">
           {page === 'placement' ? <Placement /> : page === 'learn' ? <Learn /> : page === 'unit' ? <UnitPage id={arg} />
             : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} topic={arg && arg.startsWith('u-') ? arg.slice(2) : undefined} key={arg || 'p'} />
-            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade /> : <Home />}
+            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade /> : page === 'lab' ? (arg ? <LabModule id={arg} /> : <Lab />) : <Home />}
         </main>
         <footer className="max-w-6xl mx-auto px-4 mt-20 pt-6 border-t border-line text-[13px] text-muted leading-relaxed">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
@@ -103,10 +105,10 @@ export default function EcgApp() {
           </div>
           <p>© 2026 MedWise Private Limited. For education only, not for clinical decisions. Real ECGs from PTB-XL and the Chapman–Shaoxing database (CC BY 4.0, via PhysioNet), measurements from PTB-XL+. Animated tracings are teaching models.</p>
         </footer>
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-line grid grid-cols-5" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Main">
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-line grid grid-cols-6" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Main">
           {nav.map(([h, l, Icon]) => <a key={h} href={`#/${h}`} aria-current={active(h) ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 h-16 text-[11px] font-medium ${active(h) ? 'text-ink' : 'text-muted'}`}>
-            <span className={`w-12 h-7 rounded-full flex items-center justify-center ${active(h) ? 'bg-accent-soft text-accent-ink' : ''}`}><Icon size={20} /></span>{l}</a>)}
+            className={`flex flex-col items-center justify-center gap-1 h-16 text-[10.5px] font-medium ${active(h) ? 'text-ink' : 'text-muted'}`}>
+            <span className={`w-11 h-7 rounded-full flex items-center justify-center ${active(h) ? 'bg-accent-soft text-accent-ink' : ''}`}><Icon size={20} /></span>{l}</a>)}
         </nav>
       </div>
     </AppCtx.Provider>

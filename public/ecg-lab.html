@@ -2144,9 +2144,19 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const state = { id: 'normal', rate: null, playing: !reduce, speed: 1, t: 0, lead: 'II', wave: null, mode: 'learn', cal: [], quiz: null, answered: true, waveSel: 'overview', caseIdx: 0, caseStep: 0, caseAns: [], hiLeads: [], calMode: false, blind: false, revealed: false, read: null, readGroup: 'all' };
 const C = window.ECGC;
+/* Module mode (embedded in the MedWise ECG app): ?embed=1&module=<id>&only=<pattern ids>&tabs=<modes>&cases=<indexes>
+   limits the lab to one module's patterns, modes and cases, and reports progress to the parent page. */
+const QS = new URLSearchParams(location.search);
+const EMBED = QS.get('embed') === '1', MOD = (QS.get('module') || '').replace(/[^\w-]/g, '');
+const ONLY = (QS.get('only') || '').split(',').filter(i => E.SC[i]);
+const TABS = (QS.get('tabs') || '').split(',').filter(m => ['waves', 'learn', 'cases', 'read', 'quiz'].includes(m));
+if (QS.get('cases')) { const keep = QS.get('cases').split(',').map(Number); C.CASES = C.CASES.filter((c, i) => keep.includes(i)); }
+const modeOk = m => !TABS.length || TABS.includes(m);
+const post = (ev, data) => { if (EMBED && window.parent !== window) try { window.parent.postMessage(Object.assign({ src: 'medwise-lab', module: MOD, ev }, data), location.origin); } catch (e) {} };
 let D = null, waveMask = null, P = {};
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
-let score = store.get('medwise-ecg-score', { right: 0, total: 0 });
+const SCORE_KEY = 'medwise-ecg-score' + (MOD ? '-' + MOD : '');
+let score = store.get(SCORE_KEY, { right: 0, total: 0 });
 
 function readPalette() {
   const cs = getComputedStyle(document.documentElement);
@@ -2154,10 +2164,12 @@ function readPalette() {
 }
 
 /* ---------- library ---------- */
-const ids = Object.keys(E.SC);
+const ids = Object.keys(E.SC).filter(i => !ONLY.length || ONLY.includes(i));
+const canLearn = id => modeOk('learn') && ids.includes(id);
 function buildLibrary() {
   const list = $('#libList'), sel = $('#scSelect');
   E.GROUPS.forEach(g => {
+    if (!ids.some(i => E.SC[i].group === g)) return;
     const box = document.createElement('div'); box.className = 'grp';
     box.innerHTML = `<h3 class="eyebrow">${g}</h3>`;
     const og = document.createElement('optgroup'); og.label = g;
@@ -2190,7 +2202,7 @@ function stepItem(d) { const it = navItems().map(x => x[0]); const k = it.indexO
 function fillSelect() {
   const sel = $('#scSelect'); sel.innerHTML = '';
   if (state.mode === 'learn') {
-    E.GROUPS.forEach(g => { const og = document.createElement('optgroup'); og.label = g;
+    E.GROUPS.forEach(g => { if (!ids.some(i => E.SC[i].group === g)) return; const og = document.createElement('optgroup'); og.label = g;
       ids.filter(i => E.SC[i].group === g).forEach(i => { const o = document.createElement('option'); o.value = i; o.textContent = E.SC[i].name; og.appendChild(o); }); sel.appendChild(og); });
   } else navItems().forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); });
   sel.value = curItem();
@@ -2256,7 +2268,7 @@ function setScenario(id, opts) {
   applyHeartStatic();
   computeWaveMask();
   renderHead(); renderNotes(); render12();
-  if (state.mode === 'learn') { try { history.replaceState(null, '', '#' + id); } catch (e) {} }
+  if (state.mode === 'learn') { try { history.replaceState(null, '', '#' + id); } catch (e) {} post('view', { kind: 'pattern', id }); }
 }
 function onRate() {
   const S = E.SC[state.id]; if (!S.adj) return;
@@ -2323,6 +2335,7 @@ let flashLead = 0;
 
 /* ---------- quiz ---------- */
 function setMode(m) {
+  if (!modeOk(m)) m = TABS[0];
   state.mode = m;
   [['mWaves','waves'],['mLearn','learn'],['mCases','cases'],['mRead','read'],['mQuiz','quiz']].forEach(([b, k]) => $('#' + b).setAttribute('aria-pressed', m === k));
   $('#libList').hidden = m !== 'learn'; $('#waveNav').hidden = m !== 'waves'; $('#caseNav').hidden = m !== 'cases'; $('#readNav').hidden = m !== 'read';
@@ -2347,7 +2360,7 @@ function setMode(m) {
 }
 function shuffle(a, r) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function nextQuiz() {
-  let id; do { id = ids[Math.floor(Math.random() * ids.length)]; } while (state.quiz && id === state.quiz.id);
+  let id; do { id = ids[Math.floor(Math.random() * ids.length)]; } while (ids.length > 1 && state.quiz && id === state.quiz.id);
   const same = shuffle(ids.filter(i => i !== id && E.SC[i].group === E.SC[id].group));
   const other = shuffle(ids.filter(i => i !== id && E.SC[i].group !== E.SC[id].group));
   const opts = shuffle([id, ...same.slice(0, 1), ...other.slice(0, 3 - Math.min(1, same.length))].concat(same.slice(1)).slice(0, 4));
@@ -2370,7 +2383,7 @@ function renderQuiz() {
       `<p style="margin-top:10px; font-size:15px; color:var(--ink2); font-style:italic">Tap leads to inspect them. The heart view and teaching notes unlock when you answer.</p>`) + '</div>';
   box.querySelectorAll('.opts button').forEach(b => b.addEventListener('click', () => {
     if (state.answered) return; q.choice = b.dataset.id; state.answered = true;
-    score.total++; if (q.choice === q.id) score.right++; store.set('medwise-ecg-score', score); showScore();
+    score.total++; if (q.choice === q.id) score.right++; store.set(SCORE_KEY, score); showScore(); post('quiz', { id: q.id, ok: q.choice === q.id });
     renderHead(); renderNotes(); applyHeartStatic();
   }));
   const nx = $('#qNext'); if (nx) nx.addEventListener('click', nextQuiz);
@@ -2601,9 +2614,9 @@ function showWave(id) {
         <h4 class="wp-h" style="margin:0">${w.id === 'overview' ? 'Naming QRS shapes' : 'Pathological forms'}</h4>
         <div class="formkey"><span><i></i>this form</span><span><i class="ref"></i>normal, same lead</span></div>
       </div>
-      <div class="forms">${w.forms.map((f, i) => `<article class="form"><canvas data-f="${i}"></canvas><div class="fc"><div class="fl">${f.lead}</div><h5>${f.name}</h5><p class="crit">${f.crit}</p><p class="why">${f.why}</p><div class="gos">${FORM_DEMO[f.name] ? `<button class="go watch" data-demo="${FORM_DEMO[f.name]}">▶ Watch it form</button>` : ''}${f.link ? `<button class="go" data-sc="${f.link}">Full 12-lead →</button>` : ''}</div></div></article>`).join('')}</div>
+      <div class="forms">${w.forms.map((f, i) => `<article class="form"><canvas data-f="${i}"></canvas><div class="fc"><div class="fl">${f.lead}</div><h5>${f.name}</h5><p class="crit">${f.crit}</p><p class="why">${f.why}</p><div class="gos">${FORM_DEMO[f.name] ? `<button class="go watch" data-demo="${FORM_DEMO[f.name]}">▶ Watch it form</button>` : ''}${f.link && canLearn(f.link) ? `<button class="go" data-sc="${f.link}">Full 12-lead →</button>` : ''}</div></div></article>`).join('')}</div>
     </div>
-    <div class="wavenext">${prev ? `<button class="btn" data-w="${prev.id}">← ${prev.id === 'overview' ? 'Overview' : prev.name}</button>` : '<span></span>'}${next ? `<button class="btn primary" data-w="${next.id}">Next: ${next.name} →</button>` : `<button class="btn primary" data-mode="cases">Try the cases →</button>`}</div>`;
+    <div class="wavenext">${prev ? `<button class="btn" data-w="${prev.id}">← ${prev.id === 'overview' ? 'Overview' : prev.name}</button>` : '<span></span>'}${next ? `<button class="btn primary" data-w="${next.id}">Next: ${next.name} →</button>` : (modeOk('cases') ? `<button class="btn primary" data-mode="cases">Try the cases →</button>` : '<span></span>')}</div>`;
   if (w.hero) minis.push([$('#heroCv'), w.hero]);
   P_.querySelectorAll('canvas[data-f]').forEach(cv => minis.push([cv, w.forms[+cv.dataset.f]]));
   $('#studioSlot').appendChild(Studio.mount());
@@ -2619,6 +2632,7 @@ function showWave(id) {
     <div class="naming"><h4>Squares to milliseconds</h4><table class="normtab"><tbody><tr><th>1 small</th><td>40 ms · 0.1 mV</td></tr><tr><th>1 big</th><td>200 ms · 0.5 mV</td></tr><tr><th>5 big</th><td>1 second</td></tr><tr><th>Rate</th><td>300 ÷ big squares between R waves</td></tr></tbody></table></div>`;
   $('#scSelect').value = id;
   renderHead(); renderNotes(); drawMinis();
+  post('view', { kind: 'wave', id });
 }
 
 /* ---------- cases ---------- */
@@ -2643,12 +2657,14 @@ function renderCase() {
   }
   const right = state.caseAns.filter((a, i) => a === c.steps[i].a).length;
   const fin = done ? `<div class="dx"><div class="eyebrow">Diagnosis · ${right} of ${c.steps.length} correct</div><h4>${S.name}</h4><p>${c.take}</p>
-    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px"><button class="btn" id="cLab">Open in the pattern lab</button>${state.caseIdx + 1 < C.CASES.length ? '<button class="btn primary" id="cNextCase">Next case →</button>' : ''}<button class="btn" id="cAgain">Retry this case</button></div></div>` : '';
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">${canLearn(c.sc) ? '<button class="btn" id="cLab">Open in the pattern lab</button>' : ''}${state.caseIdx + 1 < C.CASES.length ? '<button class="btn primary" id="cNextCase">Next case →</button>' : ''}<button class="btn" id="cAgain">Retry this case</button></div></div>` : '';
   $('#caseStem').innerHTML = `<p class="stem">${c.stem}</p><div class="vitals">${c.vit.map(v => `<span>${v}</span>`).join('')}</div>`;
   $('#casePanel').innerHTML = `<div class="steps">${dots}</div>${q}${fin}`;
   const P_ = $('#casePanel');
   P_.querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { state.caseAns[state.caseStep] = +b.dataset.o; renderCase(); }));
-  const nx = $('#cNext'); if (nx) nx.addEventListener('click', () => { state.caseStep++; renderCase(); renderHead(); renderNotes(); applyHeartStatic(); });
+  const nx = $('#cNext'); if (nx) nx.addEventListener('click', () => { state.caseStep++;
+    if (caseDone()) post('case', { id: c.id, right: state.caseAns.filter((a, i) => a === c.steps[i].a).length, total: c.steps.length });
+    renderCase(); renderHead(); renderNotes(); applyHeartStatic(); });
   const lb = $('#cLab'); if (lb) lb.addEventListener('click', () => { state.id = c.sc; setMode('learn'); });
   const nc = $('#cNextCase'); if (nc) nc.addEventListener('click', () => { openCase(state.caseIdx + 1); document.querySelector('.case-head').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
   const ag = $('#cAgain'); if (ag) ag.addEventListener('click', () => openCase(state.caseIdx));
@@ -2699,7 +2715,7 @@ let readStats = store.get('medwise-ecg-read', { n: 0, ms: 0, sk: {} });
 const fmtTime = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
 const axisCat = a => a >= -30 && a <= 90 ? 'normal' : a < -30 && a >= -90 ? 'left' : a > 90 && a <= 180 ? 'right' : 'extreme';
 const esc = x => String(x).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]);
-const READGROUPS = ['all'].concat(E.GROUPS.filter(g => g !== 'Foundations'));
+const READGROUPS = ['all'].concat(E.GROUPS.filter(g => g !== 'Foundations' && ids.some(i => READKEY[i] && E.SC[i].group === g)));
 
 function renderReadNav() {
   const box = $('#readNav'); const sk = readStats.sk;
@@ -2716,7 +2732,8 @@ function renderReadNav() {
   $('#rdReset').addEventListener('click', () => { readStats = { n: 0, ms: 0, sk: {} }; store.set('medwise-ecg-read', readStats); renderReadNav(); renderHead(); });
 }
 function nextRead() {
-  const pool = ids.filter(i => READKEY[i] && (state.readGroup === 'all' || E.SC[i].group === state.readGroup));
+  let pool = ids.filter(i => READKEY[i] && (state.readGroup === 'all' || E.SC[i].group === state.readGroup));
+  if (!pool.length) pool = ids.filter(i => READKEY[i]);
   let id; do { id = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && state.read && id === state.read.id);
   state.read = { id, start: performance.now(), ans: { tags: [] }, done: false };
   setScenario(id); renderRead(); renderHead(); renderNotes(); applyHeartStatic();
@@ -2797,6 +2814,7 @@ function gradeRead() {
   readStats.n++; readStats.ms += R.ms;
   res.forEach(r => { if (r.ok == null) return; const v = readStats.sk[r.key] || [0, 0]; v[1]++; if (r.ok) v[0]++; readStats.sk[r.key] = v; });
   store.set('medwise-ecg-read', readStats);
+  { const g = res.filter(r => r.ok != null); post('read', { id: R.id, right: g.filter(r => r.ok).length, total: g.length }); }
   renderRead(); renderReadNav(); renderHead(); renderNotes(); applyHeartStatic();
   $('#readPanel').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
@@ -2808,9 +2826,9 @@ function renderReadResult() {
     <table class="rd-res"><thead><tr><th>Step</th><th>You</th><th>Answer</th><th></th></tr></thead><tbody>
     ${res.map(r => `<tr><td>${r.label}</td><td>${esc(r.you)}</td><td>${r.ans}${r.ok === false ? `<span class="tip">${r.key === 'tags' && R.tagNote ? R.tagNote + ' ' : ''}${TIPS[r.key]}</span>` : ''}</td><td class="${r.ok == null ? 'na' : r.ok ? 'ok' : 'no'}">${r.ok == null ? 'n/a' : r.ok ? '✓' : '✗'}</td></tr>`).join('')}
     </tbody></table>
-    <div class="rd-go"><button class="btn primary" id="rdNext">Next ECG →</button><button class="btn" id="rdLab">Study it in the pattern lab</button></div>`;
+    <div class="rd-go"><button class="btn primary" id="rdNext">Next ECG →</button>${canLearn(R.id) ? '<button class="btn" id="rdLab">Study it in the pattern lab</button>' : ''}</div>`;
   $('#rdNext').addEventListener('click', () => { nextRead(); document.querySelector('.case-head').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
-  $('#rdLab').addEventListener('click', () => { state.id = R.id; setMode('learn'); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
+  if ($('#rdLab')) $('#rdLab').addEventListener('click', () => { state.id = R.id; setMode('learn'); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
 }
 
 /* ---------- canvases ---------- */
@@ -3058,11 +3076,23 @@ function boot() {
   const hsh = (location.hash || '').slice(1);
   sizeMonitor(); sizeWheels();
   if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add('embed');
+  if (TABS.length) [['mWaves','waves'],['mLearn','learn'],['mCases','cases'],['mRead','read'],['mQuiz','quiz']].forEach(([b, k]) => { $('#' + b).hidden = !TABS.includes(k); });
+  if (ONLY.length && !ONLY.includes(state.id)) state.id = ids[0];
   const wv = hsh.match(/^wave-(\w+)$/);
-  if (wv && C.WAVES.some(w => w.id === wv[1])) { state.waveSel = wv[1]; setMode('waves'); }
-  else if (E.SC[hsh]) { state.id = hsh; setMode('learn'); }
-  else if (hsh === 'cases' || hsh === 'quiz' || hsh === 'read') setMode(hsh);
-  else setMode('waves');
+  if (wv && C.WAVES.some(w => w.id === wv[1]) && modeOk('waves')) { state.waveSel = wv[1]; setMode('waves'); }
+  else if (ids.includes(hsh) && modeOk('learn')) { state.id = hsh; setMode('learn'); }
+  else if ((hsh === 'cases' || hsh === 'quiz' || hsh === 'read') && modeOk(hsh)) setMode(hsh);
+  else setMode(TABS[0] || 'waves');
+  // Commands from the app page that embeds this lab (same origin only).
+  window.addEventListener('message', e => {
+    const d = e.data;
+    if (e.origin !== location.origin || e.source !== window.parent || !d || d.src !== 'medwise-app') return;
+    if (d.cmd === 'pattern' && ids.includes(d.id) && modeOk('learn')) { state.id = d.id; if (state.mode === 'learn') setScenario(d.id); else setMode('learn'); }
+    else if (d.cmd === 'wave' && C.WAVES.some(w => w.id === d.id) && modeOk('waves')) { state.waveSel = d.id; if (state.mode === 'waves') showWave(d.id); else setMode('waves'); }
+    else if (d.cmd === 'case' && C.CASES[d.idx] && modeOk('cases')) { state.caseIdx = d.idx; if (state.mode === 'cases') openCase(d.idx); else setMode('cases'); }
+    else if (d.cmd === 'mode' && modeOk(d.mode)) setMode(d.mode);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  });
   new ResizeObserver(() => drawMinis()).observe($('#wavePanel'));
   if (!state.playing) state.t = D.meas.rep ? D.meas.rep.qOn + 40 : 300;
   const ro = new ResizeObserver(() => resizeAll()); ro.observe($('#ecgWrap')); ro.observe($('#vecFig')); ro.observe(document.querySelector('.monitor'));

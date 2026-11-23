@@ -12,6 +12,8 @@ Site layout: the MedWise landing page is the static `public/index.html` at `/`; 
 | Placement test (12 questions, 8 on real ECGs) sets the start level | `src/ecg/data/placement.ts`, `pages/Placement.tsx` |
 | Learning path: all four levels written (24 units) | `src/ecg/data/curriculum.ts`, `pages/Learn.tsx`, `pages/UnitPage.tsx` |
 | Interactive lab embedded in each unit | `public/ecg-lab.html?embed=1#<pattern or wave-X>` |
+| Lab as 12 modules (2 Free, 5 Student, 5 Pro) with per-module progress and locked previews | `src/ecg/data/labModules.ts`, `pages/Lab.tsx`, `pages/LabModule.tsx` (`#/lab`, `#/lab/<id>`) |
+| Plans, prices and the comparison table (shared by Upgrade, Lab and locked screens) | `src/ecg/data/plans.ts` |
 | Real-ECG read drill (9 graded steps, calipers) | `components/Drill.tsx`, `components/EcgViewer.tsx` |
 | Spaced repetition (Leitner boxes 0/1/3/7/21/45 days) and today's ECG with streak | `lib/logic.ts`, `pages/Practice.tsx` |
 | Progress: Firestore `users/{uid}/ecg/progress`; guests in browser storage, merged at sign-in | `lib/progress.ts` |
@@ -34,11 +36,19 @@ from the dataset labels). Keys are generated as drafts; the launch set of 216 wa
    Until these are set, the Upgrade buttons explain that payments are not switched on yet.
 3. **Authorised domain**: add the Netlify domain under Firebase Authentication → Settings → Authorised domains (needed for Google sign-in).
 
+## Lab modules
+
+Each module opens `ecg-lab.html?embed=1&module=<id>&tabs=<modes>&only=<pattern ids>&cases=<indexes>`: the lab shows only that
+module's patterns and modes, and posts `{src:'medwise-lab', ev:'view'|'quiz'|'case'|'read'}` to the parent (same origin only).
+`LabModule.tsx` turns these into `progress.lab[<module>]` (stations seen, quiz right/total, good reads, completion date) and can
+send `{src:'medwise-app', cmd:'pattern'|'wave'|'case'|'mode'}` back to jump to a station. Completion rules are in `moduleStatus`.
+Gating is in the browser, like the rest of the plan limits; the stand-alone `/ecg-lab.html` stays fully open.
+
 ## Plan limits (set in `lib/logic.ts`)
 
-- Free: first 3 units of Level 1, 5 real-ECG reads a week, daily ECG, placement test, a 3-ECG emergency sample and a 5-question exam sample.
-- Student: Levels 1–2, unlimited reads, full 20-question exam papers.
-- Pro: everything, including Level 3 and full 10-ECG emergency rounds.
+- Free: lab modules 1–2, first 3 units of Level 1, 5 real-ECG reads a week, daily ECG, placement test, a 3-ECG emergency sample and a 5-question exam sample.
+- Student: lab modules 1–7, Levels 1–2, unlimited reads, full 20-question exam papers.
+- Pro: everything, including all 12 lab modules (with the 18 lab cases), Level 3 and full 10-ECG emergency rounds.
 
 Model ECGs are drawn by the lab's heart model (`content/ecg-library` has no script for them; they are rendered from `public/ecg-lab.html` with `ECG.build`) and are labelled as teaching models in the app.
 
