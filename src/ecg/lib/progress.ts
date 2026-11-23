@@ -13,7 +13,10 @@ export type Progress = {
   skills: Record<string, [number, number]>; // drill step -> [right, total]
   daily: { last: string | null; streak: number; best: number };
   week: { key: string; reads: number };
+  lab?: Record<string, LabProgress>;   // interactive lab modules, keyed by module id
 };
+export type LabProgress = { seen: string[]; right: number; total: number; reads: number; done?: string };
+export const emptyLab = (): LabProgress => ({ seen: [], right: 0, total: 0, reads: 0 });
 export type Plan = 'free' | 'student' | 'pro';
 
 export const empty = (): Progress => ({ v: 1, level: null, units: {}, cards: {}, skills: {}, daily: { last: null, streak: 0, best: 0 }, week: { key: '', reads: 0 } });
@@ -37,6 +40,15 @@ export function merge(a: Progress, b: Progress): Progress {
   for (const [k, v] of Object.entries(b.skills)) { const o = out.skills[k] || [0, 0]; out.skills[k] = [o[0] + v[0], o[1] + v[1]]; }
   out.daily = (a.daily.last ?? '') >= (b.daily.last ?? '') ? a.daily : b.daily;
   out.daily = { ...out.daily, best: Math.max(a.daily.best, b.daily.best) };
+  out.lab = { ...(a.lab || {}) };
+  for (const [k, v] of Object.entries(b.lab || {})) {
+    const o = out.lab[k];
+    if (!o) { out.lab[k] = v; continue; }
+    const m: LabProgress = { seen: [...new Set([...o.seen, ...v.seen])], right: Math.max(o.right, v.right), total: Math.max(o.total, v.total), reads: Math.max(o.reads, v.reads) };
+    const done = [o.done, v.done].filter(Boolean).sort()[0];
+    if (done) m.done = done; // Firestore rejects undefined fields
+    out.lab[k] = m;
+  }
   out.week = a.week.key === b.week.key ? { key: a.week.key, reads: Math.max(a.week.reads, b.week.reads) } : (a.week.key > b.week.key ? a.week : b.week);
   return out;
 }

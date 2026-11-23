@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { useApp } from '../EcgApp';
 import { auth } from '../../lib/firebase';
-import { Check } from 'lucide-react';
-
-type PlanKey = 'student' | 'pro'; type Period = 'month' | 'year';
-const PRICE: Record<PlanKey, Record<Period, number>> = { student: { month: 199, year: 1499 }, pro: { month: 499, year: 2999 } };
-const FEATS: Record<'free' | PlanKey, string[]> = {
-  free: ['Placement test and skill report', 'First 3 units of Level 1', '5 real-ECG reads a week', "Today's ECG, emergency and exam samples"],
-  student: ['All of Levels 1 and 2', 'Unlimited real-ECG reads', 'Spaced repetition of your mistakes', 'Full 20-question exam papers'],
-  pro: ['Everything in Student', 'Levels 3 and 4: Emergencies and Advanced', 'Full emergency-mode rounds', 'Emergency ECGs in your practice and exam papers'],
-};
+import { Check, Minus } from 'lucide-react';
+import { COMPARE, FEATS, PRICE, inr, type PaidPlan as PlanKey, type Period } from '../data/plans';
 
 declare global { interface Window { Razorpay?: new (o: object) => { open: () => void } } }
 const loadCheckout = () => new Promise<void>((res, rej) => {
@@ -48,11 +41,14 @@ export default function Upgrade() {
     setBusy(null);
   }
 
-  const Card = ({ k, title, price }: { k: 'free' | PlanKey; title: string; price: string }) => (
+  const perMonth = (k: PlanKey) => period === 'year' ? `about ${inr(Math.round(PRICE[k].year / 12))} a month, paid once for 12 months` : 'paid once for 1 month';
+  const Card = ({ k, title, price, who }: { k: 'free' | PlanKey; title: string; price: string; who: string }) => (
     <div className={`card p-5 flex flex-col gap-3 ${k === 'student' ? 'border-ink shadow-[inset_0_3px_0_var(--color-accent)]' : 'border-line'}`}>
-      <div><p className="font-display text-xl text-ink">{title}</p><p className="font-mono text-2xl tabular-nums mt-1">{price}</p></div>
+      <div className="flex items-start justify-between gap-2"><p className="font-display text-xl text-ink">{title}</p>{k === 'student' && <span className="chip-accent">Best for students</span>}</div>
+      <div><p className="font-mono text-2xl tabular-nums">{price}</p><p className="text-xs text-muted mt-1">{k === 'free' ? 'Free for ever. No card, no trial period.' : perMonth(k)}</p></div>
+      <p className="text-sm text-muted">{who}</p>
       <ul className="flex flex-col gap-1.5 text-sm flex-1">{FEATS[k].map(f => <li key={f} className="flex gap-2"><Check size={16} className="text-ok shrink-0 mt-0.5" />{f}</li>)}</ul>
-      {k === 'free' ? <p className="text-xs text-muted">{plan === 'free' ? 'Your current plan' : ''}</p>
+      {k === 'free' ? (plan === 'free' ? <a href="#/lab" className="btn-secondary">Start free</a> : <p className="text-xs text-muted">Included in your plan</p>)
         : plan === k ? <p className="text-sm font-bold text-ok">Your current plan</p>
         : <button className="btn-primary" disabled={!!busy} onClick={() => buy(k)}>{busy === k ? 'Opening…' : `Get ${title}`}</button>}
     </div>
@@ -60,17 +56,35 @@ export default function Upgrade() {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex flex-wrap justify-between items-end gap-4">
-        <div><h1 className="text-3xl font-display">Plans</h1><p className="text-muted mt-1">Prices in Indian rupees, including taxes. Pay by UPI, card or net banking.</p></div>
+        <div><p className="eyebrow eyebrow-dot">Plans</p><h1 className="text-3xl md:text-4xl font-display mt-1">Start free. Subscribe when you need more.</h1><p className="text-muted mt-1">Prices in Indian rupees, including taxes. Pay by UPI, card or net banking.</p></div>
         <div className="inline-flex border border-line rounded-sm overflow-hidden text-sm font-medium bg-card" role="group" aria-label="Billing period">
           {(['month', 'year'] as Period[]).map(x => <button key={x} aria-pressed={period === x} onClick={() => setPeriod(x)} className={`px-4 py-2 ${period === x ? 'bg-ink text-white' : 'bg-white text-ink'}`}>{x === 'month' ? 'Monthly' : 'Yearly · save ~40%'}</button>)}
         </div>
       </div>
       <div className="grid md:grid-cols-3 gap-4">
-        <Card k="free" title="Free" price="₹0" />
-        <Card k="student" title="Student" price={`₹${PRICE.student[period].toLocaleString('en-IN')}/${period}`} />
-        <Card k="pro" title="Pro" price={`₹${PRICE.pro[period].toLocaleString('en-IN')}/${period}`} />
+        <Card k="free" title="Free" price="₹0" who="Learn the basics: waves, intervals and sinus rhythm." />
+        <Card k="student" title="Student" price={`${inr(PRICE.student[period])}/${period}`} who="Medical students and interns building a reading habit." />
+        <Card k="pro" title="Pro" price={`${inr(PRICE.pro[period])}/${period}`} who="Interns, residents and doctors who handle emergencies." />
       </div>
       {msg && <p className="text-sm text-ink" role="status">{msg}</p>}
+      <div className="card overflow-x-auto">
+        <table className="w-full text-sm min-w-[560px]">
+          <caption className="text-left px-5 pt-5 pb-3 text-xl font-medium text-ink">Compare plans</caption>
+          <thead><tr className="border-b border-line text-left">
+            <th scope="col" className="px-5 py-2.5 font-medium text-muted">Feature</th>
+            {(['Free', 'Student', 'Pro'] as const).map(t => <th key={t} scope="col" className={`px-3 py-2.5 font-medium ${plan === t.toLowerCase() ? 'text-accent-ink' : ''}`}>{t}{plan === t.toLowerCase() ? ' (yours)' : ''}</th>)}
+          </tr></thead>
+          <tbody>{COMPARE.map(([f, ...cells]) => <tr key={f} className="border-b border-line last:border-b-0">
+            <th scope="row" className="px-5 py-2.5 text-left font-normal">{f}</th>
+            {cells.map((c, i) => <td key={i} className="px-3 py-2.5">{c === true ? <Check size={16} className="text-ok" aria-label="Included" /> : c === false ? <Minus size={16} className="text-line-strong" aria-label="Not included" /> : c}</td>)}
+          </tr>)}</tbody>
+        </table>
+      </div>
+      <div className="grid md:grid-cols-3 gap-4 text-sm">
+        <div><p className="font-medium">Is Free really free?</p><p className="text-muted mt-1">Yes. The free modules and samples never expire and need no card. A free account only keeps your progress across devices.</p></div>
+        <div><p className="font-medium">Will I be charged again?</p><p className="text-muted mt-1">No. Each payment covers the month or year you choose. When it ends you return to Free and keep your progress.</p></div>
+        <div><p className="font-medium">Do I lose progress if I upgrade or lapse?</p><p className="text-muted mt-1">No. Progress is kept separately from your plan; locked modules simply reopen when you subscribe again.</p></div>
+      </div>
       <p className="text-xs text-muted">Plans do not renew automatically. See <a className="underline" href="#/legal/refunds">refunds</a> and <a className="underline" href="#/legal/terms">terms</a>. Colleges and hospitals: seat licences are available on request through <a className="underline" href="#/legal/contact">contact</a>.</p>
     </section>
   );

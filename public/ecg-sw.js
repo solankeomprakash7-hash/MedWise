@@ -1,6 +1,6 @@
 // MedWise ECG offline support. Pages: network first, cached copy when offline.
 // Built assets and ECG images: cache first (their URLs change when their content does).
-const V = 'mw-ecg-v4';
+const V = 'mw-ecg-v5';
 // Install: cache the app page, the lab, and every built asset the app page references.
 self.addEventListener('install', e => {
   e.waitUntil((async () => {

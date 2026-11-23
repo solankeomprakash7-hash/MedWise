@@ -4,7 +4,8 @@ import { LEVELS, UNITS, unitsFor } from '../data/curriculum';
 import { ECGS, dailyEcg, dueCards, imgOf, nextUnit, readsLeft, skillPct } from '../lib/logic';
 import { today } from '../lib/progress';
 import Monitor from '../components/Monitor';
-import { Flame, BookOpen, Activity, Target, Check, Timer, GraduationCap, CalendarCheck, Repeat } from 'lucide-react';
+import { LAB_MODULES, labOpen, moduleStatus } from '../data/labModules';
+import { Flame, BookOpen, Activity, Target, Check, Timer, GraduationCap, CalendarCheck, Repeat, FlaskConical } from 'lucide-react';
 
 const SKILLS: [string, string][] = [['rate', 'Rate'], ['rhythm', 'Rhythm'], ['axis', 'Axis'], ['pr', 'PR'], ['qrs', 'QRS'], ['qt', 'QT'], ['tags', 'ST–T'], ['dx', 'Diagnosis'], ['act', 'Next step']];
 const REAL = ECGS.filter(e => !e.model).length, MODELS = ECGS.length - REAL;
@@ -76,9 +77,9 @@ function Welcome() {
             </div>
             <div className="p-5"><p className="eyebrow">1 · Place</p><h3 className="text-xl mt-1">Find your level in 10 minutes</h3><p className="text-sm text-muted mt-1">Basics, real ECGs and emergencies. Start where you are, not at page one.</p></div>
           </a>
-          <a href="#/unit/l1-heart" className="card overflow-hidden flex flex-col">
+          <a href="#/lab" className="card overflow-hidden flex flex-col">
             <div className="h-44 bg-[#f3eee3] border-b border-line overflow-hidden"><img src="/ecg/ui/lab-heart.webp" alt="The animated heart with its conduction system and the limb leads" className="w-full h-full object-cover object-top" loading="lazy" /></div>
-            <div className="p-5"><p className="eyebrow">2 · Understand</p><h3 className="text-xl mt-1">Watch the heart write each wave</h3><p className="text-sm text-muted mt-1">Slow a beat to 0.1×, step through it and see why each lead goes up or down.</p></div>
+            <div className="p-5"><p className="eyebrow">2 · Understand</p><h3 className="text-xl mt-1">Watch the heart write each wave</h3><p className="text-sm text-muted mt-1">{LAB_MODULES.length} lab modules, the first two free. Slow a beat, step through it and see why each lead goes up or down.</p></div>
           </a>
           <a href="#/practice" className="card overflow-hidden flex flex-col">
             <div className="h-44 paper border-b border-line overflow-hidden"><img src="/ecg/ui/ecg-crop.webp" alt="Part of a real 12-lead ECG showing right bundle branch block" className="w-full h-full object-cover object-left-top" loading="lazy" /></div>
@@ -174,6 +175,8 @@ export default function Home() {
         </div>
       </div>
 
+      <LabCard />
+
       <div className="grid md:grid-cols-2 gap-4">
         <a href="#/emergency" className="card p-5 flex gap-4 items-center"><span className="w-11 h-11 rounded-md bg-[#fdecea] text-bad flex items-center justify-center shrink-0"><Timer size={22} /></span>
           <span><span className="text-lg font-medium block">Emergency mode</span><span className="text-sm text-muted">30 seconds per ECG: the action and the diagnosis.</span></span></a>
@@ -205,5 +208,23 @@ export default function Home() {
         </div>
       </div>
     </section>
+  );
+}
+
+function LabCard() {
+  const { p, plan } = useApp();
+  const open = LAB_MODULES.filter(m => labOpen(plan, m.tier));
+  const m = open.find(x => !moduleStatus(x, p.lab?.[x.id]).done) || open[0];
+  const st = moduleStatus(m, p.lab?.[m.id]), done = LAB_MODULES.filter(x => moduleStatus(x, p.lab?.[x.id]).done).length;
+  return (
+    <a href={`#/lab/${m.id}`} className="card p-5 flex flex-wrap gap-4 items-center">
+      <span className="w-11 h-11 rounded-md bg-accent-soft text-accent-ink flex items-center justify-center shrink-0"><FlaskConical size={22} /></span>
+      <span className="flex-1 min-w-[14rem]">
+        <span className="eyebrow block">Interactive lab · {done}/{LAB_MODULES.length} modules done · {open.length} open to you</span>
+        <span className="text-lg font-medium block mt-0.5">Module {m.n}: {m.title}</span>
+        <span className="text-sm text-muted">{st.done ? 'Complete. Revisit any time.' : st.todo}</span>
+      </span>
+      <span className="btn-primary btn-arrow shrink-0 max-sm:w-full">{st.pct ? 'Continue' : 'Open'}</span>
+    </a>
   );
 }
