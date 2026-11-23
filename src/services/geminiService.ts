@@ -30,41 +30,50 @@ export interface PatientData {
 export const analyzeSepsisTherapy = async (data: PatientData, retries = 2): Promise<any> => {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
   
+  // Anything the clinician did not answer is sent as "Not assessed", never as a negative.
+  const v = (x?: string) => (x && x.trim() ? x.trim() : 'Not assessed');
   const prompt = `
-    You are a senior infectious disease consultant, ICU physician, and clinical pharmacologist.
-    Your role is to evaluate Whether a selected empiric antibiotic regimen is ADEQUATE, BORDERLINE, or INADEQUATE for a patient with sepsis in the ICU, and provide expert pharmacological guidance.
+    You support an ICU doctor choosing empiric antibiotics for sepsis. Your output is shown to the doctor as an
+    AI-generated suggestion that they must check; it is not a consultant opinion.
+    Evaluate whether the doctor's proposed regimen (if any) is ADEQUATE, BORDERLINE, or INADEQUATE, recommend an
+    empiric regimen, and give pharmacological guidance.
 
-    INPUT DATA:
-    Patient: ${data.age}yo ${data.sex}, ${data.weight}kg
-    Status: ICU Day ${data.icuDay}, Diagnosis: ${data.diagnosis}, Source: ${data.infectionSource}, Ventilated: ${data.ventilated}, Hemodynamics: ${data.hemodynamics}
-    Risk Factors: 
-    - MDR Risk: ${data.mdrRisk}
-    - Recent Hospitalization: ${data.recentHospitalization}
-    - Prior Antibiotics: ${data.priorAntibiotics} (Details: ${data.priorAntibioticsDetails})
-    - Immunocompromised: ${data.immunocompromised}
-    - Indwelling Devices: ${data.indwellingDevices}
-    - Recent Travel: ${data.travelHistory}
-    - Comorbidities: ${data.comorbidities}
-    Labs: WBC: ${data.wbcTrend}, Procalcitonin: ${data.procalcitonin}, Lactate: ${data.lactate}, Creatinine/eGFR: ${data.creatinine}
-    Microbiology: Status: ${data.cultureStatus}, Organism: ${data.organism}, Sensitivity: ${data.sensitivity}
-    User Selected Antibiotic: ${data.selectedAntibiotic || "None provided"}
+    INPUT DATA ("Not assessed" means the doctor did not answer: do not treat it as absent; say how it changes the plan):
+    Patient: age ${v(data.age)} years, sex ${v(data.sex)}, weight ${v(data.weight)} kg
+    Status: ICU day ${v(data.icuDay)}, diagnosis ${v(data.diagnosis)}, source ${v(data.infectionSource)}, mechanically ventilated: ${v(data.ventilated)}, hemodynamics ${v(data.hemodynamics)}
+    Risk factors:
+    - MDR risk: ${v(data.mdrRisk)}
+    - Hospitalised in last 90 days: ${v(data.recentHospitalization)}
+    - Broad-spectrum antibiotics in last 30 days: ${v(data.priorAntibiotics)}${data.priorAntibioticsDetails ? ` (${data.priorAntibioticsDetails})` : ''}
+    - Immunocompromised: ${v(data.immunocompromised)}
+    - Indwelling devices: ${v(data.indwellingDevices)}
+    - Travel to high-resistance areas: ${v(data.travelHistory)}
+    - Comorbidities: ${v(data.comorbidities)}
+    Labs: WBC trend ${v(data.wbcTrend)}, procalcitonin ${v(data.procalcitonin)}, lactate ${v(data.lactate)}, creatinine ${v(data.creatinine)}
+    Microbiology: cultures ${v(data.cultureStatus)}, organism ${v(data.organism)}, sensitivities ${v(data.sensitivity)}
+    Doctor's proposed regimen: ${data.selectedAntibiotic || 'None provided'}
 
     TASK & OUTPUT REQUIREMENTS:
-    1. DECISION: Categorize the user's choice as ADEQUATE, BORDERLINE, or INADEQUATE.
-    2. CLINICAL REASONING: Provide a high-impact reasoning (max 120 words).
-    3. FAILURE RISK: Quantify risk of treatment failure as a percentage (0–100%).
-    4. RISK CONTRIBUTORS: Identify the top 3 specific factors contributing to this risk.
-    5. RECOMMENDED REGIMEN: Provide the most appropriate empiric antibiotic regimen with dose and route.
-    6. COVERAGE GAPS: Explicitly identify if antipseudomonal, MRSA, or ESBL coverage is missing in the user's selected choice.
-    7. PHARMACOLOGY ADVICE: Recommend optimal dosing, infusion strategy (bolus vs extended vs continuous), and renal adjustments for the recommended regimen, with PK/PD target rationale.
+    1. DECISION: Categorize the doctor's proposed regimen as ADEQUATE, BORDERLINE, or INADEQUATE (only if one was given).
+    2. CLINICAL REASONING: max 120 words.
+    3. RISK OF FAILURE: a word (Low, Moderate, High). Do not invent a percentage.
+    4. RISK CONTRIBUTORS: the top 3 specific factors.
+    5. RECOMMENDED REGIMEN: the most appropriate empiric regimen with dose and route.
+    6. COVERAGE GAPS: say if antipseudomonal, MRSA or ESBL cover is missing from the proposed regimen.
+    7. COVERAGE NEEDED: for each pathogen category, "Yes" if this patient's source and risk factors need it covered, otherwise "No".
+    8. PHARMACOLOGY: dosing, infusion strategy (bolus, extended or continuous) and renal adjustment, with the PK/PD rationale.
+    9. SOURCES: for each recommendation and in "sources", cite the guideline the statement rests on: name, year,
+       and the section or recommendation. Use only real guidance you are confident exists (for example the Surviving
+       Sepsis Campaign 2021 guidelines, IDSA 2024 guidance on antimicrobial-resistant Gram-negative infections,
+       ATS/IDSA 2019 community-acquired pneumonia guideline). Never invent a guideline, year or section; leave the
+       citation empty if unsure.
 
     DIFFERENTIAL DIAGNOSIS:
-    - Always consider tropical infections (e.g., Malaria, Dengue, Typhoid, Leptospirosis) and Rickettsial infections (e.g., Scrub Typhus) especially if travel history is positive.
-    - Recommend specific tests in the rationale if these are suspected.
+    - Consider tropical infections (malaria, dengue, typhoid, leptospirosis) and rickettsial infections (scrub typhus),
+      especially with positive travel history, and recommend specific tests in the rationale if suspected.
 
     RULES:
-    - Be clinically conservative. Never recommend under-treatment in ICU.
-    - References to SSC 2026 or IDSA 2024 guidelines are mandatory.
+    - Be clinically conservative; never recommend under-treatment in the ICU, and do not add cover the patient does not need.
   `;
 
   try {
@@ -82,6 +91,7 @@ export const analyzeSepsisTherapy = async (data: PatientData, retries = 2): Prom
                 type: Type.OBJECT,
                 properties: {
                   antibiotic: { type: Type.STRING },
+                  citation: { type: Type.OBJECT, properties: { guideline: { type: Type.STRING }, year: { type: Type.STRING }, section: { type: Type.STRING } } },
                   dose: { type: Type.STRING },
                   alternatives: { type: Type.ARRAY, items: { type: Type.STRING } },
                   coverage: {
@@ -129,6 +139,8 @@ export const analyzeSepsisTherapy = async (data: PatientData, retries = 2): Prom
                 }
               }
             },
+            coverage_needed: { type: Type.OBJECT, properties: { gram_positive: { type: Type.STRING }, pseudomonas: { type: Type.STRING }, mrsa: { type: Type.STRING }, anaerobes: { type: Type.STRING }, vre: { type: Type.STRING }, esbl: { type: Type.STRING }, atypicals: { type: Type.STRING }, tropical_rickettsial: { type: Type.STRING }, gram_negative: { type: Type.STRING } } },
+            sources: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { guideline: { type: Type.STRING }, year: { type: Type.STRING }, section: { type: Type.STRING }, statement: { type: Type.STRING } } } },
             coverage_summary: {
               type: Type.OBJECT,
               properties: {
