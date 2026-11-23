@@ -261,7 +261,7 @@ export default function App() {
       <footer className="border-t border-line bg-card">
         <div className="max-w-6xl mx-auto px-4 py-8 grid gap-4 md:grid-cols-[2fr_1fr] text-sm text-muted leading-relaxed">
           <p className="max-w-[70ch]">MedWise is a decision-support and education tool. Suggestions are written by an AI model from the details you enter and can be wrong. They are not medical advice; the treating doctor is responsible for every prescription. Reference guidance: {GUIDELINES}.</p>
-          <p className="md:text-right">© 2026 MedWise Private Limited<br />
+          <p className="md:text-right">© 2026 MedWise, operated by Dr Omprakash Solanke<br />
             <a className="link text-sm py-2.5" href="/ecg#/legal/terms">Terms</a> · <a className="link text-sm py-2.5" href="/ecg#/legal/privacy">Privacy</a> · <a className="link text-sm py-2.5" href="/ecg#/legal/contact">Contact</a></p>
         </div>
       </footer>

@@ -2,11 +2,11 @@
 // activating live payments. Fill in the empty fields; empty lines are simply not shown.
 export const BUSINESS = {
   brand: 'MedWise ECG',
-  legalName: 'MedWise Private Limited', // registered business name, as on the Razorpay account
-  email: '',          // support email learners can write to
-  phone: '',          // support phone (optional)
-  address: '',        // registered address (Razorpay asks for it)
+  legalName: 'Dr Omprakash Solanke', // registered business name, as on the Razorpay account
+  email: 'medwiseee@gmail.com', // support email learners can write to
+  phone: '+91 83789 76204', // support phone (optional)
+  address: 'Near AS Club, Sneh Vatika Housing Society, Waluj MIDC, Chhatrapati Sambhajinagar, Maharashtra 431136, India', // registered address (Razorpay asks for it)
   jurisdiction: 'India',
   refundDays: 7,      // full refund window after the first purchase of a plan
-  updated: '20 November 2026',
+  updated: '23 November 2026',
 };

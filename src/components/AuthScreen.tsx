@@ -195,7 +195,7 @@ export default function AuthScreen({ subtitle = 'Sepsis antibiotics', onBack }: 
         </div>
 
         {onBack && <p className="mt-5 text-center"><button type="button" onClick={onBack} className="link text-sm">Continue without an account</button></p>}
-        <p className="mt-6 text-center text-sm text-muted">For doctors and medical students. © 2026 MedWise Private Limited</p>
+        <p className="mt-6 text-center text-sm text-muted">For doctors and medical students. © 2026 MedWise, operated by Dr Omprakash Solanke</p>
       </div>
     </main>
   );

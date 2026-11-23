@@ -34,6 +34,10 @@ from the dataset labels). Keys are generated as drafts; the launch set of 216 wa
    - `FIREBASE_SERVICE_ACCOUNT`: the Firebase service-account JSON on one line
 
    Until these are set, the Upgrade buttons explain that payments are not switched on yet.
+   - Webhook (activates a plan even if the learner closes the payment window): in Razorpay → Account & Settings → Webhooks,
+     add `https://<site>/.netlify/functions/ecg-webhook` with event `order.paid` and a long random secret; put the same
+     secret in Netlify as `RAZORPAY_WEBHOOK_SECRET`. Test and live mode each need their own webhook.
+     Browser confirmation and webhook share `activate()` in `_ecgShared.ts`, so a plan is never extended twice for one order.
 3. **Authorised domain**: add the Netlify domain under Firebase Authentication → Settings → Authorised domains (needed for Google sign-in).
 
 ## Lab modules
