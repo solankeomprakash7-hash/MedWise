@@ -129,7 +129,7 @@ export default function AuthScreen({ subtitle = 'Sepsis antibiotics', onBack }: 
             <div className="grid grid-cols-2 gap-1 p-1 mb-6 rounded-md bg-surface" role="group" aria-label="Account">
               {(['signin', 'register'] as const).map(m => (
                 <button key={m} type="button" aria-pressed={mode === m} onClick={() => go(m)}
-                  className={`h-10 rounded-sm text-base font-medium transition-colors ${mode === m ? 'bg-card text-ink shadow-sm' : 'text-muted hover:text-ink'}`}>
+                  className={`h-11 rounded-sm text-base font-medium transition-colors ${mode === m ? 'bg-card text-ink shadow-sm' : 'text-muted hover:text-ink'}`}>
                   {m === 'signin' ? 'Sign in' : 'Create account'}
                 </button>
               ))}
@@ -156,7 +156,7 @@ export default function AuthScreen({ subtitle = 'Sepsis antibiotics', onBack }: 
               <div>
                 <div className="flex justify-between items-baseline gap-3">
                   <label className="label" htmlFor="auth-password">Password</label>
-                  {mode === 'signin' && <button type="button" onClick={() => go('reset')} className="link text-sm mb-1.5">Forgot password?</button>}
+                  {mode === 'signin' && <button type="button" onClick={() => go('reset')} className="link text-sm mb-1.5 py-2">Forgot password?</button>}
                 </div>
                 <input id="auth-password" type="password" required minLength={6} autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                   value={password} onChange={e => setPassword(e.target.value)} className="input" />

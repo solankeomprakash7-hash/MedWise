@@ -251,8 +251,9 @@ Buttons are quiet and solid, with one clear primary on each view.
 - **Internal Padding:** 20 to 24 px; list rows inside a card have 14 px vertical padding and hairline separators.
 
 ### Inputs / Fields
-- **Style:** white, 1 px Hairline border, `{rounded.sm}`, 10 × 12 px padding, 14 px text; label above in 12 px medium Slate Muted.
+- **Style:** white, 1 px Hairline Strong border, `{rounded.sm}`, at least 44 px tall, 16 px text; label above in 14 px medium Ward Navy, hint below in 14 px Slate Muted.
 - **Focus:** the border turns Ward Navy, and the global teal focus ring applies.
+- **Yes / No / Not known** (clinical forms): a segmented radio group, 44 px tall; the chosen option fills Ward Navy. Nothing is pre-selected when "not assessed" must stay distinct from "no".
 - **Answer options** (quiz, drill, exam): full-width bordered rows. When selected they take a navy border, a 5% navy fill and semibold text. When graded they turn Correct Green or Wrong Red.
 
 ### Navigation
