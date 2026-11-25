@@ -29,3 +29,10 @@ textbook criteria on the PTB-XL+ 12SL measurements (Sokolow–Lyon for LVH, P wi
 RAE, axis for LAFB) instead of trusting the label alone. They sit in `realEcgs.json` with `draft: true` and appear in
 `shortlist.csv` with a note. Draft ECGs are hidden from learners; open `/ecg#/preview` to review them (and the Module 6
 lesson), and `/ecg#/preview-off` to hide them again. After review, set `draft: false` and add `reviewed: <date>`.
+
+## Teaching-model variants
+
+The open datasets have no clean VT, VF or torsades, so those lessons use the lab's heart model. `ECG.build(id, rate, variant)`
+in `public/ecg-lab.html` draws other examples of the same rhythm (VT at other rates and with an LBBB-shaped QRS and inferior
+axis, fine and coarse VF, torsades with other twist cycles); without `variant` it gives exactly the reference tracing.
+`tools/model_variants.js` and `tools/draw_models.py` produced the 15 variants in `modelEcgs.json` (ids `model-<rhythm>-v<n>`).

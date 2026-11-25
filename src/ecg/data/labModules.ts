@@ -55,7 +55,7 @@ export const LAB_MODULES: LabModule[] = [
     summary: 'Read an unnamed tracing in nine graded steps, with calipers, against the clock.',
     objectives: ['Read every ECG in the same order', 'Measure intervals with calipers', 'See which step you get wrong most often'],
     tabs: ['read'], stationKind: 'none', check: { kind: 'read', need: 8 }, stations: [] },
-  { id: 'ventricular', n: 8, title: 'Ventricular rhythms and arrest', tier: 'pro', minutes: 30, forWho: 'Interns and residents',
+  { id: 'ventricular', n: 8, title: 'Ventricular rhythms and arrest', tier: 'pro', minutes: 45, forWho: 'Interns and residents',
     summary: 'Ectopics, VT, torsades and VF: the rhythms where the next minute matters.',
     objectives: ['Call broad-complex tachycardia VT until proven otherwise', 'Recognise torsades and its triggers', 'Match each rhythm to shock, drug or observation'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },

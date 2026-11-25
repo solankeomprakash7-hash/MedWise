@@ -91,6 +91,7 @@ function Item({ c, id, n, of, hint, onDone }: { c: Course; id: string; n: number
               {c.fields.includes('qt') && q != null && <>; QTc <span className="font-mono">{q} ms</span> (Bazett)</>}.
               {!res.catOk ? '' : res.wrong ? ` Your choice was right; check the measurement${res.wrong > 1 ? 's' : ''} marked ✗.` : ''}</span></p>
           <p className="text-sm text-muted max-w-prose">{e.teach}</p>
+          {e.model && <p className="text-xs text-muted">This tracing is a teaching model drawn by the MedWise heart model, used where the open datasets have no clean real example.</p>}
           <div><button className="btn-primary btn-arrow" onClick={() => onDone(res)} autoFocus>{n < of ? 'Next ECG' : 'See my result'}</button></div>
         </div>}
       </div>

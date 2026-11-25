@@ -1004,10 +1004,13 @@ function beat(tpl, qOn, pOn, rr, o) {
   return b;
 }
 
-function build(id, rateIn) {
+function build(id, rateIn, variant) {
+  // variant (optional, 1, 2, ...): a different teaching example of the same rhythm (VT rate and QRS shape,
+  // VF coarseness, torsades twist). Without it the output is exactly the reference tracing.
   const S = SC[id];
   const tpl = S.tpl();
-  const rng = mulberry32(hashStr(id));
+  const rng = mulberry32(hashStr(id) + (variant ? variant * 7919 : 0));
+  const vr = variant ? mulberry32(variant * 104729 + hashStr(id)) : null;
   const beats = []; let cont = null;
   const rate = rateIn || S.rate || 72;
   const R = S.rhythm || 'sinus';
@@ -1041,24 +1044,33 @@ function build(id, rateIn) {
       beats.push({ tpl, pOn: p + pp, qOn: null, blocked: 'refr', kind: 'sinus' });
     }
   } else if (R === 'vt') {
-    const vt = vtTpl(), n = 28, rr = DUR / n;
+    const vt = vtTpl();
+    if (variant && variant % 2 === 0) { // LBBB-like VT with an inferior axis (right ventricular outflow tract): negative in V1, positive in II
+      vt.qrs = [{ c: 50, s: 26, v: [0.3, 0.95, -0.75] }, { c: 110, s: 20, v: [0.15, 0.35, -0.3] }];
+      vt.t = [{ cq: -70, s: 45, s2: 30, v: [-0.15, -0.35, 0.3] }];
+    }
+    const n = variant ? Math.round(DUR * (rateIn || 168) / 60000) : 28, rr = DUR / n;
     for (let k = 0; k < n; k++) beats.push(beat(vt, 100 + k * rr, null, rr, { kind: 'vt' }));
     for (let k = 0; k < 12; k++) beats.push({ tpl, pOn: 300 + k * DUR / 12, qOn: null, blocked: 'diss', kind: 'sinus' });
   } else if (R === 'vf') {
-    cont = t => { const s = t / 1000; const A = 0.55 + 0.3 * Math.sin(6.283 * 0.2 * s) + 0.15 * Math.sin(6.283 * 0.7 * s + 1);
-      const th = 6.283 * 0.3 * s; const w = Math.sin(6.283 * 4.6 * s) + 0.6 * Math.sin(6.283 * 6.2 * s + 1) + 0.35 * Math.sin(6.283 * 3.1 * s + 2);
+    // variants: odd = coarse, even = fine (low amplitude, closer to asystole); frequencies shift a little
+    const g = vr ? (variant % 2 ? 1.1 + vr() * 0.4 : 0.3 + vr() * 0.2) : 1, f = vr ? 0.85 + vr() * 0.35 : 1, p0 = vr ? vr() * 6.283 : 0;
+    cont = t => { const s = t / 1000; const A = g * (0.55 + 0.3 * Math.sin(6.283 * 0.2 * s + p0) + 0.15 * Math.sin(6.283 * 0.7 * s + 1));
+      const th = 6.283 * 0.3 * s + p0; const w = Math.sin(6.283 * 4.6 * f * s) + 0.6 * Math.sin(6.283 * 6.2 * f * s + 1) + 0.35 * Math.sin(6.283 * 3.1 * f * s + 2);
       return [Math.cos(th) * A * w * 0.6, Math.sin(th) * A * w * 0.5, Math.sin(th * 1.3 + 0.5) * A * w * 0.45]; };
   } else if (R === 'paced') {
     const n = Math.max(1, Math.round(DUR * rate / 60000)), rr = DUR / n;
     for (let k = 0; k < n; k++) beats.push(beat(tpl, 200 + k * rr, null, rr, { kind: 'paced' }));
   } else if (R === 'tdp') {
+    if (vr) { vr.cyc = Math.round(vr() * 1400); vr.fr = 3.6 + vr() * 1.2; }
     [300, 1350, 9300].forEach((q, i) => beats.push(beat(tpl, q, q - tpl.pr, i === 1 ? 1050 : 1000)));
     const A = 1960, B = 8700;
     cont = t => { if (t < A - 40 || t > B + 60) return [0, 0, 0];
       const u = (t - A) / (B - A), on = sig((t - A) / 18) * sig((B - t) / 40);
-      const th = 6.283 * (t - A) / 2600 + 0.4;                       // axis rotates → the twist
-      const env = 0.55 + 0.45 * Math.abs(Math.sin(6.283 * (t - A) / 2600 + 1.1));
-      const ph = 6.283 * 4.1 * (t - A) / 1000;
+      const cyc = vr ? 2000 + vr.cyc : 2600, fr = vr ? vr.fr : 4.1;     // variants: twist cycle and rate
+      const th = 6.283 * (t - A) / cyc + 0.4;                        // axis rotates → the twist
+      const env = 0.55 + 0.45 * Math.abs(Math.sin(6.283 * (t - A) / cyc + 1.1));
+      const ph = 6.283 * fr * (t - A) / 1000;
       const w = (Math.sin(ph) + 0.28 * Math.sin(2 * ph + 0.6)) * env * (1.15 - 0.15 * u) * on;
       return [Math.cos(th) * w * 0.9, Math.sin(th) * w * 0.95, Math.sin(th + 0.9) * w * 0.7]; };
   } else if (R === 'mobitz1') {
