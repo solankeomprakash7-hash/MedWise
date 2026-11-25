@@ -36,7 +36,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Tell first-degree, Mobitz I, Mobitz II and complete block apart', 'Find the block on the heart, not just the strip', 'Know which ones need pacing pads'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('avb1', 'First-degree AV block'), W('mobitz1', 'Mobitz I (Wenckebach)'), W('mobitz2', 'Mobitz II'), W('chb', 'Complete heart block')] },
-  { id: 'bundles', n: 4, title: 'Bundle branches, fascicles and pacing', tier: 'student', minutes: 40, forWho: 'Students and interns',
+  { id: 'bundles', n: 4, title: 'Bundle branches, fascicles and pacing', tier: 'student', minutes: 50, forWho: 'Students and interns',
     summary: 'Why a blocked bundle widens the QRS, how pre-excitation slurs it, and what a pacemaker looks like.',
     objectives: ['Read RBBB and LBBB from V1 and V6', 'Spot left axis deviation from a fascicular block', 'Recognise a delta wave and a paced rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
