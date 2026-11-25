@@ -8,3 +8,4 @@ coverage/
 !.env.example
 .taste-skill/
 shots/
+__pycache__/
