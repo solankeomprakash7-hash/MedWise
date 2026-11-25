@@ -65,7 +65,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Map ST elevation to its artery', 'Recognise posterior MI from V1–V3', 'Call Wellens, de Winter and the aVR pattern'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 6 },
     stations: [W('stemi_ant', 'Anterior STEMI (LAD)'), W('stemi_inf', 'Inferior STEMI (RCA)'), W('stemi_post', 'Posterior MI'), W('old_inf', 'Old inferior MI'), W('nste_avr', 'Diffuse ST depression, aVR elevation'), W('wellens', 'Wellens syndrome'), W('dewinter', 'De Winter T waves')] },
-  { id: 'metabolic', n: 10, title: 'Electrolytes, drugs and temperature', tier: 'pro', minutes: 30, forWho: 'Interns and residents',
+  { id: 'metabolic', n: 10, title: 'Electrolytes, drugs and temperature', tier: 'pro', minutes: 50, forWho: 'Interns and residents',
     summary: 'Potassium, QT-prolonging drugs, digoxin and cold, each with its own signature.',
     objectives: ['Stage hyperkalaemia from the T wave to the sine wave', 'Recognise hypokalaemia and long QT', 'Spot digoxin effect and the Osborn wave'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },

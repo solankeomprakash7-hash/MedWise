@@ -2,7 +2,7 @@
 // Run from content/ecg-library with Playwright installed: node tools/model_variants.js, then python3 tools/draw_models.py.
 // Writes signals.json; draw_models.py draws each one with render.py into png/ (copy the .webp files to public/ecg/model/).
 const { chromium } = require('playwright'); const fs = require('fs');
-const JOBS = [
+const JOBS = process.env.JOBS ? JSON.parse(process.env.JOBS) : [
   ['vt', 150, 1], ['vt', 185, 2], ['vt', 200, 3], ['vt', 140, 4], ['vt', 220, 5], ['vt', 165, 6],
   ['vf', null, 1], ['vf', null, 2], ['vf', null, 3], ['vf', null, 4], ['vf', null, 5],
   ['tdp', null, 1], ['tdp', null, 2], ['tdp', null, 3], ['tdp', null, 4],

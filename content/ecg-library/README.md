@@ -36,3 +36,7 @@ The open datasets have no clean VT, VF or torsades, so those lessons use the lab
 in `public/ecg-lab.html` draws other examples of the same rhythm (VT at other rates and with an LBBB-shaped QRS and inferior
 axis, fine and coarse VF, torsades with other twist cycles); without `variant` it gives exactly the reference tracing.
 `tools/model_variants.js` and `tools/draw_models.py` produced the 15 variants in `modelEcgs.json` (ids `model-<rhythm>-v<n>`).
+
+Metabolic variants (Module 10) use the same tools with `JOBS` set: hyperkalaemia in four stages (peaked T; flat P and long
+PR; broad QRS; near sine wave), hypokalaemia (mild and marked U waves), long QT (QTc 520–600 ms), hypothermia (Osborn wave
+size and rate) and digoxin (depth of ST sag). The default tracings are unchanged (checked against the previous lab).
