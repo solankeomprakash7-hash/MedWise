@@ -40,3 +40,6 @@ axis, fine and coarse VF, torsades with other twist cycles); without `variant` i
 Metabolic variants (Module 10) use the same tools with `JOBS` set: hyperkalaemia in four stages (peaked T; flat P and long
 PR; broad QRS; near sine wave), hypokalaemia (mild and marked U waves), long QT (QTc 520–600 ms), hypothermia (Osborn wave
 size and rate) and digoxin (depth of ST sag). The default tracings are unchanged (checked against the previous lab).
+
+Mimic variants (Module 11): pericarditis (size of the diffuse ST elevation and PR depression), Brugada (cove depth),
+PE (right-ventricular strain) and limb lead reversal (rate only).

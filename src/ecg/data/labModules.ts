@@ -70,7 +70,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Stage hyperkalaemia from the T wave to the sine wave', 'Recognise hypokalaemia and long QT', 'Spot digoxin effect and the Osborn wave'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('hyperk', 'Hyperkalaemia'), W('hypok', 'Hypokalaemia'), W('longqt', 'Long QT'), W('digoxin', 'Digoxin effect'), W('hypothermia', 'Hypothermia')] },
-  { id: 'mimics', n: 11, title: 'Must-not-miss and mimics', tier: 'pro', minutes: 30, forWho: 'Residents and exam aspirants',
+  { id: 'mimics', n: 11, title: 'Must-not-miss and mimics', tier: 'pro', minutes: 50, forWho: 'Residents and exam aspirants',
     summary: 'Pericarditis, Brugada, pulmonary embolism and the lead reversal that fools everyone once.',
     objectives: ['Separate pericarditis from STEMI', 'Recognise the type 1 Brugada pattern', 'Catch limb lead reversal before acting on it'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 4 },
