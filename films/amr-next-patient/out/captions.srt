@@ -1,0 +1,291 @@
+1
+00:00:00,900 --> 00:00:02,334
+Two in the morning.
+
+2
+00:00:02,334 --> 00:00:04,592
+A NICU, somewhere in India.
+
+3
+00:00:04,792 --> 00:00:06,590
+A baby girl, nine days old.
+
+4
+00:00:06,590 --> 00:00:08,029
+Born a little early.
+
+5
+00:00:08,029 --> 00:00:10,887
+Fighting an infection in her blood.
+
+6
+00:00:11,087 --> 00:00:13,583
+The culture report comes back.
+
+7
+00:00:13,583 --> 00:00:16,528
+Resistant. Resistant. Resistant.
+
+8
+00:00:16,728 --> 00:00:19,987
+Outside the glass, her mother has been standing for
+
+9
+00:00:19,987 --> 00:00:20,625
+hours.
+
+10
+00:00:20,825 --> 00:00:22,957
+She asks just one question.
+
+11
+00:00:22,957 --> 00:00:25,146
+Doctor, koi aur dawai hai?
+
+12
+00:00:25,896 --> 00:00:27,526
+Is there any other medicine?
+
+13
+00:00:29,476 --> 00:00:31,813
+This story does not begin in the NICU.
+
+14
+00:00:31,813 --> 00:00:33,854
+It begins in rooms like ours.
+
+15
+00:00:34,054 --> 00:00:37,365
+A Monday OPD. Forty patients still waiting.
+
+16
+00:00:37,365 --> 00:00:38,974
+Fever for three days,
+
+17
+00:00:38,974 --> 00:00:40,075
+runny nose.
+
+18
+00:00:40,275 --> 00:00:43,717
+Doctor sahab, koi strong antibiotic de dijiye.
+
+19
+00:00:43,717 --> 00:00:45,507
+Kal office jaana hai.
+
+20
+00:00:45,707 --> 00:00:47,096
+We know it is viral.
+
+21
+00:00:47,096 --> 00:00:50,060
+We are tired. And saying no takes time we
+
+22
+00:00:50,060 --> 00:00:51,143
+do not have.
+
+23
+00:00:51,343 --> 00:00:55,117
+Azithromycin. Three days. Next patient.
+
+24
+00:00:55,317 --> 00:00:57,701
+Ten seconds. One signature.
+
+25
+00:00:57,701 --> 00:00:59,901
+It felt like kindness.
+
+26
+00:01:00,651 --> 00:01:04,371
+Across India, that signature is written again and again.
+
+27
+00:01:04,571 --> 00:01:07,145
+In a national survey of twenty hospitals,
+
+28
+00:01:07,145 --> 00:01:10,651
+seven in ten admitted patients were on antibiotics.
+
+29
+00:01:10,851 --> 00:01:12,429
+More than half of them,
+
+30
+00:01:12,429 --> 00:01:13,556
+just in case.
+
+31
+00:01:13,756 --> 00:01:16,399
+Every dose that was not needed is a lesson.
+
+32
+00:01:16,399 --> 00:01:18,903
+And bacteria never forget a lesson.
+
+33
+00:01:19,103 --> 00:01:23,146
+In 2017, imipenem, one of our last-line drugs,
+
+34
+00:01:23,146 --> 00:01:27,094
+still worked on about six in ten Klebsiella samples.
+
+35
+00:01:27,294 --> 00:01:30,201
+By 2023, barely one in three.
+
+36
+00:01:31,151 --> 00:01:33,439
+The man with the cold got better in a
+
+37
+00:01:33,439 --> 00:01:35,346
+week. He always would have.
+
+38
+00:01:35,546 --> 00:01:37,656
+But the bacteria stayed.
+
+39
+00:01:37,656 --> 00:01:39,450
+In families. In wards.
+
+40
+00:01:39,450 --> 00:01:40,755
+In our water.
+
+41
+00:01:40,955 --> 00:01:43,560
+And they found the ones who could not fight
+
+42
+00:01:43,560 --> 00:01:44,108
+back.
+
+43
+00:01:44,308 --> 00:01:47,080
+A newborn. A mother after her C-section.
+
+44
+00:01:47,080 --> 00:01:49,566
+A grandfather on a ventilator.
+
+45
+00:01:49,766 --> 00:01:52,273
+They never asked for that antibiotic.
+
+46
+00:01:52,273 --> 00:01:54,868
+They inherited what it left behind.
+
+47
+00:01:56,018 --> 00:01:57,056
+Back in the NICU,
+
+48
+00:01:57,056 --> 00:02:00,021
+her mother is still waiting for an answer.
+
+49
+00:02:00,221 --> 00:02:03,192
+Every prescription we write today is our answer to
+
+50
+00:02:03,192 --> 00:02:03,654
+her.
+
+51
+00:02:04,804 --> 00:02:07,957
+Antimicrobial stewardship is not a committee,
+
+52
+00:02:07,957 --> 00:02:10,228
+or a circular. It is that answer.
+
+53
+00:02:10,428 --> 00:02:13,694
+Pause, and ask: is this really bacterial?
+
+54
+00:02:13,894 --> 00:02:16,361
+Send the culture before the first dose.
+
+55
+00:02:16,561 --> 00:02:18,104
+When the report comes,
+
+56
+00:02:18,104 --> 00:02:20,583
+narrow the drug, and stop on time.
+
+57
+00:02:20,783 --> 00:02:22,680
+For surgery, one dose.
+
+58
+00:02:22,680 --> 00:02:24,158
+Not five days.
+
+59
+00:02:24,358 --> 00:02:25,871
+And teach every patient:
+
+60
+00:02:25,871 --> 00:02:28,368
+the red line on the strip means only with
+
+61
+00:02:28,368 --> 00:02:29,601
+a prescription.
+
+62
+00:02:30,551 --> 00:02:32,528
+AMR Awareness Week has ended.
+
+63
+00:02:32,528 --> 00:02:35,331
+The bacteria did not take the week off.
+
+64
+00:02:35,531 --> 00:02:38,138
+This is not one more guideline to forward on
+
+65
+00:02:38,138 --> 00:02:39,619
+WhatsApp and forget.
+
+66
+00:02:39,819 --> 00:02:42,496
+It is ten seconds of courage.
+
+67
+00:02:42,496 --> 00:02:44,242
+To explain. To wait.
+
+68
+00:02:44,242 --> 00:02:45,307
+To say no.
+
+69
+00:02:45,507 --> 00:02:46,621
+So that one day,
+
+70
+00:02:46,621 --> 00:02:48,014
+when a mother asks,
+
+71
+00:02:48,014 --> 00:02:49,564
+Koi aur dawai hai?
+
+72
+00:02:50,514 --> 00:02:52,263
+we can still say:
+
+73
+00:02:52,263 --> 00:02:53,454
+Haan. Hai.
