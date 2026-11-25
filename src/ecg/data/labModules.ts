@@ -21,7 +21,7 @@ export type LabModule = {
 const W = (id: string, name: string): Station => ({ id, name });
 
 export const LAB_MODULES: LabModule[] = [
-  { id: 'waves', n: 1, title: 'Waves and intervals', tier: 'free', minutes: 40, forWho: 'Start here',
+  { id: 'waves', n: 1, title: 'Waves and intervals', tier: 'free', minutes: 50, forWho: 'Start here',
     summary: 'Watch one beat being written, letter by letter, while the heart depolarises on screen.',
     objectives: ['Name P, Q, R, S, T and U and the event behind each one', 'Measure PR, QRS and QT on the grid', 'Recognise the normal and abnormal forms of every wave'],
     tabs: ['waves'], stationKind: 'wave', check: { kind: 'explore' },
@@ -31,7 +31,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Confirm sinus rhythm in four checks', 'Calculate the rate two ways', 'Change the rate and watch the QT shorten'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
     stations: [W('normal', 'Normal sinus rhythm'), W('sinus_brady', 'Sinus bradycardia'), W('sinus_tachy', 'Sinus tachycardia')] },
-  { id: 'avblock', n: 3, title: 'AV blocks', tier: 'student', minutes: 35, forWho: 'Students and interns',
+  { id: 'avblock', n: 3, title: 'AV blocks', tier: 'student', minutes: 45, forWho: 'Students and interns',
     summary: 'Watch the impulse stall in the AV node, then fail to cross it, beat by beat.',
     objectives: ['Tell first-degree, Mobitz I, Mobitz II and complete block apart', 'Find the block on the heart, not just the strip', 'Know which ones need pacing pads'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },

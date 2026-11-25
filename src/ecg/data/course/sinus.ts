@@ -80,5 +80,8 @@ export const SINUS: Course = {
     { ecg: 'ptbxl-149', hint: 'The R–R intervals vary. Use the count-and-multiply method, then check whether every QRS still has the same P in front.' },
   ],
   pools: { sinus: [...NORMAL, ...BRADY, ...TACHY, ...ARRH], other: ['af', 'flutter', 'svt', 'junctional'], pre: 4, check: 10, checkOther: 3, pass: 8 },
+  fields: ['rate'],
+  question: 'Rhythm',
+  answer: { normal: 'normal', sinus_brady: 'sinus_brady', sinus_tachy: 'sinus_tachy', sinus_arrh: 'sinus_arrh' },
   options: [['normal', 'Normal sinus rhythm'], ['sinus_brady', 'Sinus bradycardia'], ['sinus_tachy', 'Sinus tachycardia'], ['sinus_arrh', 'Sinus arrhythmia'], ['not_sinus', 'Not sinus rhythm']],
 };

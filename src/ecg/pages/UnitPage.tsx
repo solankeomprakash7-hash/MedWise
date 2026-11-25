@@ -3,7 +3,9 @@ import { useApp } from '../EcgApp';
 import { UNITS } from '../data/curriculum';
 import { ECGS, unitOpen } from '../lib/logic';
 import Quiz from '../components/Quiz';
-import { PlayCircle } from 'lucide-react';
+import { PlayCircle, FlaskConical } from 'lucide-react';
+import { UNIT_TO_MODULE } from '../data/course';
+import { LAB_MODULES } from '../data/labModules';
 
 export default function UnitPage({ id }: { id: string }) {
   const { p, update, plan, go } = useApp();
@@ -15,8 +17,13 @@ export default function UnitPage({ id }: { id: string }) {
   if (!unitOpen(plan, u.id)) { go('upgrade'); return null; }
   const idx = UNITS.indexOf(u), next = UNITS[idx + 1];
   const reals = ECGS.filter(e => u.practice.includes(e.pattern)).length;
+  const lesson = LAB_MODULES.find(x => x.id === UNIT_TO_MODULE[u.id]);
   return (
     <article className="flex flex-col gap-6">
+      {lesson && <a href={`#/lab/${lesson.id}`} className="card p-4 flex items-center gap-3 border-accent/40">
+        <span className="w-10 h-10 rounded-md bg-accent-soft text-accent-ink flex items-center justify-center shrink-0"><FlaskConical size={20} /></span>
+        <span className="flex-1 text-sm"><b className="font-medium text-ink">This topic is now a full lesson:</b> Lab Module {lesson.n}, {lesson.title}. It adds real-ECG practice and a checkpoint. This page stays for quick revision.</span>
+        <span className="btn-primary !h-9 !text-sm shrink-0 max-sm:hidden">Open lesson</span></a>}
       <div>
         <p className="eyebrow">Level {u.level} · {u.minutes} min</p>
         <h1 className="text-3xl md:text-4xl font-display">{u.title}</h1>

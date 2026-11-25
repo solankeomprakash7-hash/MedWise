@@ -4,63 +4,91 @@ import { db } from '../../lib/firebase';
 import { useApp } from '../EcgApp';
 import { LAB_MODULES, labOpen, labSrc, TIER_LABEL, type LabModule } from '../data/labModules';
 import { COURSE_STEPS } from '../data/course';
-import type { Course } from '../data/course/types';
+import type { Course, Field } from '../data/course/types';
 import { ECGS, byId, imgOf, review, type RealEcg } from '../lib/logic';
 import { emptyLab, today, type CourseProgress, type LabProgress } from '../lib/progress';
 import EcgViewer from './EcgViewer';
 import ProgressRing from './ProgressRing';
 import { Check, X, ChevronLeft, ChevronRight, Lightbulb, Star, RotateCcw } from 'lucide-react';
 
-// ---------- items: one ECG, two questions (rate, then rhythm), marked at once ----------
-type Res = { id: string; ok: boolean; rateOk: boolean | null; catOk: boolean };
+// ---------- items: one ECG, a few measurements and one choice, marked at once ----------
+type Res = { id: string; ok: boolean; catOk: boolean; wrong: number };
 const shuffle = <T,>(a: T[]) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
-const catOf = (c: Course, e: RealEcg) => (c.pools.other.includes(e.pattern) ? 'not_sinus' : e.pattern);
-const rateTol = (e: RealEcg) => Math.max(8, (e.key.hr ?? 0) * (e.key.regular ? 0.1 : 0.15));
+const catOf = (c: Course, e: RealEcg) => c.answer[e.pattern] ?? c.options[c.options.length - 1][0];
 const label = (c: Course, k: string) => c.options.find(o => o[0] === k)?.[1] ?? k;
+const FIELD: Record<Field, { name: string; unit: string; ph: string; key: (e: RealEcg) => number | null; tol: (e: RealEcg) => number }> = {
+  rate: { name: 'Heart rate', unit: '/min', ph: 'e.g. 75', key: e => e.key.hr, tol: e => Math.max(8, (e.key.hr ?? 0) * (e.key.regular ? 0.1 : 0.15)) },
+  pr: { name: 'PR interval', unit: 'ms', ph: 'e.g. 160', key: e => e.key.pr, tol: () => 30 },
+  qrs: { name: 'QRS width', unit: 'ms', ph: 'e.g. 90', key: e => e.key.qrs, tol: () => 25 },
+  qt: { name: 'QT interval', unit: 'ms', ph: 'e.g. 400', key: e => e.key.qt, tol: () => 40 },
+};
+const qtc = (e: RealEcg) => (e.key.qt && e.key.hr ? Math.round(e.key.qt / Math.sqrt(60 / e.key.hr)) : null);
+/** Draw n items spread across answer categories, so a checkpoint never ends up all one pattern. */
+function balanced(c: Course, ids: string[], n: number) {
+  const groups = new Map<string, string[]>();
+  shuffle(ids).forEach(id => { const k = catOf(c, byId(id)); groups.set(k, [...(groups.get(k) || []), id]); });
+  const lists = shuffle([...groups.values()]), out: string[] = [];
+  while (out.length < n && lists.some(l => l.length)) lists.forEach(l => { if (l.length && out.length < n) out.push(l.shift()!); });
+  return out;
+}
 
 function Item({ c, id, n, of, hint, onDone }: { c: Course; id: string; n: number; of: number; hint?: string; onDone: (r: Res) => void }) {
   const e = byId(id);
-  const [rate, setRate] = React.useState('');
+  const [vals, setVals] = React.useState<Record<string, string>>({});
   const [cat, setCat] = React.useState<string | null>(null);
   const [showHint, setShowHint] = React.useState(false);
   const [res, setRes] = React.useState<Res | null>(null);
-  React.useEffect(() => { setRate(''); setCat(null); setShowHint(false); setRes(null); }, [id]);
+  React.useEffect(() => { setVals({}); setCat(null); setShowHint(false); setRes(null); }, [id]);
+  const filled = c.fields.every(f => (vals[f] ?? '') !== '') && !!cat;
+  const fieldOk = (f: Field) => { const k = FIELD[f].key(e); return k == null ? null : Math.abs(Number(vals[f]) - k) <= FIELD[f].tol(e); };
   const check = () => {
-    const hr = e.key.hr, r = Number(rate);
-    const rateOk = hr == null ? null : rate !== '' && Math.abs(r - hr) <= rateTol(e);
-    const catOk = cat === catOf(c, e);
-    setRes({ id, rateOk, catOk, ok: catOk && rateOk !== false });
+    const wrong = c.fields.filter(f => fieldOk(f) === false).length, catOk = cat === catOf(c, e);
+    // The choice must be right; with several measurements, one may be off.
+    setRes({ id, catOk, wrong, ok: catOk && wrong <= (c.fields.length > 1 ? 1 : 0) });
   };
-  const right = catOf(c, e);
+  const right = catOf(c, e), q = qtc(e);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2"><p className="eyebrow">ECG {n} of {of}</p>{hint && !res && <button className="text-sm text-accent-ink inline-flex items-center gap-1" onClick={() => setShowHint(h => !h)} aria-expanded={showHint}><Lightbulb size={15} />{showHint ? 'Hide hint' : 'Show a hint'}</button>}</div>
       <EcgViewer src={imgOf(id)} alt="A real 12-lead ECG to read" />
       {showHint && hint && <p className="text-sm rounded-md bg-gold-soft text-gold-ink px-4 py-3 flex gap-2"><Lightbulb size={16} className="shrink-0 mt-0.5" />{hint}</p>}
       <div className="card p-5 flex flex-col gap-4">
-        <label className="flex flex-wrap items-center gap-3" htmlFor={`rate-${id}`}>
-          <span className="font-medium w-full sm:w-auto">1. Heart rate</span>
-          <input id={`rate-${id}`} type="number" inputMode="numeric" value={rate} disabled={!!res} onChange={ev => setRate(ev.target.value)} placeholder="e.g. 75"
-            className="input !w-28 font-mono" /><span className="text-sm text-muted font-mono">/min</span>
-        </label>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {c.fields.map((f, i) => {
+            const ok = res ? fieldOk(f) : undefined, k = FIELD[f].key(e);
+            return <label key={f} className="flex flex-col gap-1.5" htmlFor={`${f}-${id}`}>
+              <span className="font-medium">{i + 1}. {FIELD[f].name}</span>
+              <span className="flex items-center gap-2">
+                <input id={`${f}-${id}`} type="number" inputMode="numeric" value={vals[f] ?? ''} disabled={!!res} placeholder={FIELD[f].ph}
+                  onChange={ev => setVals(v => ({ ...v, [f]: ev.target.value }))}
+                  className={`input !w-28 font-mono ${ok === true ? '!border-ok' : ok === false ? '!border-bad' : ''}`} />
+                <span className="text-sm text-muted font-mono">{FIELD[f].unit}</span>
+                {res && <span className={`text-sm font-mono ${ok === false ? 'text-bad' : ok ? 'text-ok' : 'text-muted'}`}>{k == null ? 'not graded' : `${ok ? '✓' : '✗'} ${k}`}</span>}
+              </span>
+            </label>;
+          })}
+        </div>
         <div className="flex flex-col gap-2">
-          <span className="font-medium">2. Rhythm</span>
-          <div className="grid sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Rhythm">
+          <span className="font-medium">{c.fields.length + 1}. {c.question}</span>
+          <div className="grid sm:grid-cols-2 gap-2" role="radiogroup" aria-label={c.question}>
             {c.options.map(([k, l]) => {
               const st = !res ? (cat === k ? 'border-ink bg-ink/[.04] font-medium shadow-[inset_3px_0_0_var(--color-accent)]' : 'border-line-strong hover:border-ink/50')
-                : k === right ? 'border-ok bg-[#e8f4ee] text-ok font-medium' : k === cat ? 'border-bad bg-[#fdecea] text-bad' : 'border-line opacity-60';
+                : k === right ? 'border-ok bg-[#e8f4ee] text-ok font-medium disabled:opacity-100' : k === cat ? 'border-bad bg-[#fdecea] text-bad disabled:opacity-100' : 'border-line';
               return <button key={k} type="button" role="radio" aria-checked={cat === k} disabled={!!res} onClick={() => setCat(k)}
-                className={`text-left rounded-sm border px-3 py-2.5 text-[15px] transition-colors ${st}`}>{l}</button>;
+                className={`text-left rounded-sm border px-3 py-2.5 text-[15px] transition-colors disabled:cursor-default ${st}`}>{l}</button>;
             })}
           </div>
         </div>
         {!res ? <div className="flex flex-wrap items-center gap-3">
-          <button className="btn-primary" disabled={!cat || rate === ''} onClick={check}>Check</button>
-          {(!cat || rate === '') && <span className="text-sm text-muted">Answer both to check.</span>}
+          <button className="btn-primary" disabled={!filled} onClick={check}>Check</button>
+          {!filled && <span className="text-sm text-muted">Answer every part to check.</span>}
         </div> : <div className="flex flex-col gap-3" aria-live="polite">
           <p className="flex items-start gap-2">{res.ok ? <Check size={20} className="text-ok shrink-0" /> : <X size={20} className="text-bad shrink-0" />}
             <span><b className={res.ok ? 'text-ok' : 'text-bad'}>{res.ok ? 'Correct.' : 'Not quite.'}</b>{' '}
-              Rate {e.key.hr != null ? <><span className="font-mono">{e.key.hr}/min</span> (you said <span className="font-mono">{rate}</span>{res.rateOk ? ', within range' : ''})</> : 'not graded on this ECG'}; {e.key.regular ? 'regular' : 'irregular'}. {right === 'not_sinus' ? <>Not sinus: this is <b>{e.title}</b>.</> : <>This is <b>{label(c, right)}</b>.</>}</span></p>
+              This is <b>{e.title}</b>{c.answer[e.pattern] && label(c, right).toLowerCase() !== e.title.toLowerCase() ? <> ({label(c, right).replace(/^./, x => x.toLowerCase())})</> : ''}
+              {e.key.hr != null && <> at <span className="font-mono">{e.key.hr}/min</span>, {e.key.regular ? 'regular' : 'irregular'}</>}
+              {c.fields.includes('qt') && q != null && <>; QTc <span className="font-mono">{q} ms</span> (Bazett)</>}.
+              {!res.catOk ? '' : res.wrong ? ` Your choice was right; check the measurement${res.wrong > 1 ? 's' : ''} marked ✗.` : ''}</span></p>
           <p className="text-sm text-muted max-w-prose">{e.teach}</p>
           <div><button className="btn-primary btn-arrow" onClick={() => onDone(res)} autoFocus>{n < of ? 'Next ECG' : 'See my result'}</button></div>
         </div>}
@@ -99,9 +127,9 @@ export default function CourseModule({ m, c }: { m: LabModule; c: Course }) {
 
   // Fixed per attempt: pre-test and checkpoint never reuse the worked or guided ECGs, and never each other.
   const used = React.useMemo(() => new Set([c.worked.ecg, ...c.guided.map(g => g.ecg)]), [c]);
-  const pre = React.useMemo(() => shuffle(c.pools.sinus.filter(x => !used.has(x))).slice(0, c.pools.pre), [c, used]);
+  const pre = React.useMemo(() => balanced(c, c.pools.sinus.filter(x => !used.has(x)), c.pools.pre), [c, used]);
   const check = React.useMemo(() => {
-    const sinus = shuffle(c.pools.sinus.filter(x => !used.has(x) && !pre.includes(x))).slice(0, c.pools.check - c.pools.checkOther);
+    const sinus = balanced(c, c.pools.sinus.filter(x => !used.has(x) && !pre.includes(x)), c.pools.check - c.pools.checkOther);
     const other = shuffle(ECGS.filter(e => c.pools.other.includes(e.pattern) && e.key.hr != null && !e.model)).slice(0, c.pools.checkOther).map(e => e.id);
     return shuffle([...sinus, ...other]);
   }, [c, used, pre, attempt]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -204,7 +232,7 @@ export default function CourseModule({ m, c }: { m: LabModule; c: Course }) {
         {step === 6 && <>
           <div className="card p-6 flex flex-col gap-2">
             <h2 className="text-2xl">Checkpoint: {c.pools.check} unseen ECGs</h2>
-            <p className="text-muted">No hints this time. {c.pools.checkOther} of them are look-alikes that are not sinus rhythm. Get {c.pools.pass} of {c.pools.check} right (rate close to the true rate and the right rhythm) to complete the module.{cp.best ? ` Your best so far: ${cp.best[0]}/${cp.best[1]}.` : ''}</p>
+            <p className="text-muted">No hints this time. {c.pools.checkOther} of them are look-alikes that are not sinus rhythm. Get {c.pools.pass} of {c.pools.check} right to complete the module: the right answer, with {c.fields.length > 1 ? 'no more than one measurement off' : 'the measurement close to the true value'}.{cp.best ? ` Your best so far: ${cp.best[0]}/${cp.best[1]}.` : ''}</p>
           </div>
           <Series key={`c${attempt}`} c={c} ids={check} onFinish={finishCheck} />
         </>}

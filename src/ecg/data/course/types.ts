@@ -14,6 +14,11 @@ export type Course = {
   guided: { ecg: string; hint: string }[];
   /** Pre-test and checkpoint pools. `sinus`: real-ECG ids of this module's patterns; `other`: patterns used as look-alikes. */
   pools: { sinus: string[]; other: string[]; pre: number; check: number; checkOther: number; pass: number };
-  /** The answer choices for every item in this module. The last one means "none of these patterns". */
+  /** What each item asks: measurements (graded against the reviewed key) and one choice. */
+  fields: Field[];
+  question: string;
+  /** The answer choices. A pattern listed in `answer` maps to its option; anything else maps to the last option. */
   options: [string, string][];
+  answer: Record<string, string>;
 };
+export type Field = 'rate' | 'pr' | 'qrs' | 'qt';
