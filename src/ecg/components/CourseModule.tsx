@@ -5,9 +5,10 @@ import { useApp } from '../EcgApp';
 import { LAB_MODULES, labOpen, labSrc, TIER_LABEL, type LabModule } from '../data/labModules';
 import { COURSE_STEPS } from '../data/course';
 import type { Course, Field } from '../data/course/types';
-import { ECGS, byId, imgOf, review, type RealEcg } from '../lib/logic';
+import { ECGS, byId, imgOf, review, passed, type RealEcg, type Row } from '../lib/logic';
 import { emptyLab, today, type CourseProgress, type LabProgress } from '../lib/progress';
 import EcgViewer from './EcgViewer';
+import Drill, { Results } from './Drill';
 import ProgressRing from './ProgressRing';
 import { Check, X, ChevronLeft, ChevronRight, Lightbulb, Star, RotateCcw } from 'lucide-react';
 
@@ -26,7 +27,7 @@ const qtc = (e: RealEcg) => (e.key.qt && e.key.hr ? Math.round(e.key.qt / Math.s
 /** Draw n items spread across answer categories, so a checkpoint never ends up all one pattern. */
 function balanced(c: Course, ids: string[], n: number) {
   const groups = new Map<string, string[]>();
-  shuffle(ids).forEach(id => { const k = catOf(c, byId(id)); groups.set(k, [...(groups.get(k) || []), id]); });
+  shuffle(ids).forEach(id => { const k = c.mode === 'read' ? byId(id).pattern : catOf(c, byId(id)); groups.set(k, [...(groups.get(k) || []), id]); });
   const lists = shuffle([...groups.values()]), out: string[] = [];
   while (out.length < n && lists.some(l => l.length)) lists.forEach(l => { if (l.length && out.length < n) out.push(l.shift()!); });
   return out;
@@ -97,12 +98,42 @@ function Item({ c, id, n, of, hint, onDone }: { c: Course; id: string; n: number
   );
 }
 
+/** Read mode: the full nine-step read, marked step by step; it also feeds the learner's skills profile. */
+function ReadItem({ id, n, of, hint, onDone }: { id: string; n: number; of: number; hint?: string; onDone: (r: Res) => void }) {
+  const { update } = useApp();
+  const e = byId(id);
+  const [rows, setRows] = React.useState<Row[] | null>(null);
+  React.useEffect(() => setRows(null), [id]);
+  if (rows) {
+    const ok = passed(rows), dx = rows.find(r => r.key === 'dx')?.ok === true;
+    return <div className="flex flex-col gap-4">
+      <p className="eyebrow">ECG {n} of {of}</p>
+      <EcgViewer src={imgOf(id)} alt={e.title} />
+      <div className="card p-5 flex flex-col gap-4">
+        <p className="flex items-start gap-2">{ok ? <Check size={20} className="text-ok shrink-0" /> : <X size={20} className="text-bad shrink-0" />}
+          <span><b className={ok ? 'text-ok' : 'text-bad'}>{ok ? 'A good read.' : 'Not yet.'}</b> {ok ? 'Right diagnosis and at least 7 in 10 steps right.' : dx ? 'Right diagnosis, but fewer than 7 in 10 steps right. Read the tips for the steps marked wrong.' : 'The diagnosis is not right. Find the first step that went wrong; that is usually where the read went off course.'}</span></p>
+        <Results ecg={e} rows={rows} />
+        <div><button className="btn-primary btn-arrow" onClick={() => onDone({ id, ok, catOk: dx, wrong: rows.filter(r => r.ok === false).length })} autoFocus>{n < of ? 'Next ECG' : 'See my result'}</button></div>
+      </div>
+    </div>;
+  }
+  return <div className="flex flex-col gap-3">
+    <p className="eyebrow">ECG {n} of {of} · read it in nine steps</p>
+    <Drill ecg={e} onDone={r => {
+      setRows(r);
+      update(pr => { const skills = { ...pr.skills }; r.forEach(x => { if (x.ok == null) return; const v = skills[x.key] || [0, 0]; skills[x.key] = [v[0] + (x.ok ? 1 : 0), v[1] + 1]; }); return { ...pr, skills }; });
+    }}>{hint && <p className="text-sm rounded-md bg-gold-soft text-gold-ink px-4 py-3 flex gap-2"><Lightbulb size={16} className="shrink-0 mt-0.5" />{hint}</p>}</Drill>
+  </div>;
+}
+
 function Series({ c, ids, hints, onFinish }: { c: Course; ids: string[]; hints?: string[]; onFinish: (r: Res[]) => void }) {
   const [i, setI] = React.useState(0), [rs, setRs] = React.useState<Res[]>([]);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-1.5" aria-hidden="true">{ids.map((x, k) => <span key={x} className={`h-1.5 flex-1 rounded-full ${k < rs.length ? (rs[k].ok ? 'bg-ok' : 'bg-bad') : k === i ? 'bg-ink' : 'bg-line'}`} />)}</div>
-      <Item key={ids[i]} c={c} id={ids[i]} n={i + 1} of={ids.length} hint={hints?.[i]} onDone={r => { const n = [...rs, r]; setRs(n); if (i + 1 < ids.length) { setI(i + 1); scrollTo({ top: 0 }); } else onFinish(n); }} />
+      {(() => { const done = (r: Res) => { const n = [...rs, r]; setRs(n); if (i + 1 < ids.length) { setI(i + 1); scrollTo({ top: 0 }); } else onFinish(n); };
+        return c.mode === 'read' ? <ReadItem key={ids[i]} id={ids[i]} n={i + 1} of={ids.length} hint={hints?.[i]} onDone={done} />
+          : <Item key={ids[i]} c={c} id={ids[i]} n={i + 1} of={ids.length} hint={hints?.[i]} onDone={done} />; })()}
     </div>
   );
 }
@@ -187,7 +218,7 @@ export default function CourseModule({ m, c }: { m: LabModule; c: Course }) {
             <Nav nextLabel="Continue" />
           </div> : <>
             <div className="card p-6 flex flex-col gap-2">
-              <h2 className="text-2xl">Before you start: {c.pools.pre} quick ECGs</h2>
+              <h2 className="text-2xl">Before you start: {c.pools.pre} {c.mode === 'read' ? 'full reads' : 'quick ECGs'}</h2>
               <p className="text-muted">Give each one your best guess, even if you are unsure. It is not marked against you. It sets your starting point, so the checkpoint at the end can show what you learned.</p>
             </div>
             <Series c={c} ids={pre} onFinish={rs => { const r = rs.filter(x => x.ok).length; saveCourse(x => ({ ...x, pre: [r, rs.length], step: Math.max(x.step, 1) })); go(1); }} />
@@ -225,14 +256,14 @@ export default function CourseModule({ m, c }: { m: LabModule; c: Course }) {
         {step === 4 && <Worked c={c} nav={<Nav />} />}
 
         {step === 5 && <>
-          <div className="card p-6"><h2 className="text-2xl">Guided practice</h2><p className="text-muted mt-1">Three real ECGs. Use the calipers, ask for a hint if you need one, and read the explanation after each.</p></div>
+          <div className="card p-6"><h2 className="text-2xl">Guided practice</h2><p className="text-muted mt-1">{c.guided.length} real ECGs. Use the calipers, ask for a hint if you need one, and read the explanation after each.</p></div>
           <Series key={`g${step}`} c={c} ids={c.guided.map(g => g.ecg)} hints={c.guided.map(g => g.hint)} onFinish={() => go(6)} />
         </>}
 
         {step === 6 && <>
           <div className="card p-6 flex flex-col gap-2">
             <h2 className="text-2xl">Checkpoint: {c.pools.check} unseen ECGs</h2>
-            <p className="text-muted">No hints this time. {c.pools.checkOther} of them are look-alikes that are not sinus rhythm. Get {c.pools.pass} of {c.pools.check} right to complete the module: the right answer, with {c.fields.length > 1 ? 'no more than one measurement off' : 'the measurement close to the true value'}.{cp.best ? ` Your best so far: ${cp.best[0]}/${cp.best[1]}.` : ''}</p>
+            <p className="text-muted">No hints this time. {c.pools.checkOther ? `${c.pools.checkOther} of them are look-alikes from other topics. ` : ''}Get {c.pools.pass} of {c.pools.check} right to complete the module: {c.mode === 'read' ? 'the right diagnosis with at least 7 in 10 steps right' : <>the right answer, with {c.fields.length > 1 ? 'no more than one measurement off' : 'the measurement close to the true value'}</>}.{cp.best ? ` Your best so far: ${cp.best[0]}/${cp.best[1]}.` : ''}</p>
           </div>
           <Series key={`c${attempt}`} c={c} ids={check} onFinish={finishCheck} />
         </>}

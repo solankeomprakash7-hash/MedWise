@@ -2,6 +2,8 @@
 // step-by-step lesson instead of the open lab.
 export type Course = {
   moduleId: string;
+  /** 'read': every item is the full nine-step read, marked step by step (fields, question and options are unused). */
+  mode?: 'read';
   /** A short bedside case that says why the topic matters. */
   story: { setting: string; text: string[]; question: string; answer: string };
   /** What to look for in the embedded lab. */

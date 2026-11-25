@@ -5,9 +5,13 @@ import { WAVES } from './waves';
 import { AVBLOCK } from './avblock';
 import { BUNDLES } from './bundles';
 import { SVT_COURSE } from './svt';
+import { READ } from './read';
 
-export const COURSES: Record<string, Course> = { waves: WAVES, sinus: SINUS, avblock: AVBLOCK, bundles: BUNDLES, svt: SVT_COURSE };
+const TOPICS: Course[] = [WAVES, SINUS, AVBLOCK, BUNDLES, SVT_COURSE];
+// The read drill draws from every curated real ECG in the topic lessons, minus its own worked and guided ECGs.
+READ.pools.sinus = [...new Set(TOPICS.flatMap(c => [...c.pools.sinus, ...c.guided.map(g => g.ecg), c.worked.ecg]))];
+export const COURSES: Record<string, Course> = Object.fromEntries([...TOPICS, READ].map(c => [c.moduleId, c]));
 
 /** Learning-path units whose content now lives in a full lab module (Learn and Lab are becoming one course). */
-export const UNIT_TO_MODULE: Record<string, string> = { 'l1-heart': 'waves', 'l1-paper': 'waves', 'l1-p': 'waves', 'l1-qrs': 'waves', 'l1-t': 'waves', 'l2-rhythm': 'sinus', 'l3-blocks': 'avblock', 'l2-bbb': 'bundles' };
+export const UNIT_TO_MODULE: Record<string, string> = { 'l1-heart': 'waves', 'l1-paper': 'waves', 'l1-p': 'waves', 'l1-qrs': 'waves', 'l1-t': 'waves', 'l2-rhythm': 'sinus', 'l3-blocks': 'avblock', 'l2-bbb': 'bundles', 'l2-order': 'read' };
 export const COURSE_STEPS = ['Before you start', 'Bedside story', 'Watch', 'Learn the rule', 'Worked example', 'Guided practice', 'Checkpoint', 'Review'] as const;

@@ -51,7 +51,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Apply a voltage criterion for LVH', 'Recognise the strain pattern', 'Spot right ventricular hypertrophy from V1'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
     stations: [W('lvh', 'LV hypertrophy with strain'), W('rvh', 'Right ventricular hypertrophy')] },
-  { id: 'read', n: 7, title: 'Systematic read drill', tier: 'student', minutes: 30, forWho: 'Everyone, weekly',
+  { id: 'read', n: 7, title: 'Systematic read drill', tier: 'student', minutes: 60, forWho: 'Everyone, weekly',
     summary: 'Read an unnamed tracing in nine graded steps, with calipers, against the clock.',
     objectives: ['Read every ECG in the same order', 'Measure intervals with calipers', 'See which step you get wrong most often'],
     tabs: ['read'], stationKind: 'none', check: { kind: 'read', need: 8 }, stations: [] },
