@@ -8,7 +8,7 @@ export type Tier = Plan; // 'free' | 'student' | 'pro'
 export type Check =
   | { kind: 'explore' }                 // every station opened
   | { kind: 'quiz'; need: number }      // every station opened + `need` tracings named correctly in the module quiz
-  | { kind: 'cases' }                   // every case finished
+  | { kind: 'cases' }                   // every case finished, with at least 70% of questions right on best attempts
   | { kind: 'read'; need: number };     // `need` ECGs read with at least 70% of the graded steps right
 export type LabModule = {
   id: string; n: number; title: string; tier: Tier; minutes: number; forWho: string;
@@ -119,7 +119,12 @@ export function moduleStatus(m: LabModule, lp?: LabProgress) {
   } else if (c.kind === 'read') {
     have = Math.min(lp?.reads ?? 0, c.need); need = c.need;
     todo = `Read ${c.need} ECGs with at least 7 in 10 steps right (${have}/${c.need})`;
-  } else todo = c.kind === 'cases' ? `Finish every case (${seen}/${n})` : `Open every station (${seen}/${n})`;
+  } else if (c.kind === 'cases') {
+    const sc = Object.values(lp?.cases || {}), r = sc.reduce((a, x) => a + x[1], 0), t = sc.reduce((a, x) => a + x[2], 0);
+    const pctRight = t ? Math.round(100 * r / t) : 0;
+    todo = seen < n ? `Finish every case (${seen}/${n}) with at least 7 in 10 answers right${t ? ` (now ${pctRight}%)` : ''}` : `Retry cases until at least 7 in 10 answers are right (now ${pctRight}%)`;
+    if (seen >= n && t && r / t < 0.7) have = n - 1; // all finished but below the bar: not yet complete
+  } else todo = `Open every station (${seen}/${n})`;
   const done = !!lp?.done || (need > 0 && have >= need);
   return { pct: done ? 100 : need ? Math.round(100 * have / need) : 0, done, todo, seen, n };
 }

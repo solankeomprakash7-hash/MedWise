@@ -317,7 +317,7 @@ function ReviewStep({ c, cp, last, next, nextOpen, moduleId, plan, uid, onRetry,
 }
 
 /** One question at the moment of success, plus an optional comment. Saved to Firestore `feedback`. */
-function Feedback({ moduleId, plan, uid, rated, onRated, score }: { moduleId: string; plan: string; uid?: string; rated?: number; onRated: (n: number) => void; score: [number, number] }) {
+export function Feedback({ moduleId, plan, uid, rated, onRated, score }: { moduleId: string; plan: string; uid?: string; rated?: number; onRated: (n: number) => void; score: [number, number] }) {
   const [n, setN] = React.useState(0), [txt, setTxt] = React.useState(''), [state, setState] = React.useState<'idle' | 'busy' | 'done' | 'err'>(rated ? 'done' : 'idle');
   if (state === 'done') return <div className="card p-5 text-sm text-muted">Thank you for your feedback on this module.</div>;
   const send = async () => {

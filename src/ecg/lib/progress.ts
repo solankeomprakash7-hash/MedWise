@@ -15,7 +15,9 @@ export type Progress = {
   week: { key: string; reads: number };
   lab?: Record<string, LabProgress>;   // interactive lab modules, keyed by module id
 };
-export type LabProgress = { seen: string[]; right: number; total: number; reads: number; done?: string; course?: CourseProgress };
+export type LabProgress = { seen: string[]; right: number; total: number; reads: number; done?: string; course?: CourseProgress;
+  /** Clinical cases: [right on the first try, best right, questions] per case id. */
+  cases?: Record<string, [number, number, number]>; rated?: number };
 /** The full module format: furthest step reached, pre-test and best checkpoint as [right, total], pass date, feedback given. */
 export type CourseProgress = { step: number; pre?: [number, number]; best?: [number, number]; passed?: string; rated?: number };
 export const emptyLab = (): LabProgress => ({ seen: [], right: 0, total: 0, reads: 0 });
@@ -55,6 +57,12 @@ export function merge(a: Progress, b: Progress): Progress {
       const rated = a?.rated ?? b?.rated; if (rated) c.rated = rated;
       m.course = c;
     }
+    if (o.cases || v.cases) { // keep the earliest first try and the best score of each case
+      const cs: Record<string, [number, number, number]> = { ...(v.cases || {}) };
+      for (const [id, x] of Object.entries(o.cases || {})) { const y = cs[id]; cs[id] = y ? [x[0], Math.max(x[1], y[1]), x[2]] : x; }
+      m.cases = cs;
+    }
+    const rated = o.rated ?? v.rated; if (rated) m.rated = rated;
     const done = [o.done, v.done].filter(Boolean).sort()[0];
     if (done) m.done = done; // Firestore rejects undefined fields
     out.lab[k] = m;
