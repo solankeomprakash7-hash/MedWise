@@ -60,7 +60,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Call broad-complex tachycardia VT until proven otherwise', 'Recognise torsades and its triggers', 'Match each rhythm to shock, drug or observation'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('pvc', 'Ventricular bigeminy'), W('vt', 'Monomorphic VT'), W('tdp', 'Torsades de pointes'), W('vf', 'Ventricular fibrillation')] },
-  { id: 'acs', n: 9, title: 'Ischaemia and infarction', tier: 'pro', minutes: 50, forWho: 'Interns and residents',
+  { id: 'acs', n: 9, title: 'Ischaemia and infarction', tier: 'pro', minutes: 60, forWho: 'Interns and residents',
     summary: 'Territories, reciprocal change and the STEMI equivalents that are missed on night shifts.',
     objectives: ['Map ST elevation to its artery', 'Recognise posterior MI from V1–V3', 'Call Wellens, de Winter and the aVR pattern'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 6 },
