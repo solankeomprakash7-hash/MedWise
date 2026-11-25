@@ -170,9 +170,10 @@ const sources = {
 
 /* ---------- the email list: Firestore REST, collection "waitlist" ---------- */
 {
-  const PROJECT = 'medwise-24a7b';
-  const DB = 'ai-studio-b752a054-3b14-42d8-a1af-ddf9943e031d';
-  const KEY = 'AIzaSyCFF6fBLUItd86JDSdXXhSluvap4rxrTaw';
+  // The web app config of the Firebase project medwise-ecg (public by design; firestore.rules limit writes).
+  const PROJECT = 'medwise-ecg';
+  const DB = '(default)';
+  const KEY = 'AIzaSyDokxhZi3IFo94JabdMAnv7DFQxBsBwFSo';
   const form = $('form[data-firestore]');
   const input = $('#join-email', form), err = $('#join-err', form), status = $('[data-join-status]', form);
   const btn = $('button[type="submit"]', form);
