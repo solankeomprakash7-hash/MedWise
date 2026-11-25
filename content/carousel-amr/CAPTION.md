@@ -1,7 +1,7 @@
 # Koi Aur Dawai? — Instagram carousel (@medwisee)
 
-Upload `export/slide-1.mp4` … `export/slide-9.mp4` in order as one carousel post (each is a 7-second 1080×1350 video).
-If you prefer still images, use `export/slide-1.png` … `slide-9.png` instead.
+Upload `final/01.mp4` … `final/09.mp4` in order as one carousel post (each is a seamless 7-second 1080×1350 loop with a silent audio track).
+Still versions: `final/01.png` … `09.png`.
 
 ## Caption
 
@@ -10,6 +10,8 @@ If you prefer still images, use `export/slide-1.png` … `slide-9.png` instead.
 Seven in ten admitted patients in a national survey were on antibiotics. Imipenem now works on barely a third of Klebsiella samples. The bill goes to a newborn in a NICU who never asked for any of it.
 
 Stewardship isn't a committee. It's the ten seconds before you sign. Slide 8 has the five habits. Save it for your next OPD shift.
+
+Taking the 10-second pause? Comment HAAN.
 
 #AntimicrobialResistance #AMRAwarenessWeek #MedTwitterIndia
 
