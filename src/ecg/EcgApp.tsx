@@ -59,6 +59,13 @@ export default function EcgApp() {
     });
   }, [user]);
   const go = (h: string) => { location.hash = '#/' + h; };
+  // Reviewer preview switch (see PREVIEW in lib/logic.ts); a reload applies it everywhere.
+  React.useEffect(() => {
+    const page = r[0];
+    if (page !== 'preview' && page !== 'preview-off') return;
+    try { if (page === 'preview') localStorage.setItem('medwise-preview', '1'); else localStorage.removeItem('medwise-preview'); } catch { /* storage blocked */ }
+    location.replace(location.pathname + (page === 'preview' ? '#/lab/chambers' : '#/lab')); location.reload();
+  }, [r]);
 
   if (!ready) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-ink" size={36} /></div>;
   if (wantAuth && !user) return <AuthScreen subtitle="ECG course" onBack={() => setWantAuth(false)} />;

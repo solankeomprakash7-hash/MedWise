@@ -46,7 +46,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Separate AF, flutter and AVNRT at the bedside', 'Know when AF is rapid enough to treat now', 'Recognise a junctional rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('af', 'Atrial fibrillation'), W('af_rvr', 'AF with rapid ventricular response'), W('flutter', 'Atrial flutter, 2:1'), W('svt', 'AV nodal re-entry (AVNRT)'), W('junctional', 'Junctional rhythm')] },
-  { id: 'chambers', n: 6, title: 'Chamber enlargement', tier: 'student', minutes: 20, forWho: 'Students and interns',
+  { id: 'chambers', n: 6, title: 'Chamber enlargement', tier: 'student', minutes: 40, forWho: 'Students and interns',
     summary: 'Thick walls make big voltages. See how LV and RV hypertrophy move the vector and strain the ST–T.',
     objectives: ['Apply a voltage criterion for LVH', 'Recognise the strain pattern', 'Spot right ventricular hypertrophy from V1'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
