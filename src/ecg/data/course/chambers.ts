@@ -1,6 +1,5 @@
 // Module 6 · Chamber enlargement. The skill: spot LVH, left and right atrial enlargement against a normal ECG.
-// Uses 12 ECGs added on 2026-11-25 that still wait for clinical review (draft: true), so the lesson is shown only in
-// the reviewer preview until they are signed off (see PREVIEW in lib/logic.ts and index.ts).
+// Uses 12 ECGs added and approved on 2026-11-25.
 import type { Course } from './types';
 
 // Chosen with the textbook criteria checked on the PTB-XL+ measurements, not the label alone:

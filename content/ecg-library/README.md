@@ -26,8 +26,7 @@ Needs network access to physionet.org and `pip install wfdb matplotlib scipy`.
 On 2026-11-25, 17 PTB-XL records were added for Module 6 (chamber enlargement) and to replace the left anterior fascicular
 block ECGs whose axis did not meet the −45° rule. They were picked with `tools/pick_by_criteria.py`, which checks the
 textbook criteria on the PTB-XL+ 12SL measurements (Sokolow–Lyon for LVH, P width or terminal P in V1 for LAE, P height for
-RAE, axis for LAFB) instead of trusting the label alone. They sit in `realEcgs.json` with `draft: true` and appear in
-`shortlist.csv` with a note. Draft ECGs are hidden from learners; open `/ecg#/preview` to review them (and the Module 6
+RAE, axis for LAFB) instead of trusting the label alone. They appear in `shortlist.csv` with a note. Draft ECGs are hidden from learners; open `/ecg#/preview` to review them (and the Module 6
 lesson), and `/ecg#/preview-off` to hide them again. After review, set `draft: false` and add `reviewed: <date>`.
 
 ## Teaching-model variants
@@ -43,3 +42,7 @@ size and rate) and digoxin (depth of ST sag). The default tracings are unchanged
 
 Mimic variants (Module 11): pericarditis (size of the diffuse ST elevation and PR depression), Brugada (cove depth),
 PE (right-ventricular strain) and limb lead reversal (rate only).
+
+All 26 ECGs added on 2026-11-25 (17 chamber and LAFB, 9 STEMIs) were approved by the product owner the same day:
+`draft: false`, `reviewed: 2026-11-25`. Modules 6 and 9 are therefore open to learners; the reviewer preview stays available
+for future additions.

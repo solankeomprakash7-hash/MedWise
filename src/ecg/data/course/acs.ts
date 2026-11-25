@@ -3,8 +3,8 @@
 //
 // Every "STEMI" here was checked against the 4th Universal Definition of MI on the PTB-XL+ J-point ST amplitudes
 // (tools/stemi_check.py): ST elevation in two contiguous leads, ≥1 mm (≥2 mm in V2–V3 in men 40 and over, ≥2.5 mm under 40,
-// ≥1.5 mm in women), with an "acute" or "recent" report, sinus rhythm and a narrow QRS. The 9 STEMIs added on 2026-11-25
-// wait for clinical review, so this lesson shows only in the reviewer preview until they are signed off.
+// ≥1.5 mm in women), with an "acute" or "recent" report, sinus rhythm and a narrow QRS. The 9 STEMIs were added and
+// approved on 2026-11-25.
 //
 // Left out on purpose:
 //   labelled "acute MI" but not meeting STEMI criteria on measurement: ptbxl-12841, -15811, -3219, -6172, -8652, -18198;
