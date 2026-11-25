@@ -41,7 +41,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Read RBBB and LBBB from V1 and V6', 'Spot left axis deviation from a fascicular block', 'Recognise a delta wave and a paced rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('rbbb', 'Right bundle branch block'), W('lbbb', 'Left bundle branch block'), W('lafb', 'Left anterior fascicular block'), W('wpw', 'Wolff–Parkinson–White'), W('paced', 'Ventricular paced rhythm')] },
-  { id: 'svt', n: 5, title: 'Atrial and narrow-complex rhythms', tier: 'student', minutes: 40, forWho: 'Students and interns',
+  { id: 'svt', n: 5, title: 'Atrial and narrow-complex rhythms', tier: 'student', minutes: 50, forWho: 'Students and interns',
     summary: 'Fibrillation, flutter circuits, re-entry and junctional escape, each drawn on the heart as it happens.',
     objectives: ['Separate AF, flutter and AVNRT at the bedside', 'Know when AF is rapid enough to treat now', 'Recognise a junctional rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
