@@ -15,7 +15,9 @@ export type Progress = {
   week: { key: string; reads: number };
   lab?: Record<string, LabProgress>;   // interactive lab modules, keyed by module id
 };
-export type LabProgress = { seen: string[]; right: number; total: number; reads: number; done?: string };
+export type LabProgress = { seen: string[]; right: number; total: number; reads: number; done?: string; course?: CourseProgress };
+/** The full module format: furthest step reached, pre-test and best checkpoint as [right, total], pass date, feedback given. */
+export type CourseProgress = { step: number; pre?: [number, number]; best?: [number, number]; passed?: string; rated?: number };
 export const emptyLab = (): LabProgress => ({ seen: [], right: 0, total: 0, reads: 0 });
 export type Plan = 'free' | 'student' | 'pro';
 
@@ -45,6 +47,14 @@ export function merge(a: Progress, b: Progress): Progress {
     const o = out.lab[k];
     if (!o) { out.lab[k] = v; continue; }
     const m: LabProgress = { seen: [...new Set([...o.seen, ...v.seen])], right: Math.max(o.right, v.right), total: Math.max(o.total, v.total), reads: Math.max(o.reads, v.reads) };
+    if (o.course || v.course) { // keep the further step, the earlier pre-test, the better checkpoint
+      const a = o.course, b = v.course, c: CourseProgress = { step: Math.max(a?.step ?? 0, b?.step ?? 0) };
+      const pre = a?.pre ?? b?.pre; if (pre) c.pre = pre;
+      const best = [a?.best, b?.best].filter(Boolean).sort((x, y) => y![0] / y![1] - x![0] / x![1])[0]; if (best) c.best = best;
+      const passed = [a?.passed, b?.passed].filter(Boolean).sort()[0]; if (passed) c.passed = passed;
+      const rated = a?.rated ?? b?.rated; if (rated) c.rated = rated;
+      m.course = c;
+    }
     const done = [o.done, v.done].filter(Boolean).sort()[0];
     if (done) m.done = done; // Firestore rejects undefined fields
     out.lab[k] = m;

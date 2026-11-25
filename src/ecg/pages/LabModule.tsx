@@ -5,6 +5,8 @@ import { emptyLab, today, type LabProgress } from '../lib/progress';
 import { FEATS, PRICE, inr } from '../data/plans';
 import { Check, Lock, ChevronLeft, ChevronRight, Target, PartyPopper, X } from 'lucide-react';
 import ProgressRing from '../components/ProgressRing';
+import CourseModule from '../components/CourseModule';
+import { COURSES } from '../data/course';
 
 /** Apply one message from the lab to a module's progress; null when the message changes nothing. */
 function applyMsg(m: Mod, prev: LabProgress | undefined, d: LabMsg): LabProgress | null {
@@ -36,7 +38,8 @@ export default function LabModule({ id }: { id: string }) {
   const { plan } = useApp();
   const m = LAB_MODULES.find(x => x.id === id);
   if (!m) return <p>Module not found. <a className="underline" href="#/lab">Back to the lab</a></p>;
-  return labOpen(plan, m.tier) ? <OpenModule m={m} key={m.id} /> : <Locked m={m} />;
+  if (!labOpen(plan, m.tier)) return <Locked m={m} />;
+  return COURSES[m.id] ? <CourseModule m={m} c={COURSES[m.id]} key={m.id} /> : <OpenModule m={m} key={m.id} />;
 }
 
 function Head({ m }: { m: Mod }) {

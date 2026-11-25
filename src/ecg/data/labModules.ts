@@ -1,6 +1,7 @@
 // The interactive lab as a course of modules. Each module opens public/ecg-lab.html limited to its own
 // patterns, modes and cases (?embed=1&module=…&only=…&tabs=…&cases=…); the lab reports progress back.
 import type { LabProgress, Plan } from '../lib/progress';
+import { COURSES, COURSE_STEPS } from './course';
 
 export type Station = { id: string; name: string };
 export type Tier = Plan; // 'free' | 'student' | 'pro'
@@ -25,7 +26,7 @@ export const LAB_MODULES: LabModule[] = [
     objectives: ['Name P, Q, R, S, T and U and the event behind each one', 'Measure PR, QRS and QT on the grid', 'Recognise the normal and abnormal forms of every wave'],
     tabs: ['waves'], stationKind: 'wave', check: { kind: 'explore' },
     stations: [W('overview', 'A beat, letter by letter'), W('P', 'P wave'), W('Q', 'Q wave'), W('R', 'R wave'), W('S', 'S wave'), W('T', 'T wave'), W('U', 'U wave')] },
-  { id: 'sinus', n: 2, title: 'Sinus rhythm and rate', tier: 'free', minutes: 25, forWho: 'Start here',
+  { id: 'sinus', n: 2, title: 'Sinus rhythm and rate', tier: 'free', minutes: 45, forWho: 'Start here',
     summary: 'The reference tracing, and what happens to it when the sinus node speeds up or slows down.',
     objectives: ['Confirm sinus rhythm in four checks', 'Calculate the rate two ways', 'Change the rate and watch the QT shorten'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
@@ -105,6 +106,11 @@ export function labSrc(m: LabModule, plan: Plan, start?: string) {
 
 /** How far a learner is through a module, and what is left. */
 export function moduleStatus(m: LabModule, lp?: LabProgress) {
+  if (COURSES[m.id]) { // full-format module: steps reached, done when the checkpoint is passed
+    const c = lp?.course, steps = COURSE_STEPS.length, done = !!c?.passed;
+    const at = Math.min(c?.step ?? 0, steps - 1);
+    return { pct: done ? 100 : Math.round(100 * at / steps), done, todo: done ? '' : c?.step ? `Next: ${COURSE_STEPS[at]}` : `${steps} steps, ending in a checkpoint on unseen real ECGs`, seen: at, n: steps };
+  }
   const seen = m.stations.filter(s => lp?.seen.includes(s.id)).length, n = m.stations.length, c = m.check;
   let have = seen, need = n, todo = '';
   if (c.kind === 'quiz') {

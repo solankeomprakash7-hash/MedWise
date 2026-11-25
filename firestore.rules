@@ -17,6 +17,16 @@ service cloud.firestore {
         && request.resource.data.email is string && request.resource.data.email.size() < 200;
       allow read, update, delete: if false;
     }
+    // Module feedback: anyone may add one rating (1-5) with an optional short comment; nobody may read or change it from the app.
+    match /feedback/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['module', 'rating', 'comment', 'plan', 'uid', 'score', 'of', 'createdAt'])
+        && request.resource.data.module is string && request.resource.data.module.size() < 40
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.comment is string && request.resource.data.comment.size() <= 1000
+        && (request.resource.data.uid == null || (request.auth != null && request.resource.data.uid == request.auth.uid))
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
+    }
     // Payment records: server only.
     match /payments/{id} { allow read, write: if false; }
   }
