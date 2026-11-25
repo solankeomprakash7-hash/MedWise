@@ -1,7 +1,8 @@
 __pycache__/
-audio/
+audio/*
+!audio/overrides.json
 assets/prep/
 assets/data/
 out/*
-!out/koi-aur-dawai-draft.mp4
+!out/koi-aur-dawai-indian-voice.mp4
 !out/captions.srt
