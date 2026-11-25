@@ -3,7 +3,32 @@ import { useApp } from '../EcgApp';
 import { LAB_MODULES, TIER_LABEL, labOpen, labSrc, moduleStatus, type LabModule as Mod } from '../data/labModules';
 import { emptyLab, today, type LabProgress } from '../lib/progress';
 import { FEATS, PRICE, inr } from '../data/plans';
-import { Check, Lock, ChevronLeft, ChevronRight, Target } from 'lucide-react';
+import { Check, Lock, ChevronLeft, ChevronRight, Target, PartyPopper, X } from 'lucide-react';
+import ProgressRing from '../components/ProgressRing';
+
+/** Apply one message from the lab to a module's progress; null when the message changes nothing. */
+function applyMsg(m: Mod, prev: LabProgress | undefined, d: LabMsg): LabProgress | null {
+  const cur: LabProgress = { ...emptyLab(), ...(prev || {}) };
+  const seen = new Set(cur.seen);
+  if (d.ev === 'view' && d.id && d.kind === m.stationKind) seen.add(d.id);
+  else if (d.ev === 'case' && d.id) seen.add(d.id);
+  else if (d.ev === 'quiz') { cur.total++; if (d.ok) cur.right++; }
+  else if (d.ev === 'read' && d.total) { cur.total++; if ((d.right ?? 0) / d.total >= 0.7) { cur.right++; cur.reads++; } }
+  else return null;
+  cur.seen = m.stations.filter(s => seen.has(s.id)).map(s => s.id);
+  if (!cur.done && moduleStatus(m, cur).done) cur.done = today();
+  return cur;
+}
+/** A one-line note on what just happened, for the toast. */
+function noteFor(m: Mod, before: LabProgress | undefined, after: LabProgress, d: LabMsg): [string, 'ok' | 'bad' | 'info'] | null {
+  if (after.done && !before?.done) return ['Module complete', 'ok'];
+  const name = m.stations.find(s => s.id === d.id)?.name;
+  if ((d.ev === 'view' || d.ev === 'case') && after.seen.length > (before?.seen.length ?? 0))
+    return [`${d.ev === 'case' ? 'Case finished' : 'Station explored'}: ${name} · ${after.seen.length}/${m.stations.length}`, 'info'];
+  if (d.ev === 'quiz' && m.check.kind === 'quiz') return d.ok ? [`Correct · ${Math.min(after.right, m.check.need)}/${m.check.need} for the module`, 'ok'] : ['Not quite. Read the notes, then try the next one', 'bad'];
+  if (d.ev === 'read' && m.check.kind === 'read') return after.reads > (before?.reads ?? 0) ? [`Good read · ${Math.min(after.reads, m.check.need)}/${m.check.need}`, 'ok'] : ['Below 7 in 10 steps. Check the tips and read another', 'bad'];
+  return null;
+}
 
 type LabMsg = { src: 'medwise-lab'; module: string; ev: 'view' | 'quiz' | 'case' | 'read'; kind?: string; id?: string; ok?: boolean; right?: number; total?: number };
 
@@ -33,26 +58,28 @@ function OpenModule({ m }: { m: Mod }) {
   const lp = p.lab?.[m.id];
   const st = moduleStatus(m, lp);
   const idx = LAB_MODULES.indexOf(m), next = LAB_MODULES[idx + 1];
+  const lpRef = React.useRef(lp); lpRef.current = lp;
+  const [toast, setToast] = React.useState<{ text: string; tone: 'ok' | 'bad' | 'info'; k: number } | null>(null);
+  const [fresh, setFresh] = React.useState<string | null>(null);
+  const [celebrate, setCelebrate] = React.useState(false);
+  const tRef = React.useRef<number | undefined>(undefined);
+  const flash = (text: string, tone: 'ok' | 'bad' | 'info') => { setToast({ text, tone, k: Date.now() }); clearTimeout(tRef.current); tRef.current = window.setTimeout(() => setToast(null), 2600); };
+  React.useEffect(() => () => clearTimeout(tRef.current), []);
+  const nextStation = m.stations.find(s => !lp?.seen.includes(s.id));
 
   React.useEffect(() => {
     const on = (e: MessageEvent) => {
       const d = e.data as LabMsg;
       if (e.origin !== location.origin || e.source !== frame.current?.contentWindow || !d || d.src !== 'medwise-lab' || d.module !== m.id) return;
-      update(pr => {
-        const cur: LabProgress = { ...emptyLab(), ...(pr.lab?.[m.id] || {}) };
-        const seen = new Set(cur.seen);
-        if (d.ev === 'view' && d.id && d.kind === m.stationKind) seen.add(d.id);
-        else if (d.ev === 'case' && d.id) seen.add(d.id);
-        else if (d.ev === 'quiz') { cur.total++; if (d.ok) cur.right++; }
-        else if (d.ev === 'read' && d.total) { cur.total++; if ((d.right ?? 0) / d.total >= 0.7) { cur.right++; cur.reads++; } }
-        else return pr;
-        cur.seen = m.stations.filter(s => seen.has(s.id)).map(s => s.id);
-        if (!cur.done && moduleStatus(m, cur).done) cur.done = today();
-        return { ...pr, lab: { ...(pr.lab || {}), [m.id]: cur } };
-      });
+      const before = lpRef.current, after = applyMsg(m, before, d);
+      if (!after) return;
+      update(pr => { const c = applyMsg(m, pr.lab?.[m.id], d); return c ? { ...pr, lab: { ...(pr.lab || {}), [m.id]: c } } : pr; });
+      const n = noteFor(m, before, after, d); if (n) flash(n[0], n[1]);
+      if (after.seen.length > (before?.seen.length ?? 0) && d.id) setFresh(d.id);
+      if (after.done && !before?.done) setCelebrate(true);
     };
     addEventListener('message', on); return () => removeEventListener('message', on);
-  }, [m, update]);
+  }, [m, update]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goStation = (sid: string) => {
     const w = frame.current?.contentWindow; if (!w) return;
@@ -70,22 +97,29 @@ function OpenModule({ m }: { m: Mod }) {
           <iframe ref={frame} title={`Interactive ECG lab: ${m.title}`} src={src} className="w-full block" style={{ height: '86vh', minHeight: 640, border: 0 }} />
         </div>
         <aside className="flex flex-col gap-4 order-1 lg:order-2 lg:sticky lg:top-20">
-          <div className="card p-5 flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <span className="eyebrow">Your progress</span>
-              {st.done ? <span className="chip-accent"><Check size={12} />Complete</span> : <span className="font-mono text-sm tabular-nums">{st.pct}%</span>}
+          {celebrate ? <div className="card p-5 flex flex-col gap-3 border-ok shadow-[inset_0_3px_0_var(--color-ok)] path-preview" role="status">
+            <div className="flex items-center gap-3"><ProgressRing pct={100} done size={44} /><div><p className="eyebrow text-ok">Module {m.n} complete</p><p className="text-lg leading-tight">{m.title}</p></div></div>
+            <p className="text-sm text-muted flex gap-2"><PartyPopper size={16} className="shrink-0 mt-0.5 text-gold-ink" />Done. It stays open for revision{next ? `, and Module ${next.n} is next.` : '.'}</p>
+            {next && <a href={`#/lab/${next.id}`} className="btn-primary btn-arrow">{labOpen(plan, next.tier) ? `Start Module ${next.n}` : `See Module ${next.n}`}</a>}
+            <button className="text-sm text-muted hover:text-ink w-fit" onClick={() => setCelebrate(false)}>Keep exploring this module</button>
+          </div> : <div className="card p-5 flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <ProgressRing pct={st.pct} done={st.done} size={48}>{st.pct}%</ProgressRing>
+              <div className="min-w-0"><p className="eyebrow">Your progress</p>
+                <p className="text-sm mt-0.5">{st.done ? 'Module complete' : m.check.kind === 'quiz' && lp?.total ? <span className="font-mono tabular-nums">Quiz {lp.right}/{lp.total}</span> : st.pct ? 'Keep going' : 'Not started'}</p></div>
             </div>
-            <span className="h-1.5 rounded-full bg-line overflow-hidden"><span className={`block h-full rounded-full ${st.done ? 'bg-ok' : 'bg-accent'}`} style={{ width: `${st.pct}%` }} /></span>
-            <p className="text-sm text-muted flex gap-2"><Target size={16} className="shrink-0 mt-0.5 text-accent-ink" />{st.done ? 'Module complete. Revisit any station whenever you like.' : st.todo}</p>
-            {m.check.kind === 'quiz' && <button className="btn-secondary !h-9 !text-sm" onClick={quizMode}>Take the module quiz{lp?.total ? ` · ${lp.right}/${lp.total}` : ''}</button>}
-          </div>
+            <p className="text-sm text-muted flex gap-2"><Target size={16} className="shrink-0 mt-0.5 text-accent-ink" />{st.done ? 'Revisit any station whenever you like.' : st.todo}</p>
+            {nextStation && m.stationKind !== 'none' && <button className="btn-primary !h-10 !text-sm btn-arrow" onClick={() => goStation(nextStation.id)}>
+              {lp?.seen.length ? 'Next' : 'First'} {m.stationKind === 'case' ? 'case' : 'station'}: {nextStation.name}</button>}
+            {m.check.kind === 'quiz' && <button className={`${nextStation ? 'btn-secondary' : 'btn-primary'} !h-10 !text-sm`} onClick={quizMode}>Take the module quiz</button>}
+          </div>}
           {m.stations.length > 0 && <div className="card overflow-hidden">
             <p className="eyebrow px-5 pt-4 pb-2">{m.stationKind === 'case' ? 'Cases' : 'Stations'}</p>
             <ol className="max-h-[44vh] overflow-y-auto">
               {m.stations.map((s, i) => {
                 const ok = lp?.seen.includes(s.id);
                 return <li key={s.id}><button onClick={() => goStation(s.id)} className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-surface border-t border-line">
-                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-mono shrink-0 ${ok ? 'bg-ok text-white' : 'border border-line-strong'}`}>{ok ? <Check size={13} /> : i + 1}</span>
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-mono shrink-0 ${ok ? 'bg-ok text-white' : 'border border-line-strong'} ${fresh === s.id ? 'tick-new' : ''}`}>{ok ? <Check size={13} /> : i + 1}</span>
                   <span className="text-sm">{s.name}</span></button></li>;
               })}
             </ol>
@@ -94,10 +128,13 @@ function OpenModule({ m }: { m: Mod }) {
             <p className="eyebrow mb-2">By the end you can</p>
             <ul className="flex flex-col gap-2 text-sm">{m.objectives.map(o => <li key={o} className="flex gap-2"><span className="h-1.5 w-1.5 bg-accent mt-2 shrink-0" />{o}</li>)}</ul>
           </div>
-          {next && <a href={`#/lab/${next.id}`} className={`${st.done ? 'btn-primary' : 'btn-secondary'} justify-between`}>
+          {next && !celebrate && <a href={`#/lab/${next.id}`} className={`${st.done ? 'btn-primary' : 'btn-secondary'} justify-between`}>
             <span className="truncate">Next: {next.title}</span>{labOpen(plan, next.tier) ? <ChevronRight size={16} /> : <Lock size={14} />}</a>}
         </aside>
       </div>
+      <div className="sr-only" aria-live="polite">{toast?.text}</div>
+      {toast && <div key={toast.k} className={`mw-toast fixed left-1/2 bottom-24 md:bottom-8 z-50 -translate-x-1/2 flex items-center gap-2 rounded-full px-4 h-11 text-sm font-medium shadow-lg max-w-[calc(100vw-32px)] ${toast.tone === 'ok' ? 'bg-ok text-white' : toast.tone === 'bad' ? 'bg-ink text-white' : 'bg-card text-ink border border-line'}`} aria-hidden="true">
+        {toast.tone === 'ok' ? <Check size={16} /> : toast.tone === 'bad' ? <X size={16} /> : <span className="w-2 h-2 rounded-full bg-accent" />}<span className="truncate">{toast.text}</span></div>}
     </article>
   );
 }

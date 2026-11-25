@@ -111,6 +111,25 @@
   .hint { @apply text-sm text-muted leading-snug; }
 }
 
+/* ---- interaction moments (all off under reduced motion, see below) ---- */
+/* the next module on the path breathes like a monitor dot */
+.path-here::before { content: ""; position: absolute; inset: -4px; border-radius: 999px; border: 2px solid var(--color-accent); animation: mw-pulse 1.8s var(--ease) infinite; }
+@keyframes mw-pulse { 0% { opacity: .7; transform: scale(.92); } 70% { opacity: 0; transform: scale(1.25); } 100% { opacity: 0; transform: scale(1.25); } }
+.path-preview { animation: mw-rise 220ms var(--ease); }
+@keyframes mw-rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+/* answers: a right answer settles in, a wrong one shakes once */
+.spot-opt { transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform 120ms var(--ease); }
+.spot-opt:not(:disabled):active { transform: scale(.98); }
+.spot-opt.is-right { animation: mw-pop 320ms var(--ease); }
+.spot-opt.is-wrong { animation: mw-shake 320ms var(--ease); }
+@keyframes mw-pop { 0% { transform: scale(.97); } 60% { transform: scale(1.02); } 100% { transform: none; } }
+@keyframes mw-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+/* station rows: a fresh tick pops; a toast slides up from the bottom edge */
+.tick-new { animation: mw-pop 420ms var(--ease); }
+.mw-toast { animation: mw-toast-in 260ms var(--ease); }
+@keyframes mw-toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.bar-fill { transition: width 600ms var(--ease); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
