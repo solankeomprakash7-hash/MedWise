@@ -1,0 +1,7 @@
+__pycache__/
+audio/
+assets/prep/
+assets/data/
+out/*
+!out/koi-aur-dawai-draft.mp4
+!out/captions.srt
