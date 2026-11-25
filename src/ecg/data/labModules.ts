@@ -1,6 +1,7 @@
 // The interactive lab as a course of modules. Each module opens public/ecg-lab.html limited to its own
 // patterns, modes and cases (?embed=1&module=…&only=…&tabs=…&cases=…); the lab reports progress back.
 import type { LabProgress, Plan } from '../lib/progress';
+import { COURSES, COURSE_STEPS } from './course';
 
 export type Station = { id: string; name: string };
 export type Tier = Plan; // 'free' | 'student' | 'pro'
@@ -20,37 +21,37 @@ export type LabModule = {
 const W = (id: string, name: string): Station => ({ id, name });
 
 export const LAB_MODULES: LabModule[] = [
-  { id: 'waves', n: 1, title: 'Waves and intervals', tier: 'free', minutes: 40, forWho: 'Start here',
+  { id: 'waves', n: 1, title: 'Waves and intervals', tier: 'free', minutes: 50, forWho: 'Start here',
     summary: 'Watch one beat being written, letter by letter, while the heart depolarises on screen.',
     objectives: ['Name P, Q, R, S, T and U and the event behind each one', 'Measure PR, QRS and QT on the grid', 'Recognise the normal and abnormal forms of every wave'],
     tabs: ['waves'], stationKind: 'wave', check: { kind: 'explore' },
     stations: [W('overview', 'A beat, letter by letter'), W('P', 'P wave'), W('Q', 'Q wave'), W('R', 'R wave'), W('S', 'S wave'), W('T', 'T wave'), W('U', 'U wave')] },
-  { id: 'sinus', n: 2, title: 'Sinus rhythm and rate', tier: 'free', minutes: 25, forWho: 'Start here',
+  { id: 'sinus', n: 2, title: 'Sinus rhythm and rate', tier: 'free', minutes: 45, forWho: 'Start here',
     summary: 'The reference tracing, and what happens to it when the sinus node speeds up or slows down.',
     objectives: ['Confirm sinus rhythm in four checks', 'Calculate the rate two ways', 'Change the rate and watch the QT shorten'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
     stations: [W('normal', 'Normal sinus rhythm'), W('sinus_brady', 'Sinus bradycardia'), W('sinus_tachy', 'Sinus tachycardia')] },
-  { id: 'avblock', n: 3, title: 'AV blocks', tier: 'student', minutes: 35, forWho: 'Students and interns',
+  { id: 'avblock', n: 3, title: 'AV blocks', tier: 'student', minutes: 45, forWho: 'Students and interns',
     summary: 'Watch the impulse stall in the AV node, then fail to cross it, beat by beat.',
     objectives: ['Tell first-degree, Mobitz I, Mobitz II and complete block apart', 'Find the block on the heart, not just the strip', 'Know which ones need pacing pads'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('avb1', 'First-degree AV block'), W('mobitz1', 'Mobitz I (Wenckebach)'), W('mobitz2', 'Mobitz II'), W('chb', 'Complete heart block')] },
-  { id: 'bundles', n: 4, title: 'Bundle branches, fascicles and pacing', tier: 'student', minutes: 40, forWho: 'Students and interns',
+  { id: 'bundles', n: 4, title: 'Bundle branches, fascicles and pacing', tier: 'student', minutes: 50, forWho: 'Students and interns',
     summary: 'Why a blocked bundle widens the QRS, how pre-excitation slurs it, and what a pacemaker looks like.',
     objectives: ['Read RBBB and LBBB from V1 and V6', 'Spot left axis deviation from a fascicular block', 'Recognise a delta wave and a paced rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('rbbb', 'Right bundle branch block'), W('lbbb', 'Left bundle branch block'), W('lafb', 'Left anterior fascicular block'), W('wpw', 'Wolff–Parkinson–White'), W('paced', 'Ventricular paced rhythm')] },
-  { id: 'svt', n: 5, title: 'Atrial and narrow-complex rhythms', tier: 'student', minutes: 40, forWho: 'Students and interns',
+  { id: 'svt', n: 5, title: 'Atrial and narrow-complex rhythms', tier: 'student', minutes: 50, forWho: 'Students and interns',
     summary: 'Fibrillation, flutter circuits, re-entry and junctional escape, each drawn on the heart as it happens.',
     objectives: ['Separate AF, flutter and AVNRT at the bedside', 'Know when AF is rapid enough to treat now', 'Recognise a junctional rhythm'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('af', 'Atrial fibrillation'), W('af_rvr', 'AF with rapid ventricular response'), W('flutter', 'Atrial flutter, 2:1'), W('svt', 'AV nodal re-entry (AVNRT)'), W('junctional', 'Junctional rhythm')] },
-  { id: 'chambers', n: 6, title: 'Chamber enlargement', tier: 'student', minutes: 20, forWho: 'Students and interns',
+  { id: 'chambers', n: 6, title: 'Chamber enlargement', tier: 'student', minutes: 40, forWho: 'Students and interns',
     summary: 'Thick walls make big voltages. See how LV and RV hypertrophy move the vector and strain the ST–T.',
     objectives: ['Apply a voltage criterion for LVH', 'Recognise the strain pattern', 'Spot right ventricular hypertrophy from V1'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 3 },
     stations: [W('lvh', 'LV hypertrophy with strain'), W('rvh', 'Right ventricular hypertrophy')] },
-  { id: 'read', n: 7, title: 'Systematic read drill', tier: 'student', minutes: 30, forWho: 'Everyone, weekly',
+  { id: 'read', n: 7, title: 'Systematic read drill', tier: 'student', minutes: 60, forWho: 'Everyone, weekly',
     summary: 'Read an unnamed tracing in nine graded steps, with calipers, against the clock.',
     objectives: ['Read every ECG in the same order', 'Measure intervals with calipers', 'See which step you get wrong most often'],
     tabs: ['read'], stationKind: 'none', check: { kind: 'read', need: 8 }, stations: [] },
@@ -105,6 +106,11 @@ export function labSrc(m: LabModule, plan: Plan, start?: string) {
 
 /** How far a learner is through a module, and what is left. */
 export function moduleStatus(m: LabModule, lp?: LabProgress) {
+  if (COURSES[m.id]) { // full-format module: steps reached, done when the checkpoint is passed
+    const c = lp?.course, steps = COURSE_STEPS.length, done = !!c?.passed;
+    const at = Math.min(c?.step ?? 0, steps - 1);
+    return { pct: done ? 100 : Math.round(100 * at / steps), done, todo: done ? '' : c?.step ? `Next: ${COURSE_STEPS[at]}` : `${steps} steps, ending in a checkpoint on unseen real ECGs`, seen: at, n: steps };
+  }
   const seen = m.stations.filter(s => lp?.seen.includes(s.id)).length, n = m.stations.length, c = m.check;
   let have = seen, need = n, todo = '';
   if (c.kind === 'quiz') {

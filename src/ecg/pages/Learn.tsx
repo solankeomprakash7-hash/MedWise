@@ -3,6 +3,8 @@ import { useApp } from '../EcgApp';
 import { LEVELS, unitsFor } from '../data/curriculum';
 import { ECGS, unitOpen } from '../lib/logic';
 import { Check, Lock, ChevronRight } from 'lucide-react';
+import { UNIT_TO_MODULE } from '../data/course';
+import { LAB_MODULES } from '../data/labModules';
 
 export default function Learn() {
   const { p, plan } = useApp();
@@ -38,7 +40,7 @@ export default function Learn() {
                     <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono shrink-0 ${st?.done ? 'bg-ok text-white' : open ? 'border border-line-strong text-ink' : 'bg-surface text-muted'}`}>{st?.done ? <Check size={14} /> : open ? i + 1 : <Lock size={12} />}</span>
                     <span className="flex-1 min-w-0">
                       <span className={`block font-medium ${open ? 'text-ink' : 'text-muted'}`}>{u.title}</span>
-                      <span className="block text-xs text-muted mt-0.5">{u.minutes} min{n ? ` · ${n} practice ECGs` : ''}{st ? ` · quiz ${st.score}/3` : ''}</span>
+                      <span className="block text-xs text-muted mt-0.5">{u.minutes} min{n ? ` · ${n} practice ECGs` : ''}{st ? ` · quiz ${st.score}/3` : ''}{UNIT_TO_MODULE[u.id] ? ` · full lesson in Lab Module ${LAB_MODULES.find(x => x.id === UNIT_TO_MODULE[u.id])?.n}` : ''}</span>
                     </span>
                     <ChevronRight size={18} className="text-line-strong shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:text-ink" />
                   </a></li>;

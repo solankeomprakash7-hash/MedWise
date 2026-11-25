@@ -5,6 +5,7 @@ import { PRICE, inr } from '../data/plans';
 import { Check, Lock, ChevronRight } from 'lucide-react';
 import ProgressRing from '../components/ProgressRing';
 import SpotIt from '../components/SpotIt';
+import { COURSES, COURSE_STEPS } from '../data/course';
 
 const TIERS: { t: Tier; title: string; note: string }[] = [
   { t: 'free', title: 'Free modules', note: 'Open to everyone. No account or card needed; sign in only to keep progress across devices.' },
@@ -69,7 +70,7 @@ function ModuleCard({ m }: { m: LabModule }) {
         <p className="text-sm text-muted mt-1">{m.summary}</p>
       </div>
       <div className="mt-auto flex flex-col gap-2">
-        <span className="text-xs text-muted">{m.stations.length ? `${m.stations.length} ${m.stationKind === 'case' ? 'cases' : 'stations'} · ` : ''}about {m.minutes} min</span>
+        <span className="text-xs text-muted">{COURSES[m.id] ? `Full lesson · ${COURSE_STEPS.length} steps · ` : m.stations.length ? `${m.stations.length} ${m.stationKind === 'case' ? 'cases' : 'stations'} · ` : ''}about {m.minutes} min</span>
         {open ? <span className="flex items-center gap-3">
           <ProgressRing pct={st.pct} done={st.done} size={36}>{st.pct}</ProgressRing>
           <span className="text-sm text-muted flex-1">{st.done ? 'Complete' : st.pct ? 'In progress' : 'Not started'}</span>

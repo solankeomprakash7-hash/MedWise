@@ -9,8 +9,12 @@ export type RealKey = { hr: number | null; regular: boolean; axis: number | null
   rhythm: string[]; tags: string[]; opt: string[]; act: string[] };
 export type RealEcg = { id: string; src: string; rec: string; pattern: string; title: string; level: number; age: string; sex: string; key: RealKey; teach: string; draft: boolean; model?: boolean };
 const realTitle = new Map((REAL as RealEcg[]).map(e => [e.pattern, e.title]));
-/** Real ECGs first; model tracings cover emergencies the open datasets lack. Shared patterns use the real-ECG title. */
-export const ECGS: RealEcg[] = [...(REAL as RealEcg[]), ...(MODEL as RealEcg[]).map(e => ({ ...e, title: realTitle.get(e.pattern) || e.title }))];
+/** Reviewer preview: open /ecg#/preview on a device to see draft ECGs and lessons that wait for clinical review
+ *  (#/preview-off hides them again). Learners never see drafts. */
+export const PREVIEW = (() => { try { return localStorage.getItem('medwise-preview') === '1'; } catch { return false; } })();
+/** Real ECGs first; model tracings cover emergencies the open datasets lack. Shared patterns use the real-ECG title.
+ *  Draft ECGs (keys not yet clinically reviewed) are left out unless the reviewer preview is on. */
+export const ECGS: RealEcg[] = [...(REAL as RealEcg[]).filter(e => !e.draft || PREVIEW), ...(MODEL as RealEcg[]).map(e => ({ ...e, title: realTitle.get(e.pattern) || e.title }))];
 /** Answers that also count as right for a pattern. */
 export const DX_ALSO: Record<string, string[]> = { mobitz1: ['avb2'], mobitz2: ['avb2'], avb2: ['mobitz1', 'mobitz2'], af_rvr: ['af'], af: ['af_rvr'] };
 export const dxOk = (pattern: string, ans?: string) => !!ans && (ans === pattern || (DX_ALSO[pattern] || []).includes(ans));
