@@ -42,6 +42,14 @@ from the dataset labels). Keys are generated as drafts; the launch set of 216 wa
 
 ## Lab modules
 
+Eleven modules are full lessons (`src/ecg/data/course/`, player `components/CourseModule.tsx`): pre-test, bedside story,
+watch (lab), the rule with look-alikes, a worked ECG, guided practice, a checkpoint on unseen ECGs, and a review step with
+before/after score, spaced review of misses and one feedback question (Firestore `feedback`). Module 12 (clinical cases) runs
+the lab's 18 cases and keeps first-try and best scores per case. Modules 6 (chambers) and 9 (ischaemia) use ECGs added and approved on
+2026-11-25. New ECGs start as `draft: true` and are hidden from learners; a lesson that depends on them goes in `IN_REVIEW`
+(`data/course/index.ts`) and shows only in the reviewer preview (`/ecg#/preview`, off with `#/preview-off`) until approval. Paid modules were tested by setting their tier to free for the test only.
+
+
 Each module opens `ecg-lab.html?embed=1&module=<id>&tabs=<modes>&only=<pattern ids>&cases=<indexes>`: the lab shows only that
 module's patterns and modes, and posts `{src:'medwise-lab', ev:'view'|'quiz'|'case'|'read'}` to the parent (same origin only).
 `LabModule.tsx` turns these into `progress.lab[<module>]` (stations seen, quiz right/total, good reads, completion date) and can

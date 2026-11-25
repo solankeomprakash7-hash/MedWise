@@ -5,7 +5,7 @@ import { emptyLab, today, type LabProgress } from '../lib/progress';
 import { FEATS, PRICE, inr } from '../data/plans';
 import { Check, Lock, ChevronLeft, ChevronRight, Target, PartyPopper, X } from 'lucide-react';
 import ProgressRing from '../components/ProgressRing';
-import CourseModule from '../components/CourseModule';
+import CourseModule, { Feedback } from '../components/CourseModule';
 import { COURSES } from '../data/course';
 
 /** Apply one message from the lab to a module's progress; null when the message changes nothing. */
@@ -13,7 +13,10 @@ function applyMsg(m: Mod, prev: LabProgress | undefined, d: LabMsg): LabProgress
   const cur: LabProgress = { ...emptyLab(), ...(prev || {}) };
   const seen = new Set(cur.seen);
   if (d.ev === 'view' && d.id && d.kind === m.stationKind) seen.add(d.id);
-  else if (d.ev === 'case' && d.id) seen.add(d.id);
+  else if (d.ev === 'case' && d.id) {
+    seen.add(d.id);
+    if (d.total) { const old = cur.cases?.[d.id], r = d.right ?? 0; cur.cases = { ...(cur.cases || {}), [d.id]: old ? [old[0], Math.max(old[1], r), d.total] : [r, r, d.total] }; }
+  }
   else if (d.ev === 'quiz') { cur.total++; if (d.ok) cur.right++; }
   else if (d.ev === 'read' && d.total) { cur.total++; if ((d.right ?? 0) / d.total >= 0.7) { cur.right++; cur.reads++; } }
   else return null;
@@ -54,7 +57,7 @@ function Head({ m }: { m: Mod }) {
 }
 
 function OpenModule({ m }: { m: Mod }) {
-  const { p, update, plan } = useApp();
+  const { p, update, plan, user } = useApp();
   const frame = React.useRef<HTMLIFrameElement>(null);
   // Build the lab URL once per module, so progress updates never reload the lab.
   const src = React.useMemo(() => labSrc(m, plan), [m.id, plan]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -116,6 +119,24 @@ function OpenModule({ m }: { m: Mod }) {
               {lp?.seen.length ? 'Next' : 'First'} {m.stationKind === 'case' ? 'case' : 'station'}: {nextStation.name}</button>}
             {m.check.kind === 'quiz' && <button className={`${nextStation ? 'btn-secondary' : 'btn-primary'} !h-10 !text-sm`} onClick={quizMode}>Take the module quiz</button>}
           </div>}
+          {m.stationKind === 'case' && lp?.cases && Object.keys(lp.cases).length > 0 && (() => {
+            const sc = Object.entries(lp.cases), sum = (k: 0 | 1) => sc.reduce((a, [, x]) => a + x[k], 0), t = sc.reduce((a, [, x]) => a + x[2], 0);
+            const first = Math.round(100 * sum(0) / t), best = Math.round(100 * sum(1) / t);
+            const weak = sc.filter(([, x]) => x[1] / x[2] < 0.75).sort((a, b) => a[1][1] / a[1][2] - b[1][1] / b[1][2]).slice(0, 3);
+            return <><div className="card p-5 flex flex-col gap-3">
+              <p className="eyebrow">Your case scores · {sc.length} done</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="rounded-md bg-surface border border-line p-3"><p className="text-xs text-muted">First tries</p><p className="font-mono text-2xl tabular-nums">{first}%</p></div>
+                <div className="rounded-md bg-accent-soft border border-line p-3"><p className="text-xs text-accent-ink">Best</p><p className="font-mono text-2xl tabular-nums text-accent-ink">{best}%</p></div>
+              </div>
+              {weak.length > 0 && <div className="flex flex-col gap-1.5"><p className="text-sm text-muted">Worth another try:</p>
+                {weak.map(([id, x]) => <button key={id} onClick={() => goStation(id)} className="text-left text-sm flex justify-between gap-2 hover:text-accent-ink">
+                  <span className="truncate">{m.stations.find(s => s.id === id)?.name}</span><span className="font-mono tabular-nums text-muted">{x[1]}/{x[2]}</span></button>)}</div>}
+            </div>
+              {st.done && <Feedback moduleId={m.id} plan={plan} uid={user?.uid} rated={lp.rated} score={[sum(1), t]}
+                onRated={n => update(pr => ({ ...pr, lab: { ...(pr.lab || {}), [m.id]: { ...emptyLab(), ...(pr.lab?.[m.id] || {}), rated: n } } }))} />}
+            </>;
+          })()}
           {m.stations.length > 0 && <div className="card overflow-hidden">
             <p className="eyebrow px-5 pt-4 pb-2">{m.stationKind === 'case' ? 'Cases' : 'Stations'}</p>
             <ol className="max-h-[44vh] overflow-y-auto">
@@ -123,7 +144,7 @@ function OpenModule({ m }: { m: Mod }) {
                 const ok = lp?.seen.includes(s.id);
                 return <li key={s.id}><button onClick={() => goStation(s.id)} className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-surface border-t border-line">
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-mono shrink-0 ${ok ? 'bg-ok text-white' : 'border border-line-strong'} ${fresh === s.id ? 'tick-new' : ''}`}>{ok ? <Check size={13} /> : i + 1}</span>
-                  <span className="text-sm">{s.name}</span></button></li>;
+                  <span className="text-sm flex-1">{s.name}</span>{lp?.cases?.[s.id] && <span className="font-mono text-xs tabular-nums text-muted">{lp.cases[s.id][1]}/{lp.cases[s.id][2]}</span>}</button></li>;
               })}
             </ol>
           </div>}

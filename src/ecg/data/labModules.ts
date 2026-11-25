@@ -8,7 +8,7 @@ export type Tier = Plan; // 'free' | 'student' | 'pro'
 export type Check =
   | { kind: 'explore' }                 // every station opened
   | { kind: 'quiz'; need: number }      // every station opened + `need` tracings named correctly in the module quiz
-  | { kind: 'cases' }                   // every case finished
+  | { kind: 'cases' }                   // every case finished, with at least 70% of questions right on best attempts
   | { kind: 'read'; need: number };     // `need` ECGs read with at least 70% of the graded steps right
 export type LabModule = {
   id: string; n: number; title: string; tier: Tier; minutes: number; forWho: string;
@@ -55,22 +55,22 @@ export const LAB_MODULES: LabModule[] = [
     summary: 'Read an unnamed tracing in nine graded steps, with calipers, against the clock.',
     objectives: ['Read every ECG in the same order', 'Measure intervals with calipers', 'See which step you get wrong most often'],
     tabs: ['read'], stationKind: 'none', check: { kind: 'read', need: 8 }, stations: [] },
-  { id: 'ventricular', n: 8, title: 'Ventricular rhythms and arrest', tier: 'pro', minutes: 30, forWho: 'Interns and residents',
+  { id: 'ventricular', n: 8, title: 'Ventricular rhythms and arrest', tier: 'pro', minutes: 45, forWho: 'Interns and residents',
     summary: 'Ectopics, VT, torsades and VF: the rhythms where the next minute matters.',
     objectives: ['Call broad-complex tachycardia VT until proven otherwise', 'Recognise torsades and its triggers', 'Match each rhythm to shock, drug or observation'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('pvc', 'Ventricular bigeminy'), W('vt', 'Monomorphic VT'), W('tdp', 'Torsades de pointes'), W('vf', 'Ventricular fibrillation')] },
-  { id: 'acs', n: 9, title: 'Ischaemia and infarction', tier: 'pro', minutes: 50, forWho: 'Interns and residents',
+  { id: 'acs', n: 9, title: 'Ischaemia and infarction', tier: 'pro', minutes: 60, forWho: 'Interns and residents',
     summary: 'Territories, reciprocal change and the STEMI equivalents that are missed on night shifts.',
     objectives: ['Map ST elevation to its artery', 'Recognise posterior MI from V1–V3', 'Call Wellens, de Winter and the aVR pattern'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 6 },
     stations: [W('stemi_ant', 'Anterior STEMI (LAD)'), W('stemi_inf', 'Inferior STEMI (RCA)'), W('stemi_post', 'Posterior MI'), W('old_inf', 'Old inferior MI'), W('nste_avr', 'Diffuse ST depression, aVR elevation'), W('wellens', 'Wellens syndrome'), W('dewinter', 'De Winter T waves')] },
-  { id: 'metabolic', n: 10, title: 'Electrolytes, drugs and temperature', tier: 'pro', minutes: 30, forWho: 'Interns and residents',
+  { id: 'metabolic', n: 10, title: 'Electrolytes, drugs and temperature', tier: 'pro', minutes: 50, forWho: 'Interns and residents',
     summary: 'Potassium, QT-prolonging drugs, digoxin and cold, each with its own signature.',
     objectives: ['Stage hyperkalaemia from the T wave to the sine wave', 'Recognise hypokalaemia and long QT', 'Spot digoxin effect and the Osborn wave'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 5 },
     stations: [W('hyperk', 'Hyperkalaemia'), W('hypok', 'Hypokalaemia'), W('longqt', 'Long QT'), W('digoxin', 'Digoxin effect'), W('hypothermia', 'Hypothermia')] },
-  { id: 'mimics', n: 11, title: 'Must-not-miss and mimics', tier: 'pro', minutes: 30, forWho: 'Residents and exam aspirants',
+  { id: 'mimics', n: 11, title: 'Must-not-miss and mimics', tier: 'pro', minutes: 50, forWho: 'Residents and exam aspirants',
     summary: 'Pericarditis, Brugada, pulmonary embolism and the lead reversal that fools everyone once.',
     objectives: ['Separate pericarditis from STEMI', 'Recognise the type 1 Brugada pattern', 'Catch limb lead reversal before acting on it'],
     tabs: ['learn', 'quiz'], stationKind: 'pattern', check: { kind: 'quiz', need: 4 },
@@ -119,7 +119,12 @@ export function moduleStatus(m: LabModule, lp?: LabProgress) {
   } else if (c.kind === 'read') {
     have = Math.min(lp?.reads ?? 0, c.need); need = c.need;
     todo = `Read ${c.need} ECGs with at least 7 in 10 steps right (${have}/${c.need})`;
-  } else todo = c.kind === 'cases' ? `Finish every case (${seen}/${n})` : `Open every station (${seen}/${n})`;
+  } else if (c.kind === 'cases') {
+    const sc = Object.values(lp?.cases || {}), r = sc.reduce((a, x) => a + x[1], 0), t = sc.reduce((a, x) => a + x[2], 0);
+    const pctRight = t ? Math.round(100 * r / t) : 0;
+    todo = seen < n ? `Finish every case (${seen}/${n}) with at least 7 in 10 answers right${t ? ` (now ${pctRight}%)` : ''}` : `Retry cases until at least 7 in 10 answers are right (now ${pctRight}%)`;
+    if (seen >= n && t && r / t < 0.7) have = n - 1; // all finished but below the bar: not yet complete
+  } else todo = `Open every station (${seen}/${n})`;
   const done = !!lp?.done || (need > 0 && have >= need);
   return { pct: done ? 100 : need ? Math.round(100 * have / need) : 0, done, todo, seen, n };
 }

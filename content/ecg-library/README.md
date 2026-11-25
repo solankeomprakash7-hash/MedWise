@@ -26,6 +26,23 @@ Needs network access to physionet.org and `pip install wfdb matplotlib scipy`.
 On 2026-11-25, 17 PTB-XL records were added for Module 6 (chamber enlargement) and to replace the left anterior fascicular
 block ECGs whose axis did not meet the −45° rule. They were picked with `tools/pick_by_criteria.py`, which checks the
 textbook criteria on the PTB-XL+ 12SL measurements (Sokolow–Lyon for LVH, P width or terminal P in V1 for LAE, P height for
-RAE, axis for LAFB) instead of trusting the label alone. They sit in `realEcgs.json` with `draft: true` and appear in
-`shortlist.csv` with a note. Draft ECGs are hidden from learners; open `/ecg#/preview` to review them (and the Module 6
+RAE, axis for LAFB) instead of trusting the label alone. They appear in `shortlist.csv` with a note. Draft ECGs are hidden from learners; open `/ecg#/preview` to review them (and the Module 6
 lesson), and `/ecg#/preview-off` to hide them again. After review, set `draft: false` and add `reviewed: <date>`.
+
+## Teaching-model variants
+
+The open datasets have no clean VT, VF or torsades, so those lessons use the lab's heart model. `ECG.build(id, rate, variant)`
+in `public/ecg-lab.html` draws other examples of the same rhythm (VT at other rates and with an LBBB-shaped QRS and inferior
+axis, fine and coarse VF, torsades with other twist cycles); without `variant` it gives exactly the reference tracing.
+`tools/model_variants.js` and `tools/draw_models.py` produced the 15 variants in `modelEcgs.json` (ids `model-<rhythm>-v<n>`).
+
+Metabolic variants (Module 10) use the same tools with `JOBS` set: hyperkalaemia in four stages (peaked T; flat P and long
+PR; broad QRS; near sine wave), hypokalaemia (mild and marked U waves), long QT (QTc 520–600 ms), hypothermia (Osborn wave
+size and rate) and digoxin (depth of ST sag). The default tracings are unchanged (checked against the previous lab).
+
+Mimic variants (Module 11): pericarditis (size of the diffuse ST elevation and PR depression), Brugada (cove depth),
+PE (right-ventricular strain) and limb lead reversal (rate only).
+
+All 26 ECGs added on 2026-11-25 (17 chamber and LAFB, 9 STEMIs) were approved by the product owner the same day:
+`draft: false`, `reviewed: 2026-11-25`. Modules 6 and 9 are therefore open to learners; the reviewer preview stays available
+for future additions.

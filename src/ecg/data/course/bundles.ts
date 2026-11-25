@@ -6,11 +6,12 @@ import type { Course } from './types';
 //   ptbxl-16116 (left posterior fascicular block with axis +87°, not right axis deviation)
 //   ptbxl-19330 (WPW with PR 180 ms and QRS 84 ms), ptbxl-12559 (WPW with PR 140 ms): no short PR in the key
 //   ptbxl-18334, ptbxl-8559 (incomplete RBBB with QRS 146 and 126 ms, which would be complete RBBB)
-// Fascicular blocks are taught in the rule but kept out of the checkpoint until their labels are checked.
+// Left anterior fascicular block is tested with 6 ECGs added on 2026-11-25 whose axis is truly beyond −45° (approved that day).
 const NORMAL = ['ptbxl-10492', 'ptbxl-1476', 'ptbxl-4439', 'ptbxl-1899', 'ptbxl-8042', 'ptbxl-18860', 'ptbxl-5799', 'ptbxl-441'];
 const RBBB = ['ptbxl-11614', 'ptbxl-1123', 'ptbxl-9324', 'ptbxl-10359', 'ptbxl-2034'];
 const LBBB = ['ptbxl-11474', 'ptbxl-8868', 'ptbxl-1156', 'ptbxl-4415', 'ptbxl-14181'];
 const WPW = ['ptbxl-9795', 'ptbxl-14653'];
+const LAFB = ['ptbxl-41', 'ptbxl-447', 'ptbxl-520', 'ptbxl-786', 'ptbxl-940', 'ptbxl-1005'];
 const PACED = ['ptbxl-1674', 'ptbxl-12532', 'ptbxl-8060', 'ptbxl-6491', 'ptbxl-2090'];
 
 export const BUNDLES: Course = {
@@ -87,9 +88,9 @@ export const BUNDLES: Course = {
     { ecg: 'ptbxl-12083', hint: 'Zoom in just before each broad QRS. Is there a very thin vertical line?' },
     { ecg: 'ptbxl-6240', hint: 'Measure the PR. Is it shorter than three small squares? Then look at the start of the QRS: does it rise slowly before it shoots up?' },
   ],
-  pools: { sinus: [...NORMAL, ...RBBB, ...LBBB, ...WPW, ...PACED], other: [], pre: 4, check: 10, checkOther: 0, pass: 8 },
+  pools: { sinus: [...NORMAL, ...RBBB, ...LBBB, ...LAFB, ...WPW, ...PACED], other: [], pre: 4, check: 10, checkOther: 0, pass: 8 },
   fields: ['qrs'],
   question: 'What is the conduction?',
-  answer: { normal: 'normal', rbbb: 'rbbb', lbbb: 'lbbb', wpw: 'wpw', paced: 'paced' },
-  options: [['normal', 'Narrow QRS, normal conduction'], ['rbbb', 'Right bundle branch block'], ['lbbb', 'Left bundle branch block'], ['wpw', 'Pre-excitation (WPW pattern)'], ['paced', 'Ventricular paced rhythm']],
+  answer: { normal: 'normal', rbbb: 'rbbb', lbbb: 'lbbb', lafb: 'lafb', wpw: 'wpw', paced: 'paced' },
+  options: [['normal', 'Narrow QRS, normal conduction'], ['rbbb', 'Right bundle branch block'], ['lbbb', 'Left bundle branch block'], ['lafb', 'Left anterior fascicular block'], ['wpw', 'Pre-excitation (WPW pattern)'], ['paced', 'Ventricular paced rhythm']],
 };
