@@ -1,36 +1,50 @@
-# Next Patient: beat table
+# Koi Aur Dawai?: beat table
 
-28 lines, 1:57.0 total, ESTIMATED from letter counts (no voice yet).
+37 lines, 2:29.8 total, ESTIMATED from letter counts (no voice yet).
 
 Hero = the one thing the camera is on (everything else dims). Typed = text drawn in code; a phrase is either typed or shown on a real document, never both.
 
 | # | Start | Len | Narration | Hero on screen | Typed |
 |---|---|---|---|---|---|
-| 1 | 0:00.9 | 3.0s | Monday OPD. Fever for three days. Body ache. Runny nose. | an OPD token slip, set big; symptoms ticked one by one | OPD · TOKEN 47 |
-| 2 | 0:04.3 | 3.8s | "Doctor sahab, koi strong antibiotic de dijiye. Kal office jaana hai." | the empty patient's stool beside the desk; subtitle only (burned captions) | -- |
-| 3 | 0:08.6 | 4.2s | We know it is probably viral. And we know exactly how the next ten seconds go. | a 10-second clock starts ticking on 'ten seconds' | 0:10 |
-| 4 | 0:13.2 | 3.0s | Azithromycin. Once a day, for three days. Next patient. | a handwritten prescription slip, labelled RECREATION; the pen stroke lands on 'Next patient' | Tab. AZITHRO 500 · OD × 3 |
-| 5 | 0:16.6 | 1.5s | It feels harmless. It is not. | the slip tilts and darkens | -- |
-| 6 | 0:19.1 | 0.8s | Next patient. | title, set huge | NEXT PATIENT |
-| 7 | 0:21.3 | 4.6s | A national survey looked inside twenty Indian hospitals, across fifteen states. | India map; twenty pins drop in | NCDC · 20 HOSPITALS |
-| 8 | 0:26.4 | 3.5s | Seven out of every ten admitted patients were on antibiotics. | ten bed icons; seven turn red | 72% |
-| 9 | 0:30.3 | 3.5s | More than half of those were given just in case, as prophylaxis. | counter rolls to 55% | 55% · "JUST IN CASE" |
-| 10 | 0:34.3 | 5.4s | And nine in ten surgical patients got them for longer than a day, when one dose is usually enough. | counter rolls to 91%; a calendar strip runs past day one | 91% · MORE THAN 1 DAY |
-| 11 | 0:40.7 | 1.8s | The bacteria are keeping count. | red string draws from the stat cards to a lab report | -- |
-| 12 | 0:42.9 | 6.1s | In 2017, imipenem, one of our last-line drugs, still worked on about six in ten Klebsiella samples. | the ICMR AMRSN report page; a bar fills to 58% | IMIPENEM · KLEBSIELLA · 58% |
-| 13 | 0:49.5 | 2.4s | By 2023, barely one in three. | the bar drops to 36% on 'three' | 36% |
-| 14 | 0:52.4 | 3.2s | That is the drug we save for the sickest patient in the ICU. | an ICU bed card, alone in the spotlight | ICU |
-| 15 | 0:56.1 | 4.1s | When it fails, we reach for colistin. After that, there is very little left. | a row of drug cards; the last one flickers | COLISTIN |
-| 16 | 1:01.1 | 2.8s | And the ones who pay are rarely the ones who asked. | camera drifts away from the OPD slip | -- |
-| 17 | 1:04.4 | 4.5s | A newborn in the NICU. A mother after her C-section. A grandfather on a ventilator. | three illustrated cards, one per sentence (illustration, not real patients) | NICU · POST-OP · VENTILATOR |
-| 18 | 1:09.3 | 4.0s | They never took that azithromycin. They inherit the bacteria that did. | red string from the OPD slip to all three cards | -- |
-| 19 | 1:14.5 | 4.6s | That is what antimicrobial stewardship really is. Not a committee. A daily habit. | a clean card, STEWARDSHIP, set big | STEWARDSHIP |
-| 20 | 1:19.5 | 2.2s | Pause, and ask: is this really bacterial? | step card 1 | 1 · PAUSE |
-| 21 | 1:22.1 | 2.2s | Send the culture before the first dose. | step card 2 | 2 · CULTURE FIRST |
-| 22 | 1:24.8 | 3.0s | When the report comes, narrow the drug and stop on time. | step card 3 | 3 · DE-ESCALATE |
-| 23 | 1:28.3 | 2.8s | For surgery, one prophylactic dose. Not five days. | step card 4 | 4 · ONE DOSE |
-| 24 | 1:31.5 | 4.6s | And tell every patient: a red line on the strip means never without a prescription. | a medicine strip with the red vertical line; the line draws on 'red line' | 5 · THE RED LINE |
-| 25 | 1:37.3 | 3.5s | World AMR Awareness Week has just ended. One Health, one action. | the week's card | 18–24 NOVEMBER |
-| 26 | 1:41.3 | 2.9s | It is not one more guideline to forward on WhatsApp. | a forwarded-message card slides off the board | -- |
-| 27 | 1:44.6 | 3.6s | It is those ten seconds, before you write the next prescription. | camera returns to the 10-second clock and the OPD slip from the opening | -- |
-| 28 | 1:48.7 | 3.3s | Because the next patient may be the one who needs it to work. | final pull-back: whole board; the title NEXT PATIENT returns | -- |
+| 1 | 0:00.9 | 2.5s | Two in the morning. A NICU, somewhere in India. | time and place, set big over a dim incubator silhouette; small tag ILLUSTRATIVE STORY | 2:00 AM · NICU |
+| 2 | 0:03.8 | 4.5s | A baby girl, nine days old. Born a little early. Fighting an infection in her blood. | a tiny name-band card reading BABY OF ___, monitor line pulsing | DAY 9 |
+| 3 | 0:08.8 | 3.6s | The culture report comes back. Resistant. Resistant. Resistant. | a lab sheet; three red R stamps slam, one on each 'Resistant' | R · R · R |
+| 4 | 0:12.8 | 3.2s | Outside the glass, her mother has been standing for hours. | a pair of hands pressed to glass (illustration) | -- |
+| 5 | 0:16.5 | 2.9s | She asks just one question. "Doctor, koi aur dawai hai?" | silence; only the monitor line; the question appears as burned caption | -- |
+| 6 | 0:20.4 | 1.6s | Is there any other medicine? | the doctor's empty hands; the drug shelf behind is bare | -- |
+| 7 | 0:23.6 | 0.8s | Koi aur dawai? | title, set huge, on black | KOI AUR DAWAI? |
+| 8 | 0:25.9 | 3.7s | This story does not begin in the NICU. It begins in rooms like ours. | camera travels a long red string away from the NICU to a bright OPD desk | -- |
+| 9 | 0:30.0 | 4.2s | A Monday OPD. Forty patients still waiting. Fever for three days, runny nose. | OPD token slip, set big | TOKEN 47 |
+| 10 | 0:34.7 | 3.8s | "Doctor sahab, koi strong antibiotic de dijiye. Kal office jaana hai." | the patient's stool beside the desk; burned caption only | -- |
+| 11 | 0:38.9 | 3.9s | We know it is viral. We are tired. And saying no takes time we do not have. | a 10-second clock starts ticking | 0:10 |
+| 12 | 0:43.3 | 2.2s | Azithromycin. Three days. Next patient. | handwritten prescription slip, labelled RECREATION; the pen stroke lands on 'Next patient' | Tab. AZITHRO 500 · OD × 3 |
+| 13 | 0:45.9 | 2.8s | Ten seconds. One signature. It felt like kindness. | the signature on the slip, close | -- |
+| 14 | 0:49.7 | 3.2s | Across India, that signature is written again and again. | India map; slips multiply across it | -- |
+| 15 | 0:53.3 | 5.3s | In a national survey of twenty hospitals, seven in ten admitted patients were on antibiotics. | ten bed icons; seven turn red | NCDC · 72% |
+| 16 | 0:59.1 | 1.9s | More than half of them, just in case. | counter rolls to 55% | 55% · "JUST IN CASE" |
+| 17 | 1:01.4 | 4.3s | Every dose that was not needed is a lesson. And bacteria never forget a lesson. | red string from every slip to one lab report | -- |
+| 18 | 1:06.2 | 6.1s | In 2017, imipenem, one of our last-line drugs, still worked on about six in ten Klebsiella samples. | ICMR report page; a bar fills to 58% | IMIPENEM · 58% |
+| 19 | 1:12.8 | 2.4s | By 2023, barely one in three. | the bar falls to 36% on 'three' | 36% |
+| 20 | 1:16.4 | 3.4s | The man with the cold got better in a week. He always would have. | the OPD slip, now crumpled | -- |
+| 21 | 1:20.3 | 3.2s | But the bacteria stayed. In families. In wards. In our water. | three small cards, one per word: home, ward, river | HOME · WARD · WATER |
+| 22 | 1:24.0 | 2.7s | And they found the ones who could not fight back. | spotlight narrows | -- |
+| 23 | 1:27.2 | 3.9s | A newborn. A mother after her C-section. A grandfather on a ventilator. | three illustrated cards, one per sentence (illustration, not real patients) | NICU · POST-OP · ICU |
+| 24 | 1:31.5 | 4.1s | They never asked for that antibiotic. They inherited what it left behind. | red string pulls tight from the OPD slip to all three cards | -- |
+| 25 | 1:37.0 | 3.2s | Back in the NICU, her mother is still waiting for an answer. | camera returns along the string to the hands on the glass | -- |
+| 26 | 1:40.7 | 3.1s | Every prescription we write today is our answer to her. | a blank prescription pad, alone in the light | -- |
+| 27 | 1:45.2 | 4.4s | Antimicrobial stewardship is not a committee, or a circular. It is that answer. | the word STEWARDSHIP, set big on the pad | STEWARDSHIP |
+| 28 | 1:50.1 | 2.2s | Pause, and ask: is this really bacterial? | step card 1 | 1 · PAUSE |
+| 29 | 1:52.7 | 2.2s | Send the culture before the first dose. | step card 2 | 2 · CULTURE FIRST |
+| 30 | 1:55.4 | 3.0s | When the report comes, narrow the drug, and stop on time. | step card 3 | 3 · NARROW & STOP |
+| 31 | 1:58.9 | 1.9s | For surgery, one dose. Not five days. | step card 4 | 4 · ONE DOSE |
+| 32 | 2:01.2 | 4.6s | And teach every patient: the red line on the strip means only with a prescription. | a medicine strip; the red vertical line draws on 'red line' | 5 · THE RED LINE |
+| 33 | 2:07.0 | 3.8s | AMR Awareness Week has ended. The bacteria did not take the week off. | the week's card fades; the lab report stays lit | 18–24 NOVEMBER |
+| 34 | 2:11.2 | 3.7s | This is not one more guideline to forward on WhatsApp and forget. | a forwarded-message card slides off the board | -- |
+| 35 | 2:15.3 | 3.1s | It is ten seconds of courage. To explain. To wait. To say no. | the 10-second clock from the OPD, now stopped | -- |
+| 36 | 2:18.9 | 2.8s | So that one day, when a mother asks, "Koi aur dawai hai?" | final pull-back toward the NICU glass | -- |
+| 37 | 2:22.9 | 1.4s | we can still say: "Haan. Hai." | one antibiotic card turns face up and glows; whole board composed | -- |
+
+## Lint
+
+- line 7: 'KOI AUR DAWAI?' is typed AND spoken word for word; show it one way
+- line 32: 'THE RED LINE' is typed AND spoken word for word; show it one way
