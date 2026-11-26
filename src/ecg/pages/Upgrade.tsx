@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useApp } from '../EcgApp';
 import { auth } from '../../lib/firebase';
-import { Check, Minus } from 'lucide-react';
+import { Check, Minus, KeyRound } from 'lucide-react';
 import { COMPARE, FEATS, PRICE, inr, type PaidPlan as PlanKey, type Period } from '../data/plans';
 
 declare global { interface Window { Razorpay?: new (o: object) => { open: () => void } } }
@@ -11,7 +11,7 @@ const loadCheckout = () => new Promise<void>((res, rej) => {
   document.body.appendChild(s);
 });
 
-export default function Upgrade() {
+export default function Upgrade({ code }: { code?: string }) {
   const { plan, user, signIn } = useApp();
   const [period, setPeriod] = React.useState<Period>('year');
   const [busy, setBusy] = React.useState<PlanKey | null>(null);
@@ -67,6 +67,7 @@ export default function Upgrade() {
         <Card k="pro" title="Pro" price={`${inr(PRICE.pro[period])}/${period}`} who="Interns, residents and doctors who handle emergencies." />
       </div>
       {msg && <p className="text-sm text-ink" role="status">{msg}</p>}
+      <AccessCode initial={code} />
       <div className="card overflow-x-auto">
         <table className="w-full text-sm min-w-[560px]">
           <caption className="text-left px-5 pt-5 pb-3 text-xl font-medium text-ink">Compare plans</caption>
@@ -87,5 +88,43 @@ export default function Upgrade() {
       </div>
       <p className="text-xs text-muted">Plans do not renew automatically. See <a className="underline" href="#/legal/refunds">refunds</a> and <a className="underline" href="#/legal/terms">terms</a>. Colleges and hospitals: seat licences are available on request through <a className="underline" href="#/legal/contact">contact</a>.</p>
     </section>
+  );
+}
+
+/** Pilot or institution access code: unlocks a plan until a set date, checked on the server (ecg-redeem). */
+function AccessCode({ initial }: { initial?: string }) {
+  const { user, plan, signIn } = useApp();
+  const [code, setCode] = React.useState(initial ? decodeURIComponent(initial).toUpperCase() : '');
+  const [busy, setBusy] = React.useState(false);
+  const [res, setRes] = React.useState<{ ok: boolean; text: string } | null>(null);
+  const redeem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) { signIn(); return; }
+    if (!code.trim()) { setRes({ ok: false, text: 'Type the code you were given.' }); return; }
+    setBusy(true); setRes(null);
+    try {
+      const r = await fetch('/.netlify/functions/ecg-redeem', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await auth.currentUser!.getIdToken()}` }, body: JSON.stringify({ code }) });
+      const d = await r.json().catch(() => ({}));
+      if (r.status === 501) setRes({ ok: false, text: 'Access codes are not switched on yet.' });
+      else if (!r.ok) setRes({ ok: false, text: d.error || 'The code could not be checked. Please try again.' });
+      else {
+        const until = d.until ? new Date(d.until).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+        const name = d.plan === 'pro' ? 'Pro' : 'Student';
+        setRes({ ok: true, text: d.unchanged ? `You already have ${name}${until ? ` until ${until}` : ''}, so nothing changed.` : `Done: ${name} is unlocked until ${until}. Every module on that plan is open now.` });
+      }
+    } catch { setRes({ ok: false, text: 'No connection. Check your internet and try again.' }); }
+    setBusy(false);
+  };
+  return (
+    <form onSubmit={redeem} className="card p-5 flex flex-wrap items-end gap-3" aria-labelledby="code-h">
+      <div className="flex-1 min-w-[14rem]">
+        <p id="code-h" className="font-medium flex items-center gap-2"><KeyRound size={16} className="text-accent-ink" />Have an access code?</p>
+        <p className="text-sm text-muted mt-0.5">From a pilot, your college or your hospital. {user ? '' : 'Sign in first, with a verified email.'}{plan !== 'free' && user ? ` You are on ${plan === 'pro' ? 'Pro' : 'Student'} now.` : ''}</p>
+      </div>
+      <label className="sr-only" htmlFor="access-code">Access code</label>
+      <input id="access-code" className="input !w-56 font-mono uppercase" value={code} onChange={e => setCode(e.target.value)} placeholder="e.g. MEDWISE-PILOT" autoComplete="off" spellCheck={false} />
+      <button className="btn-primary" disabled={busy}>{busy ? 'Checking…' : user ? 'Unlock' : 'Sign in to unlock'}</button>
+      {res && <p role="status" className={`w-full text-sm ${res.ok ? 'text-ok' : 'text-bad'}`}>{res.text}</p>}
+    </form>
   );
 }
