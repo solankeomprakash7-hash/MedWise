@@ -105,7 +105,7 @@ export default function EcgApp() {
         <main id="main" className="max-w-6xl mx-auto px-4 pt-8 md:pt-10">
           {page === 'placement' ? <Placement /> : page === 'learn' ? <Learn /> : page === 'unit' ? <UnitPage id={arg} />
             : page === 'practice' ? <Practice mode={arg === 'daily' ? 'daily' : 'practice'} topic={arg && arg.startsWith('u-') ? arg.slice(2) : undefined} key={arg || 'p'} />
-            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade /> : page === 'lab' ? (arg ? <LabModule id={arg} /> : <Lab />) : <Home />}
+            : page === 'emergency' ? <Emergency /> : page === 'exam' ? <Exam /> : page === 'legal' ? <Legal doc={arg} /> : page === 'upgrade' ? <Upgrade code={arg} /> : page === 'lab' ? (arg ? <LabModule id={arg} /> : <Lab />) : <Home />}
         </main>
         <footer className="max-w-6xl mx-auto px-4 mt-20 pt-6 border-t border-line text-[13px] text-muted leading-relaxed">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">

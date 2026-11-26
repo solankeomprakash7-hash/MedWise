@@ -27,6 +27,8 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time;
       allow read, update, delete: if false;
     }
+    // Access-code redemptions (ecg-redeem): server only.
+    match /redemptions/{id} { allow read, write: if false; }
     // Payment records: server only.
     match /payments/{id} { allow read, write: if false; }
   }

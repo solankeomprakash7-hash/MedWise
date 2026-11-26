@@ -56,6 +56,15 @@ module's patterns and modes, and posts `{src:'medwise-lab', ev:'view'|'quiz'|'ca
 send `{src:'medwise-app', cmd:'pattern'|'wave'|'case'|'mode'}` back to jump to a station. Completion rules are in `moduleStatus`.
 Gating is in the browser, like the rest of the plan limits; the stand-alone `/ecg-lab.html` stays fully open.
 
+## Access codes (pilots, colleges, hospitals)
+
+Set `ECG_ACCESS_CODES` in Netlify (plus `FIREBASE_SERVICE_ACCOUNT`), then redeploy. Format: `CODE:plan:YYYY-MM-DD`, several
+separated by commas, e.g. `MEDWISE-PILOT:pro:2027-01-31,GMC-INTERNS:student:2027-06-30`. A signed-in learner with a verified
+email enters the code on the Plans page (or opens `/ecg#/upgrade/MEDWISE-PILOT`, which fills it in); `ecg-redeem.ts` checks it on
+the server and sets `plan` and `planUntil` on `users/{uid}`. It never downgrades a better or longer plan, allows 8 wrong codes
+per account per hour, and records each redemption in `redemptions/{uid}`. To end a code early, remove it and redeploy; people who
+already redeemed keep access until their date (edit `planUntil` in Firestore to cut it short).
+
 ## Plan limits (set in `lib/logic.ts`)
 
 - Free: lab modules 1–2, first 3 units of Level 1, 5 real-ECG reads a week, daily ECG, placement test, a 3-ECG emergency sample and a 5-question exam sample.

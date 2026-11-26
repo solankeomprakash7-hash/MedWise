@@ -2,6 +2,7 @@
 //   RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET  - from the Razorpay dashboard
 //   FIREBASE_SERVICE_ACCOUNT              - the Firebase service-account JSON, as one line
 //   RAZORPAY_WEBHOOK_SECRET               - the secret set on the Razorpay webhook (ecg-webhook.ts)
+//   ECG_ACCESS_CODES                      - pilot or institution codes, CODE:plan:YYYY-MM-DD,... (ecg-redeem.ts)
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
