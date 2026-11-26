@@ -2,7 +2,7 @@ import * as React from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import AuthScreen from '../components/AuthScreen';
-import { Activity, LogOut, Loader2, BookOpen, Timer, GraduationCap, FlaskConical, House as HomeIcon } from 'lucide-react';
+import { Activity, LogOut, BookOpen, Timer, GraduationCap, FlaskConical, House as HomeIcon } from 'lucide-react';
 import { type Plan, type Progress, cloudLoad, cloudSave, empty, localLoad, localSave, merge, watchPlan } from './lib/progress';
 import Home from './pages/Home';
 import Placement from './pages/Placement';
@@ -35,6 +35,7 @@ export default function EcgApp() {
   React.useEffect(() => { const f = () => { setR(route()); window.scrollTo(0, 0); }; addEventListener('hashchange', f); return () => removeEventListener('hashchange', f); }, []);
   // Offline or slow network: don't block the app on sign-in; continue with local progress.
   React.useEffect(() => { const t = setTimeout(() => setReady(true), 2500); return () => clearTimeout(t); }, []);
+  React.useEffect(() => { if (ready) (window as Window & { mwSplashDone?: () => void }).mwSplashDone?.(); }, [ready]);
   React.useEffect(() => onAuthStateChanged(auth, async u => {
     const ok = u && u.emailVerified ? u : null;
     setUser(ok); setReady(true);
@@ -67,7 +68,8 @@ export default function EcgApp() {
     location.replace(location.pathname + (page === 'preview' ? '#/lab/chambers' : '#/lab')); location.reload();
   }, [r]);
 
-  if (!ready) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-ink" size={36} /></div>;
+  // The opening animation in ecg.html covers the screen until sign-in is resolved; then it fades out.
+  if (!ready) return null;
   if (wantAuth && !user) return <AuthScreen subtitle="ECG course" onBack={() => setWantAuth(false)} />;
 
   const [page, arg] = r;
