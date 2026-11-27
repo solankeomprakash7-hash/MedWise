@@ -1,0 +1,8 @@
+node_modules/
+.venv/
+work/
+raw/*
+references/*
+exports/*
+assets/*
+!*/.gitkeep

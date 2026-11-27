@@ -1,0 +1,17 @@
+{
+  "name": "reels",
+  "version": "1.0.0",
+  "description": "Instagram Reel editing workspace (FFmpeg + Whisper + Puppeteer)",
+  "scripts": {
+    "setup": "./setup.sh",
+    "transcribe": ".venv/bin/python tools/transcribe.py",
+    "capture": "node tools/capture.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^25.19.0"
+  },
+  "private": true
+}
