@@ -1,6 +1,6 @@
 # How to approach an ECG without panicking · Part 4: What it takes to call an ECG normal
 
-About 75 s spoken (about 230 words). The 60-second cut is at the end.
+About 90 s spoken (about 260 words), roughly 80 s once the edit trims the pauses. A shorter cut is at the end.
 Style S12 Whiteboard Diagram, teal accent. Teleprompter text: `part-4-normal-ecg-teleprompter.txt`
 
 The idea viewers should leave with: "normal" is a conclusion you reach after nine checks pass, and you can't reach it by glancing at the tracing. Then some relief, because several findings that scare beginners are normal.
@@ -36,9 +36,9 @@ Example ECG: `assets/ecg/ptbxl-441.png` (reviewed key: sinus 86/min, axis +65°,
 | App | The practice drill on MedWise ECG takes you through this order on real 12-leads. It's launching soon. | Plain. | `10-practice-steps-full.png` · MedWise logo · "Launching soon" |
 | CTA | Part 5 is next. Like this, share it with your batch, and follow if you never want to go blank on an ECG again. | Warm. | CTA card held to the end · "Part 5 next" |
 
-## The 60-second cut
+## The shorter cut (about 65 s)
 
-Drop the senior tip and shorten the app line to "It's all on MedWise ECG, launching soon." That saves about 12 s. Keep the "looks wrong but normal" block, because it's the part people will save and send to friends.
+Drop the senior tip, the "If aVF is negative…" lines in check 3, and shorten the app line to "It's all on MedWise ECG, launching soon." That removes about 45 words, roughly 17 s. Keep the "looks wrong but normal" block, because it's the part people will save and send to friends.
 
 ## Other hooks for this episode (all on the panic theme)
 
