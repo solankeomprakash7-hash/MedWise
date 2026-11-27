@@ -29,12 +29,55 @@ Teleprompter-only version (no tables, ready to paste into an app): `reel-01-tele
 | App | 44–49 s | I've built MedWise ECG around this exact order, / on real ECGs. / It's launching soon. | Plain and proud. No sales voice. | MedWise logo + "Launching soon" |
 | CTA | 49–55 s | Like this, / share it with your batch, / and follow / if you never want to go blank on an ECG again. | Warm. "Go blank" calls back to the hook. | CTA card held to the last frame |
 
-## Two other hooks to test later
+## Hook bank
 
-Keep the rest of the script the same and swap only the first 7 seconds. After two or three Reels you'll see which kind of opening holds your audience.
+Swap only the first 5–7 seconds and keep the rest of the script. Each hook ends on a line that leads into step one. Put the on-screen text up from the very first frame, because many people watch with the sound off.
 
-- **Viva:** "Your examiner slides an ECG across the table and says, 'Go on, read it.' [pause] Where do you even start? Here."
-- **Mistake:** "Most interns read an ECG by staring at it and hoping something jumps out. Here's the order that actually works."
+### Put them in the room
+
+| # | Say | On screen |
+|---|---|---|
+| 1 | 3 a.m. in casualty. Someone hands you an ECG: "Doctor, just check this once." [pause] And your mind goes blank. Here's the order I follow every time. | *3 a.m.* Your mind goes **blank** |
+| 2 | The monitor starts beeping, the sister holds out a strip, [pause] and everyone in the room turns to look at you. Here's what you do first. | Everyone's looking at **you** |
+| 3 | First week of internship. Someone hands you an ECG and walks away. [pause] Now what? Start here. | First week. First ECG. **Now what?** |
+| 4 | The cardiology resident is on the phone: "What does the ECG show?" You've got about ten seconds. Here's how to use them. | "What does the ECG show?" |
+
+### Exams
+
+| # | Say | On screen |
+|---|---|---|
+| 5 | Your examiner slides an ECG across the table: "Go on, read it." [pause] Where do you even start? Here. | "Go on, read it." |
+| 6 | Got an ECG in your next exam? Use this order and you won't be guessing. | ECG in the exam? **Don't guess** |
+
+### Things viewers will recognise in themselves
+
+| # | Say | On screen |
+|---|---|---|
+| 7 | If you've ever nodded along while your senior explained an ECG and understood none of it, this one's for you. | Nodded along. Understood **nothing** |
+| 8 | When someone hands you an ECG, where do your eyes go first? If the answer is "everywhere", watch this. | Where do your eyes go **first?** |
+| 9 | Most interns read an ECG by staring at it and hoping something jumps out. Here's the order that actually works. | Staring and **hoping?** |
+
+### Make them do something
+
+| # | Say | On screen |
+|---|---|---|
+| 10 | Pause the video and read this ECG. [hold 2 s] Done? Now let's check it properly, in seven steps. | The full ECG from frame 1 · "Pause. Read it." |
+| 11 | This ECG is normal. In fifty seconds, you'll be able to prove it. | Normal? **Prove it.** |
+| 12 | Seven questions. Ask them in this order and you can work through any ECG. | **7 questions.** Any ECG |
+
+### Push back on how they were taught
+
+| # | Say | On screen |
+|---|---|---|
+| 13 | Stop trying to memorise ECG patterns. [pause] Memorise the order you read them in. That's what gets you through the ward. | Stop memorising **patterns** |
+| 14 | I'm a doctor, and this is the exact checklist I run on every single ECG. | My ECG checklist |
+
+### Which to use first
+
+- Strongest for this Reel: 1 (a scene every intern knows), 10 (makes them pause, which counts as watch time) and 13 (an opinion people comment on).
+- Hook 10 needs the ECG full screen for the first 3 s. Tell the editor "Hook: full-screen ECG from 0 s, title on top."
+- To compare hooks fairly, post the same body with a different hook as an Instagram trial Reel (it's shown to non-followers first) and compare how many viewers stay past 3 s.
+- Use the remaining hooks on the "30-second ECG" episodes later. Hooks 2, 4 and 10 fit that format especially well.
 
 ## What to record
 
