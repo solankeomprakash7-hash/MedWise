@@ -1,6 +1,7 @@
 HOW TO APPROACH AN ECG WITHOUT PANICKING · PART 4
-WHAT IT TAKES TO CALL AN ECG NORMAL · about 90 seconds (80 after edit)
+WHAT IT TAKES TO CALL AN ECG NORMAL · two Reels: 4A about 2:15, 4B about 2:25
 / = breath     [pause] = one full second     CAPS = lean on the word
+>>> SPLIT HERE marks where it divides into Part 4A and 4B
 
 
 Your senior asks, "ECG normal?"
@@ -10,55 +11,123 @@ So you say yes.
 Could you DEFEND that?
 
 Don't panic.
-To call an ECG normal, /
-it has to pass nine checks.
-Fail one, /
-and it isn't normal yet.
+An ECG is normal when it passes nine checks.
+Here's how to do each one, / and why.
+
+First, the grid.
+One small box is 40 milliseconds.
+One big box, / five small ones, / is 200.
 
 
-ONE. Rate, between 60 and 100.
+ONE. Rate.
+Count the big boxes between two R waves /
+and divide 300 by that number.
+Three boxes, / 100.
+Five boxes, / 60.
+So for a normal rate, /
+the R waves sit three to five big boxes apart.
+Irregular rhythm? / Count the QRS complexes on the 10-second strip /
+and multiply by six.
 
-TWO. A P wave before every QRS, /
-upright in lead II.
-That's sinus.
+TWO. Is it sinus?
+A normal beat starts in the SA node /
+and travels down and to the left, / toward lead II.
+So in lead II, / the P wave points UP.
+Then look for a P before every QRS, /
+a QRS after every P, /
+and the same gap between them, / every beat.
+No P waves and an irregularly irregular rhythm? /
+Think atrial fibrillation.
 
-THREE. Lead I positive, / aVF positive.
-Normal axis.
-If aVF is negative, /
-check lead II before you panic.
-Still positive? Still normal.
+THREE. Axis.
+That's the direction the electricity takes through the ventricles.
+Normally, / down and to the left, / toward the big left ventricle.
+Lead I looks from the left.
+aVF looks from below.
+QRS mostly upright in both? /
+The current is heading toward both. / Normal axis.
+aVF negative? / Don't panic yet.
+Check lead II.
+II still positive? / Still normal.
+II negative too? / That's left axis deviation.
 
-FOUR. PR, / three to five small boxes.
+FOUR. The PR interval.
+Start of the P / to the start of the QRS.
+That's the AV node holding the impulse back for a moment /
+so the atria can finish filling the ventricles.
+Normal: / three to five small boxes, / 120 to 200 milliseconds.
+Longer than five? / First-degree heart block.
+Shorter than three? / Think of a shortcut pathway, / like WPW.
 
-FIVE. QRS, / under three. / Narrow.
+FIVE. QRS width.
+This is the ventricles firing.
+The conduction system spreads the impulse so FAST /
+that the QRS stays under three small boxes. / 120 milliseconds.
+Wider means the impulse took a slower route: /
+a bundle branch block, / a beat that started in the ventricle, /
+or pre-excitation.
 
-SIX. R waves grow from V1 to V5, /
-and cross over around V3, V4.
+[END OF PART 4A]
+That's five of the nine.
+The last four are in the next Reel, /
+including the one where MIs get missed.
+Follow so you don't miss it.
 
-SEVEN. ST segments sit flat on the baseline. /
-In EVERY lead.
+>>> SPLIT HERE
 
-EIGHT. T waves upright /
-in I, II, and V3 to V6.
-
-NINE. QTc under 450 in men, /
-460 in women.
+[START OF PART 4B]
+Part 4, continued.
+We've done rate, rhythm, axis, PR and QRS.
+Four checks left / before you can call an ECG normal.
 
 
-Now, a few things that look wrong /
+SIX. R wave progression.
+V1 sits over the right side of the heart, / V6 over the left.
+Moving toward the left ventricle, /
+the R wave gets TALLER / and the S wave smaller.
+Around V3 or V4 they're about equal. / That's the transition.
+If the R waves don't grow, /
+think of an old anterior MI, / LVH, /
+or electrodes placed in the wrong spot.
+
+SEVEN. The ST segment.
+Right after the QRS, / every ventricular cell is at the same voltage.
+No current flows, / so the ST segment is flat, /
+level with the baseline before the P wave.
+Check it in EVERY lead.
+If it's raised in two leads that look at the same wall, /
+or pushed down, /
+this ECG is not normal, / however good the rest looks.
+
+EIGHT. T waves.
+The T wave is the ventricles recovering.
+It runs the opposite way with the opposite charge, /
+so the T points the same way as the QRS.
+It should be upright in I, II, / and V3 to V6.
+In aVR, / it's ALWAYS upside down.
+And on its own, / an inverted T in III, aVL, aVF or V1 /
+can still be normal.
+
+NINE. The QT.
+Start of the QRS / to the end of the T.
+It shortens as the heart speeds up, / so correct it for rate: / the QTc.
+Normal is under 450 in men, / 460 in women.
+Why care? / A long QT can set off a dangerous rhythm /
+called torsades.
+
+
+Two more things that scare beginners /
 and are completely normal.
-A T wave upside down in aVR.
-It's ALWAYS like that.
-Tiny q waves in V5 and V6.
-That's just the septum.
-A heart rate that speeds up and slows down /
-as the patient breathes.
-Sinus arrhythmia. / Normal.
+Small q waves in I, aVL, V5 and V6.
+That's the septum firing first, / from left to right.
+And a heart rate that speeds up as the patient breathes in /
+and slows as they breathe out.
+Sinus arrhythmia. / Normal, / especially in young people.
 
 
 All nine pass? /
 Then say "normal ECG" /
-and mean it.
+and MEAN it.
 
 And if there's an old ECG, /
 put them side by side.

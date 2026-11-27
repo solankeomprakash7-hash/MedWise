@@ -1,46 +1,53 @@
 # How to approach an ECG without panicking · Part 4: What it takes to call an ECG normal
 
-About 90 s spoken (about 260 words), roughly 80 s once the edit trims the pauses. A shorter cut is at the end.
-Style S12 Whiteboard Diagram, teal accent. Teleprompter text: `part-4-normal-ecg-teleprompter.txt`
+The explanatory version. For each check, viewers learn what to look at, how to measure it on the grid, why a normal ECG looks that way, and what a failed check points to.
 
-The idea viewers should leave with: "normal" is a conclusion you reach after nine checks pass, and you can't reach it by glancing at the tracing. Then some relief, because several findings that scare beginners are normal.
+Teleprompter text: `part-4-normal-ecg-teleprompter.txt`. Record it as one take; it is edited into two Reels.
 
-Example ECG: `assets/ecg/ptbxl-441.png` (reviewed key: sinus 86/min, axis +65°, PR 150 ms, QRS 90 ms, QTc about 441 ms, normal). Every one of the nine checks passes on it, so each tick on screen is true.
+| Reel | Covers | Length |
+|---|---|---|
+| Part 4A | Hook, the grid, checks 1–5 (rate, sinus, axis, PR, QRS), "five of nine" ending | about 2:15 |
+| Part 4B | Short recap, checks 6–9 (R progression, ST, T, QT), normal findings that scare beginners, old-ECG tip, app, CTA | about 2:25 |
+
+Instagram allows Reels up to 3 minutes. One combined Reel would run about 4½ minutes, so it has to be two. The split also helps: 4A ends on a reason to watch 4B ("the one where MIs get missed"), and each Reel teaches one complete chunk.
+
+Example ECG: `assets/ecg/ptbxl-441.png`. Its reviewed key is sinus 86/min, axis +65°, PR 150 ms, QRS 90 ms, QT 368 ms (QTc about 441 ms), normal. Every check passes on it, so each tick on screen is true.
 
 ## How to deliver it
 
-- In the hook, play the intern who says yes too quickly, then pause and ask the question straight into the lens.
-- "Don't panic" is warm and reassuring. It's the series promise, so keep it that way every episode.
-- The nine checks are quick and even, one finger per check, like ticking boxes.
-- In the "look wrong but are normal" block, relax and almost smile. Viewers are hearing that the things they worried about are fine.
-- Say the old-ECG line slowly. It's the piece of advice a senior would give.
+- Teach it the way you'd explain it to one intern at the bedside, pointing at the paper. Leave the presenter voice out.
+- In the hook, play the intern who says yes too quickly, then pause and ask the question into the lens.
+- Each check follows the same pattern: what to look at, then how to measure it, then why, then what it means if it fails. Slow down a little on the "why" line, because that's what makes this series different from a list of normal values.
+- One finger per check number. It gives the editor clean cut points.
+- Don't rush the numbers. Viewers write them down.
+- If you trip, pause, then repeat the whole line. The cut list keeps the better take.
 
-## Script
+## On screen, check by check
 
-| # | Say | Delivery | On screen |
-|---|---|---|---|
-| Hook | Your senior asks, "ECG normal?" You glance at it. Nothing jumps out. So you say yes. [pause] Could you defend that? | First lines a bit hurried, like the intern. Then stop and look into the lens. | "ECG normal?" · then: *Could you* **defend** *that?* |
-| Promise | Don't panic. To call an ECG normal, it has to pass nine checks. Fail one, and it isn't normal yet. | Calm. Hands open. | Series tag: **Part 4** · Empty checklist 1–9 next to the ECG |
-| 1 | Rate, between 60 and 100. | 1 finger | ✓ Rate 60–100 · ECG shows 86 |
-| 2 | A P wave before every QRS, upright in lead II. That's sinus. | | ✓ Sinus · lead II strip with the P waves in teal |
-| 3 | Lead I positive, aVF positive. Normal axis. If aVF is negative, check lead II before you panic. Still positive? Still normal. | "Before you panic" lightly, as a callback to the series title. | ✓ Axis · I ↑ aVF ↑ · small note: II ↑ = still normal (to −30°) |
-| 4 | PR, three to five small boxes. | | ✓ PR 120–200 ms |
-| 5 | QRS, under three. Narrow. | | ✓ QRS < 120 ms |
-| 6 | R waves grow from V1 to V5, and cross over around V3, V4. | Draw a rising line with your hand. | ✓ R progression · V1→V5 growing, transition at V3–V4 |
-| 7 | ST segments sit flat on the baseline. In every lead. | Slow down on "every lead". | ✓ ST flat · `heart-normal.mp4` |
-| 8 | T waves upright in I, II, and V3 to V6. | | ✓ T waves |
-| 9 | QTc under 450 in men, 460 in women. | | ✓ QTc · ECG shows 441 |
-| Relief | Now, a few things that look wrong and are completely normal. A T wave upside down in aVR: it's always like that. Tiny q waves in V5 and V6: that's just the septum. A heart rate that speeds up and slows down as the patient breathes: sinus arrhythmia. Normal. | Lighter tone. Small shrug on each. | Three cards, each stamped NORMAL: inverted T in aVR · septal q in V5–V6 · sinus arrhythmia |
-| Close | All nine pass? Then say "normal ECG" and mean it. | Confident. | Checklist complete: **NORMAL ECG** |
-| Senior tip | And if there's an old ECG, put them side by side. Something that's changed since last time matters more than any single number. | Slow, quieter. | Two ECGs side by side · "Compare with the old one" |
-| App | The practice drill on MedWise ECG takes you through this order on real 12-leads. It's launching soon. | Plain. | `10-practice-steps-full.png` · MedWise logo · "Launching soon" |
-| CTA | Part 5 is next. Like this, share it with your batch, and follow if you never want to go blank on an ECG again. | Warm. | CTA card held to the end · "Part 5 next" |
+A checklist 1–9 builds up beside the real ECG. Each check gets one visual that matches what you're explaining.
 
-## The shorter cut (about 65 s)
+| Check | What you explain | Visual |
+|---|---|---|
+| Hook | "ECG normal?" and saying yes too fast | "ECG normal?" · *Could you* **defend** *that?* |
+| Grid | Small box 40 ms, big box 200 ms | Zoom into the ECG grid: one small box labelled 40 ms, one big box labelled 200 ms |
+| 1 Rate | 300 ÷ big boxes; 3 boxes = 100, 5 boxes = 60; irregular: QRS in 10 s × 6 | Two R waves with the boxes between them counted 1, 2, 3… · "3–5 big boxes = 60–100" |
+| 2 Sinus | The SA node fires down and to the left, toward II, so P is upright in II; P before every QRS, QRS after every P, same gap | Lead II strip with each P wave in teal and the PR gap repeating · `heart-normal.mp4` showing the SA node |
+| 3 Axis | Direction of ventricular current; I looks from the left, aVF from below; both up = normal; aVF down → check II | Lead I and aVF with arrows; small panel "II ↑ = still normal (to −30°)" |
+| 4 PR | AV node holds the impulse so the atria can fill the ventricles; 3–5 small boxes; long = 1st-degree block, short = WPW | PR measured with calipers on lead II: 150 ms ✓ · side notes "> 200 ms: 1st-degree block" "< 120 ms: shortcut (WPW)" |
+| 5 QRS | Fast conduction keeps it narrow, under 3 boxes; wide = slower route (BBB, ventricular beat, pre-excitation) | QRS measured: 90 ms ✓ · three small labels for the wide causes |
+| 4A end | "Five of nine. MIs get missed in one of the last four." | Checklist with 1–5 ticked and 6–9 greyed out |
+| 4B start | Recap | Checklist with 1–5 ticked |
+| 6 R progression | V1 over the right heart, V6 over the left; R grows, S shrinks; transition V3–V4; failure: old anterior MI, LVH, misplaced leads | V1→V6 strip with a rising teal line over the R waves, transition marked at V3–V4 |
+| 7 ST | Every ventricular cell at the same voltage, so no current, so flat; check every lead; raised in two leads on the same wall, or depressed = abnormal | ST segment highlighted level with the baseline · then `heart-stemi-inferior.mp4` as "what not normal looks like" |
+| 8 T | Recovery runs the opposite way with the opposite charge, so T follows the QRS; upright I, II, V3–V6; always inverted in aVR; alone in III, aVL, aVF, V1 can be normal | T waves ticked in I, II, V3–V6 · aVR stamped "always inverted" |
+| 9 QT | Start of QRS to end of T; correct for rate; under 450 men, 460 women; long QT → torsades | QT bracket on the ECG · "QTc 441 ms ✓" |
+| Normal traps | Septal q in I, aVL, V5, V6 (septum fires left to right); sinus arrhythmia with breathing | Two cards stamped NORMAL |
+| Close | All nine pass, say "normal" and mean it; compare with the old ECG | Full checklist → **NORMAL ECG** · two ECGs side by side |
+| App + CTA | MedWise ECG drill, launching soon; Part 5 next | `10-practice-steps-full.png` · logo · CTA card held to the end |
 
-Drop the senior tip, the "If aVF is negative…" lines in check 3, and shorten the app line to "It's all on MedWise ECG, launching soon." That removes about 45 words, roughly 17 s. Keep the "looks wrong but normal" block, because it's the part people will save and send to friends.
+## Hooks (panic theme)
 
-## Other hooks for this episode (all on the panic theme)
+Swap only the opening lines; the "Don't panic" line follows any of them.
 
 | # | Say | On screen |
 |---|---|---|
@@ -48,38 +55,55 @@ Drop the senior tip, the "If aVF is negative…" lines in check 3, and shorten t
 | 2 | Calling an ECG abnormal is easy. Calling it normal means you're saying you checked everything. [pause] Did you? | Normal = you checked **everything** |
 | 3 | The T wave in aVR is upside down, and you start panicking. [pause] Relax. It's supposed to be. Here's what normal actually looks like. | Upside-down T? **Relax.** |
 | 4 | Nine checks. If an ECG passes all nine, you can call it normal without that sinking feeling. | **9 checks** to call it normal |
-| 5 | "Looks normal to me." [pause] The four words that get interns into trouble on the ward. | "Looks normal to me." |
-| 6 | You don't need to know every disease to read an ECG. You need to know what normal looks like, properly. Part 4. | Know **normal** properly |
+| 5 | "Looks normal to me." [pause] Four words that get interns into trouble on the ward. | "Looks normal to me." |
+| 6 | You don't need to know every disease to read an ECG. You need to know what normal looks like, properly. | Know **normal** properly |
 
-Hook 3 is the strongest for reaching new viewers: it starts with a fear beginners really have and settles it within five seconds.
+Hook 3 is the strongest for reaching new viewers: it starts with a fear beginners really have and settles it within five seconds. If you use it for 4A, make sure aVR gets its moment in 4B (it does, in check 8).
 
-## Instagram caption
+## Captions
 
-> Part 4 of How to approach an ECG without panicking.
-> To call an ECG normal, all nine have to pass: rate 60–100, sinus rhythm, normal axis, PR 120–200 ms, QRS under 120 ms, normal R progression, flat ST, upright T in I, II and V3–V6, and QTc under 450 (men) or 460 (women).
-> Normal and often feared: inverted T in aVR, small septal q in V5–V6, sinus arrhythmia.
-> Save it for your next ECG. Part 5 next.
->
-> MedWise ECG, launching soon.
-> ECG: PTB-XL (PhysioNet), CC BY 4.0. For education only.
+**Part 4A**
+> Part 4 of How to approach an ECG without panicking: what it takes to call an ECG normal. Checks 1 to 5.
+> Grid: 1 small box = 40 ms, 1 big box = 200 ms.
+> 1 Rate 60–100 (R waves 3–5 big boxes apart) · 2 Sinus: upright P in II, P before every QRS · 3 Axis: I and aVF positive (II positive is still normal to −30°) · 4 PR 120–200 ms · 5 QRS under 120 ms.
+> Checks 6 to 9 in the next Reel. Save this one.
+> MedWise ECG, launching soon. ECG: PTB-XL (PhysioNet), CC BY 4.0. For education only.
 > #ECG #ECGinterpretation #NormalECG #MBBS #MedicalStudents #NEETPG #Intern #MedWise
 
-## Start prompt (after uploading)
+**Part 4B**
+> Part 4, continued. Checks 6 to 9.
+> 6 R waves grow from V1 to V5, transition at V3–V4 · 7 ST flat on the baseline in every lead · 8 T upright in I, II and V3–V6, always inverted in aVR · 9 QTc under 450 ms (men), 460 ms (women).
+> Normal and often feared: septal q waves in I, aVL, V5, V6, and sinus arrhythmia.
+> Always compare with the old ECG. Part 5 next.
+> MedWise ECG, launching soon. ECG: PTB-XL (PhysioNet), CC BY 4.0. For education only.
+> #ECG #ECGinterpretation #NormalECG #MBBS #MedicalStudents #NEETPG #Intern #MedWise
+
+## Start prompt (after uploading the single take)
 
 ```
 Edit this video. Use my video-edit skill.
 Raw file: raw/2026-11-xx-part-4-normal-ecg.mp4
 Style: S12, accent teal from brand.md
 Topic: How to approach an ECG without panicking, Part 4: what it takes to call an ECG normal
-Visuals: follow reels/scripts/part-4-normal-ecg.md (checklist 1–9 ticking beside assets/ecg/ptbxl-441.png)
-Series tag "Part 4" on the title. CTA from brand.md.
-Show me the cut list first. Don't render anything yet.
+Make TWO Reels from this take, split where I say "That's five of the nine":
+  Part 4A ends after "Follow so you don't miss it."
+  Part 4B starts at "Part 4, continued."
+Visuals: follow reels/scripts/part-4-normal-ecg.md (checklist 1–9 building beside assets/ecg/ptbxl-441.png)
+Series tag "Part 4A" / "Part 4B" on the titles. CTA from brand.md at the end of 4B.
+Show me the cut list for both first. Don't render anything yet.
 ```
 
-## Facts used (all from the MedWise curriculum, src/ecg/data/curriculum.ts)
+## Facts used (MedWise curriculum, src/ecg/data/curriculum.ts)
 
-- Normal axis: I and aVF positive (0° to +90°). With I positive and aVF negative, lead II positive is still normal (to −30°).
-- PR 120–200 ms. QRS under 120 ms. QTc normal under 450 ms (men), 460 ms (women). Rate 60–100 is the standard range for sinus rhythm.
-- R grows from V1 to V5, transition around V3–V4. Small septal q waves are normal in I, aVL, V5 and V6.
-- T upright in I, II and V3–V6, always inverted in aVR. Sinus arrhythmia varies with breathing and is normal.
-- The most useful comparison is the patient's previous ECG, because a new change matters more than a stable abnormality.
+- 25 mm/s: one small square is 40 ms, one big square 200 ms. Regular rate = 300 ÷ big squares; irregular = QRS on the 10-second strip × 6. Rate 60–100 is the standard sinus range.
+- SA node fires; the atrial force points to about +60°, so a sinus P is upright in I and II and tallest in II. Sinus: a P before every QRS at a constant PR.
+- AF: no P waves, irregularly irregular.
+- Axis: I and aVF positive is normal (0° to +90°). I positive, aVF negative: II positive is still normal (to −30°), II negative is left axis deviation.
+- PR 120–200 ms; longer is AV-node delay (first-degree block); shorter is pre-excitation (WPW) or a junctional focus. The AV-node pause lets the atria finish filling the ventricles (standard physiology).
+- QRS under 120 ms is narrow; 120 ms or more means bundle branch block, a ventricular beat or pre-excitation.
+- R grows from V1 to V5, transition V3–V4; poor progression suggests old anterior MI, LVH or lead misplacement.
+- During the plateau every ventricular cell is depolarised, so no current flows and the ST segment is flat.
+- Repolarisation runs in the opposite direction with the opposite charge, so the T normally points the same way as the QRS. T upright in I, II and V3–V6, always inverted in aVR, may be inverted alone in III, aVL, aVF or V1.
+- QTc = QT ÷ √RR; normal under 450 ms (men), 460 ms (women). Long QT predisposes to torsades.
+- Small septal q waves are normal in I, aVL, V5 and V6 (the septum depolarises left to right). Sinus arrhythmia varies with breathing and is normal.
+- The most useful comparison is the patient's previous ECG.
