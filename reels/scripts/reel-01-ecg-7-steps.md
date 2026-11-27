@@ -1,7 +1,7 @@
 # Reel 1: Read any ECG in 7 steps
 
 Week 1, teaching. It introduces the order MedWise teaches and mentions the app once, at the end.
-About 55 s spoken (about 140 words) · Style S12 Whiteboard Diagram · Accent teal #18AB97
+55 to 60 s spoken (about 165 words) · Style S12 Whiteboard Diagram · Accent teal #18AB97
 Example ECG: `assets/ecg/ptbxl-441.png`, a real 12-lead with a reviewed answer key: sinus 86/min, axis +65°, PR 150 ms, QRS 90 ms, QT 368 ms (QTc about 441 ms), normal.
 Teleprompter-only version (no tables, ready to paste into an app): `reel-01-teleprompter.txt`
 
