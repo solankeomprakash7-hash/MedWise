@@ -1,38 +1,51 @@
-# Reel 1 · "Read any ECG in 7 steps"
+# Reel 1: Read any ECG in 7 steps
 
-**Goal:** week 1, teaching. Builds trust and introduces the MedWise reading order. The app is mentioned once, softly, at the end.
-**Length:** about 45 s · **Style:** S12 Whiteboard Diagram · **Accent:** teal #18AB97
-**Example ECG:** `assets/ecg/ptbxl-441.png`, a real 12-lead, reviewed answer key: sinus 86/min, axis +65°, PR 150 ms, QRS 90 ms, QT 368 ms (QTc ≈ 441 ms), normal.
+Week 1, teaching. It introduces the order MedWise teaches and mentions the app once, at the end.
+About 55 s spoken (about 140 words) · Style S12 Whiteboard Diagram · Accent teal #18AB97
+Example ECG: `assets/ecg/ptbxl-441.png`, a real 12-lead with a reviewed answer key: sinus 86/min, axis +65°, PR 150 ms, QRS 90 ms, QT 368 ms (QTc about 441 ms), normal.
+Teleprompter-only version (no tables, ready to paste into an app): `reel-01-teleprompter.txt`
 
-Speak naturally. This is a guide, not lines to memorise. If you fumble, pause one second and repeat the whole sentence; the edit keeps the better take.
+## How to deliver it
 
----
+- Talk the way you would to one intern standing next to you on rounds. You're explaining, so drop the presenter voice.
+- The hook is the only part to say slightly faster. Everything after it is calm and sure.
+- A `/` is a short breath. `[pause]` is a full second of silence, which the edit will tighten.
+- Hold up fingers for each step number. It gives the editor a natural cut point and viewers a sense of progress.
+- If you trip on a line, stop, wait one second and say the whole line again. The cut list keeps the better take.
 
-## Script (Hinglish; Hindi and Marathi words in English letters)
+## Script
 
-| # | Time | You say | On screen (the engine builds it) |
-|---|---|---|---|
-| 1 | 0–4 s | **"ECG haath mein aaya… aur dimaag blank? Bas ye 7 steps yaad rakho."** | Title: *Never go* **blank** *on an ECG again* |
-| 2 | 4–9 s | "Step one, **rate**. Regular hai toh 300 divided by big boxes between two R's. Yahan three and a half boxes, matlab around **86**." | Real ECG, R–R gap highlighted · counter → **86/min** |
-| 3 | 9–14 s | "Step two, **rhythm**. Regular hai? Har QRS se pehle P wave hai? Toh **sinus**." | List: ✓ Regular ✓ P before every QRS → *Sinus* |
-| 4 | 14–19 s | "Step three, **axis**. Lead I positive, aVF positive: **normal axis**. Done." | Axis graphic: lead I ↑ + aVF ↑ = normal (+65°); or the heart-vector wheel from `heart-normal.mp4` |
-| 5 | 19–26 s | "Step four, **intervals**. PR three se five small boxes, QRS three se kam, aur QTc check karo." | Three chips: PR 150 ms ✓ · QRS 90 ms ✓ · QTc 441 ms ✓ |
-| 6 | 26–31 s | "Step five, the most important: **ST segment aur T waves**. Elevation, depression, inversion, sab dekho." | `assets/app/heart-stemi-inferior.mp4`: the heart with the injured wall |
-| 7 | 31–35 s | "Step six, **diagnosis**: sab jod do. Ye ECG? Completely **normal**." | Bigword: **NORMAL ECG** |
-| 8 | 35–39 s | "Aur step seven, jo sab bhool jaate hain: **next step**. Patient ke liye ab kya karna hai?" | `assets/app/10-practice-steps-full.png`: the 9-step drill, scrolling to "What do you do next?" |
-| 9 | 39–45 s | "Isi order mein main **MedWise ECG** pe real ECGs ke saath sikhata hoon. Launching soon. **Like, share and follow** if you never want to go blank while reading an ECG." | CTA card held to the end + MedWise logo |
+| # | Time | Say | Delivery | On screen |
+|---|---|---|---|---|
+| Hook | 0–5 s | 3 a.m. in casualty. / Someone hands you an ECG: / "Doctor, just check this once." [pause] And your mind goes blank. | Lean in a little. Say "blank" quietly, almost a confession. | Title: *3 a.m.* Your mind goes **blank** |
+| Bridge | 5–7 s | Here's the order I follow / every time. | Sit back, relaxed. This is the promise. | Caption only |
+| 1 | 7–13 s | One. Rate. / 300, divided by the big boxes between two R waves. / Three and a half boxes here, / so about 86. | Show 1 finger. Slow down on the numbers. | Real ECG, R–R gap boxed in teal · counter → 86/min |
+| 2 | 13–18 s | Two. Rhythm. / Regular, with a P wave before every QRS? / That's sinus. | Small nod on "That's sinus." | Two ticks appear: Regular ✓ P before QRS ✓ → Sinus |
+| 3 | 18–22 s | Three. Axis. / Lead I up, aVF up. / Normal. Move on. | "Move on" with a small hand flick. Viewers like hearing they can skip the overthinking. | Lead I ↑ + aVF ↑ = Normal axis, or the vector wheel from `heart-normal.mp4` |
+| 4 | 22–29 s | Four. Intervals. / PR, three to five small boxes. / QRS, under three. / Then correct the QT for rate. / This one's 441. Fine. | Count on your fingers for PR and QRS. | Chips appear one by one: PR 150 ms ✓ · QRS 90 ms ✓ · QTc 441 ms ✓ |
+| 5 | 29–35 s | Five. ST segments and T waves. / Go lead by lead. [pause] This is where MIs get missed. | The most serious line in the Reel. Look straight into the lens and slow right down. | `heart-stemi-inferior.mp4`: the heart with the inferior wall injured |
+| 6 | 35–38 s | Six. Name it. / This one? / A normal ECG. | Light, almost a smile. Release after step 5. | Bigword: NORMAL ECG |
+| 7 | 38–44 s | Seven. The one everyone skips. / What do you do next? / Because that's the first thing your senior will ask. | Point at the camera on "you". | `10-practice-steps-full.png` scrolling down to "What do you do next?" |
+| App | 44–49 s | I've built MedWise ECG around this exact order, / on real ECGs. / It's launching soon. | Plain and proud. No sales voice. | MedWise logo + "Launching soon" |
+| CTA | 49–55 s | Like this, / share it with your batch, / and follow / if you never want to go blank on an ECG again. | Warm. "Go blank" calls back to the hook. | CTA card held to the last frame |
 
-**Optional Marathi touch:** open with *"ECG haatat aala aani dokyat kahich nahi?"* if your audience is mostly Maharashtra. The captions follow whatever you say.
+## Two other hooks to test later
 
----
+Keep the rest of the script the same and swap only the first 7 seconds. After two or three Reels you'll see which kind of opening holds your audience.
+
+- **Viva:** "Your examiner slides an ECG across the table and says, 'Go on, read it.' [pause] Where do you even start? Here."
+- **Mistake:** "Most interns read an ECG by staring at it and hoping something jumps out. Here's the order that actually works."
 
 ## What to record
-- Vertical, 1080p, 30 fps, eye level. Window light on your face, clip-on mic, fan off.
-- Keep the upper half of the frame plain (style S12 puts graphics above your face).
-- One take of the whole thing is fine. Pause, then redo any line you didn't like.
-- Name the file `2026-11-xx-ecg-7-steps.mp4` and upload it to `ai-video-editor/raw/`.
 
-## Start prompt (after uploading)
+- Vertical, 1080p, 30 fps, camera at eye level.
+- Window light on your face, clip-on mic, fan off.
+- Keep the top half of the frame plain. S12 puts the graphics above your head.
+- One continuous take is fine.
+- Upload it to `ai-video-editor/raw/` as `2026-11-xx-ecg-7-steps.mp4`.
+
+## Start prompt (paste after uploading)
+
 ```
 Edit this video. Use my video-edit skill.
 Raw file: raw/2026-11-xx-ecg-7-steps.mp4
@@ -43,12 +56,17 @@ CTA: from brand.md
 Show me the cut list first. Don't render anything yet.
 ```
 
-## Caption for Instagram
-> Har ECG, same 7 steps: rate → rhythm → axis → intervals → ST–T → diagnosis → next step. Save this for your next ward posting. 🫀
-> MedWise ECG, a self-study ECG course on real 12-leads, is launching soon.
+## Instagram caption
+
+> The order I read every ECG in: rate, rhythm, axis, intervals, ST and T waves, diagnosis, and then what you'll actually do for the patient.
+> Save it for your next casualty posting.
+>
+> MedWise ECG, a self-study course built on real 12-leads, is launching soon. Follow so you don't miss it.
+>
 > ECG: PTB-XL (PhysioNet), CC BY 4.0. For education only.
 > #ECG #ECGinterpretation #MBBS #MedicalStudents #NEETPG #Intern #Cardiology #MedWise
 
-## Facts used (all checkable)
-- Rate 300 ÷ big boxes; PR 120–200 ms (3–5 small boxes); QRS < 120 ms (< 3 small boxes); QTc normal < 450 ms (men), < 460 ms (women), per the MedWise curriculum.
-- Example values come from the reviewed answer key for `ptbxl-441`. QTc = 368 ÷ √(60/86) ≈ 441 ms.
+## Facts used
+
+- Rate = 300 ÷ big boxes between R waves (regular rhythm). PR 120–200 ms (3–5 small boxes). QRS under 120 ms (under 3 small boxes). QTc normal under 450 ms in men and 460 ms in women, as in the MedWise curriculum.
+- Example values come from the reviewed answer key for `ptbxl-441`. 300 ÷ 86 is 3.5 big boxes. QTc = 368 ÷ √(60/86), about 441 ms.

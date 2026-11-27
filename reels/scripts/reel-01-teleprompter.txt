@@ -1,0 +1,60 @@
+REEL 1 · READ ANY ECG IN 7 STEPS · about 55 seconds
+/ = breath     [pause] = one full second     CAPS = lean on the word
+
+
+3 a.m. in casualty.
+Someone hands you an ECG:
+"Doctor, just check this once."
+[pause]
+And your mind goes BLANK.
+
+Here's the order I follow /
+every time.
+
+
+ONE. Rate.
+300, divided by the big boxes /
+between two R waves.
+Three and a half boxes here, /
+so about 86.
+
+TWO. Rhythm.
+Regular, /
+with a P wave before every QRS?
+That's sinus.
+
+THREE. Axis.
+Lead I up, / aVF up.
+Normal. / Move on.
+
+FOUR. Intervals.
+PR, / three to five small boxes.
+QRS, / under three.
+Then correct the QT for rate.
+This one's 441. / Fine.
+
+FIVE. ST segments and T waves.
+Go lead by lead.
+[pause]
+This is where MIs get MISSED.
+
+SIX. Name it.
+This one?
+A normal ECG.
+
+SEVEN. The one everyone skips.
+What do you do NEXT?
+Because that's the first thing
+your senior will ask.
+
+
+I've built MedWise ECG
+around this exact order, /
+on real ECGs.
+It's launching soon.
+
+Like this, /
+share it with your batch, /
+and follow
+if you never want to go blank
+on an ECG again.
