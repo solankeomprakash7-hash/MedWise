@@ -6,8 +6,8 @@ Teleprompter text: `part-4-normal-ecg-teleprompter.txt`. Record it as one take; 
 
 | Reel | Covers | Length |
 |---|---|---|
-| Part 4A | Hook, the grid, checks 1–5 (rate, sinus, axis, PR, QRS), "five of nine" ending | about 2:15 |
-| Part 4B | Short recap, checks 6–9 (R progression, ST, T, QT), normal findings that scare beginners, old-ECG tip, app, CTA | about 2:25 |
+| Part 4A | Hook, the grid, checks 1–5 (rate, sinus, axis, PR, QRS), "five of nine" ending | about 2:20 |
+| Part 4B | Short recap, checks 6–9 (R progression, ST, T, QT), normal findings that scare beginners, old-ECG tip, app, CTA | about 2:30 |
 
 Instagram allows Reels up to 3 minutes. One combined Reel would run about 4½ minutes, so it has to be two. The split also helps: 4A ends on a reason to watch 4B ("the one where MIs get missed"), and each Reel teaches one complete chunk.
 
